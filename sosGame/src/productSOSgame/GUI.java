@@ -72,7 +72,7 @@ public class GUI extends JFrame implements MouseListener{
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
-
+				//only accept numbers in text field
 				if(!(Character.isDigit(c)) || (c==KeyEvent.VK_BACK_SPACE)) {
 					e.consume();
 				}

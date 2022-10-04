@@ -14,7 +14,7 @@ public class TestEmptyBoard {
 
 	@Before
 	public void setUp() throws Exception {
-		
+		//Size of board is 5
 		board = new Board(5);
 	}
 
@@ -47,6 +47,7 @@ public class TestEmptyBoard {
 		assertEquals("", board.getTurnO(), 'O'); 
 	}
 	
+	// acceptance criterion 1.2
 	@Test
 	public void testInvalidSize() {
 		//row, col, size

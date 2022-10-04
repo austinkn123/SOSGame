@@ -13,7 +13,6 @@ public class Console {
 	
 	public static void main(String[] args) {
 		
-		// acceptance criterion 1.2
 		Scanner input = new Scanner(System.in);
 		int size = 0;
 		while(size < 3) {
