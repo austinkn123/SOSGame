@@ -12,6 +12,7 @@ public class TestBoardGUI {
 
 	@Before
 	public void setUp() throws Exception {
+		//Can change size of board manually
 		board = new Board(6);
 		
 //		GUI.frame.setVisible(true);

@@ -9,8 +9,14 @@ public class Board {
 		grid = new int[num][num];
 	}
 
-	public int getCell(int row, int column) {
-		return grid[row][column];
+	public int getCell(int row, int column, int size) {
+//		return grid[row][column];
+		if((row >= 0) && (column >= 0) && (row < size) && (column < size)) {
+			return grid[row][column];
+		}
+		else {
+			return -1;
+		}
 	}
 
 	public char getTurnS() {

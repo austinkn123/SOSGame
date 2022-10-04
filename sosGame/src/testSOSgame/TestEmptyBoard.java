@@ -14,6 +14,7 @@ public class TestEmptyBoard {
 
 	@Before
 	public void setUp() throws Exception {
+		
 		board = new Board(5);
 	}
 
@@ -28,7 +29,7 @@ public class TestEmptyBoard {
 		for (int row = 0; row<5; row++) {
 			for (int column = 0; column<5; column++) {
 				//"" means message
-				assertEquals("", board.getCell(row, column), 0); 
+				assertEquals("", board.getCell(row, column, 5), 0); 
 			}
 		}
 		assertEquals("", board.getTurnS(), 'S'); 
@@ -40,9 +41,16 @@ public class TestEmptyBoard {
 		for (int row = 0; row<5; row++) {
 			for (int column = 0; column<5; column++) {
 				//"" means message
-				assertEquals("", board.getCell(row, column), 0); 
+				assertEquals("", board.getCell(row, column, 5), 0); 
 			}
 		}
 		assertEquals("", board.getTurnO(), 'O'); 
 	}
+	
+	@Test
+	public void testInvalidSize() {
+		//row, col, size
+		assertEquals("", board.getCell(6, 0, 5), -1); 
+	}
+	
 }

@@ -30,7 +30,7 @@ public class GUI extends JFrame implements MouseListener{
 	private JPanel contentPane;
 	private JTextField textField;
 	private int size;
-	private JButton[][] cell;
+	private JButton[][] cellButtons;
 	private JFrame frame = new JFrame(); 
 //	public static JFrame frame = new JFrame(); 
 	private JPanel panel;
@@ -126,11 +126,11 @@ public class GUI extends JFrame implements MouseListener{
 		
 		System.out.print(numSize);
 		System.out.println();
-		cell = new JButton[numSize][numSize];
+		cellButtons = new JButton[numSize][numSize];
 		for(int row = 0; row < numSize; row++) {
 			for(int col = 0; col < numSize; col++) {
-				cell[row][col] = new JButton("-");
-				panel.add(cell[row][col]);
+				cellButtons[row][col] = new JButton("-");
+				panel.add(cellButtons[row][col]);
 				
 			}
 		}
