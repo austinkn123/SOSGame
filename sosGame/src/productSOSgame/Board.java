@@ -5,8 +5,8 @@ public class Board {
 	private char turnS = 'S';
 	private char turnO = 'O'; 
 
-	public Board(int num) {
-		grid = new int[num][num];
+	public Board(int size) {
+		grid = new int[size][size];
 	}
 
 	public int getCell(int row, int column, int size) {

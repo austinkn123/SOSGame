@@ -1,72 +1,88 @@
 package productSOSgame;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import productSOSgame.Board;
-
 import javax.swing.JButton;
-import javax.swing.JLabel;
-import java.awt.Font;
 import javax.swing.JTextField;
-
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.Color;
-import java.awt.GridLayout;
 
-public class GUI extends JFrame implements MouseListener{
+
+public class GUI extends JFrame {
+	
+	public static final int CELL_SIZE = 100; 
+	public static final int GRID_WIDTH = 8;
+	public static final int GRID_WIDHT_HALF = GRID_WIDTH / 2; 
+
+	public static final int CELL_PADDING = CELL_SIZE / 6;
+	public static final int SYMBOL_SIZE = CELL_SIZE - CELL_PADDING * 2; 
+	public static final int SYMBOL_STROKE_WIDTH = 8; 
+
+	private int CANVAS_WIDTH;
+	private int CANVAS_HEIGHT;
+
+	private GameBoardCanvas gameBoardCanvas; 
+
 	private Board board;
-	private JPanel contentPane;
-	private JTextField textField;
-	private int size;
-	private JButton[][] cellButtons;
-	private JFrame frame = new JFrame(); 
-//	public static JFrame frame = new JFrame(); 
-	private JPanel panel;
+	
+	private JPanel panel = new JPanel();
+	private JTextField textField = new JTextField();
+	private JButton enterButton = new JButton("Enter");
+	private Container contentPane = getContentPane();
+	private static int size = 3;
 
 	/**
 	 * Create the frame.
 	 */
 	public GUI(Board board) {
 		this.board = board;
-		//frame
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		setBounds(100, 100, 395, 244);
+		setContentPane();
 		pack(); 
-		setVisible(true);
 		setTitle("SOS Game");
-		setBounds(100, 100, 574, 440);
-		frame.setSize(500, 500);
+		setVisible(true);  
+	}
+	
+	public Board getBoard(){
+		return board;
+	}
+	
+	private void setContentPane(){
+		contentPane.setLayout(new BorderLayout());
+		panel();
+
+	}
+	
+	private void panel(){
+		panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		contentPane.add(panel, BorderLayout.NORTH);
 		
-		//jpanel
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		
-		//label
 		JLabel lblNewLabel = new JLabel("Size of board (3 or greater):");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel.setBounds(10, 10, 195, 47);
-		contentPane.add(lblNewLabel);
+		panel.add(lblNewLabel, BorderLayout.NORTH);
 		
-		//input
-		textField = new JTextField();
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
 		textField.setText("");
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		textField.setBounds(215, 17, 47, 33);
-		contentPane.add(textField);
 		textField.setColumns(10);
 		textField.addKeyListener(new KeyAdapter() {
 			@Override
@@ -78,64 +94,75 @@ public class GUI extends JFrame implements MouseListener{
 				}
 			}
 		});
+		panel.add(textField, BorderLayout.WEST);
 		
-		//create board panel
-		boardPanel();
-		
-		//Enter Click
-		JButton btnNewButton = new JButton("Enter");
-		contentPane.add(btnNewButton);
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnNewButton.setBounds(272, 14, 92, 39);
-		btnNewButton.addMouseListener(new MouseAdapter() {
+
+		panel.add(enterButton, BorderLayout.CENTER);
+		enterButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		enterButton.setBounds(272, 14, 92, 39);
+		enterButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				String text = textField.getText();
 				size = Integer.parseInt(text);
 				if(size > 2) {
-					drawBoard(size);
+					setGamePanel();
 //					Validating a container means laying out its subcomponents.
 //					Layout-related changes, such as setting the bounds of a component, or adding a component to the container, 
 //					invalidate the container automatically
 //					**Only works after one use**
 					validate();
 					textField.setEditable(false);
-					btnNewButton.setEnabled(false);
-					btnNewButton.removeMouseListener(this);
+					enterButton.setEnabled(false);
+					enterButton.removeMouseListener(this);
 				}
 				
 			}
 		});
+		
+	}
+	
+	private void setGamePanel(){
+		gameBoardCanvas = new GameBoardCanvas(); 
+		//Change size
+		CANVAS_WIDTH = CELL_SIZE * size;  
+		CANVAS_HEIGHT = CELL_SIZE * size;
+		//Add numbers to w/h to increase size of window
+		gameBoardCanvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
+		contentPane.add(gameBoardCanvas, BorderLayout.CENTER);
+		pack(); 
+	}
+	
+	class GameBoardCanvas extends JPanel {
+		
+		GameBoardCanvas(){
+
+		}
+		
+		@Override
+		public void paintComponent(Graphics g) { 
+			super.paintComponent(g);   
+			setBackground(Color.WHITE);
+			drawGridLines(g);
+		}
+		
+		private void drawGridLines(Graphics g){
+			//Have to change these sizes too
+			g.setColor(Color.LIGHT_GRAY);
+			for (int row = 1; row < size; row++) {
+				g.fillRoundRect(0, CELL_SIZE * row - GRID_WIDHT_HALF,
+						CANVAS_WIDTH-1, GRID_WIDTH, GRID_WIDTH, GRID_WIDTH);
+			}
+			for (int col = 1; col < size; col++) {
+				g.fillRoundRect(CELL_SIZE * col - GRID_WIDHT_HALF, 0,
+						GRID_WIDTH, CANVAS_HEIGHT-1, GRID_WIDTH, GRID_WIDTH);
+			}
+
+		}
 
 	}
 	
-	public Board getBoard(){
-		return board;
-	}
-	
-	public void boardPanel() {
-		panel = new JPanel();
-		panel.setBackground(new Color(128, 255, 128));
-		panel.setBounds(104, 67, 300, 300);
-		contentPane.add(panel);
-	}
-	
-	//buttons to create board
-	public void drawBoard(int numSize) {
-		panel.setLayout(new GridLayout(numSize, numSize));
-		
-		System.out.print(numSize);
-		System.out.println();
-		cellButtons = new JButton[numSize][numSize];
-		for(int row = 0; row < numSize; row++) {
-			for(int col = 0; col < numSize; col++) {
-				cellButtons[row][col] = new JButton("-");
-				panel.add(cellButtons[row][col]);
-				
-			}
-		}
-	}
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -143,8 +170,8 @@ public class GUI extends JFrame implements MouseListener{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//board size static for now
-					new GUI(new Board(3));
+					GUI frame = new GUI(new Board(size));
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -152,34 +179,4 @@ public class GUI extends JFrame implements MouseListener{
 		});
 	}
 
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 }

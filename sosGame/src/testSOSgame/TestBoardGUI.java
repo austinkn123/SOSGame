@@ -28,7 +28,7 @@ public class TestBoardGUI {
 		new GUI(board);
 		
 		try {
-			Thread.sleep(15000);
+			Thread.sleep(5000);
 			
 		} catch (InterruptedException e) {
 			e.printStackTrace();

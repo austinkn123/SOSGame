@@ -31,10 +31,10 @@ public class Console {
 	}
 		
 	
-	public void displayBoard(int num) {
-		for(int row = 0; row < num; row++) {
-	    	for(int col = 0; col < num; col++) {
-	    		System.out.print("|" + board.getCell(row, col, num));
+	public void displayBoard(int boardSize) {
+		for(int row = 0; row < boardSize; row++) {
+	    	for(int col = 0; col < boardSize; col++) {
+	    		System.out.print("|" + board.getCell(row, col, boardSize));
 	    	}
 	    	System.out.print("|");
 	    	System.out.println();
