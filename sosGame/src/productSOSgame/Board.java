@@ -2,8 +2,8 @@ package productSOSgame;
 
 public class Board {
 	private int[][] grid;
-	private char turnS = 'S';
-	private char turnO = 'O'; 
+	private char turn = 'S';
+	private Boolean gameEnded = false;
 
 	public Board(int size) {
 		grid = new int[size][size];
@@ -19,11 +19,8 @@ public class Board {
 		}
 	}
 
-	public char getTurnS() {
-		return turnS;
+	public char getTurn() {
+		return turn;
 	}
 	
-	public char getTurnO() {
-		return turnO;
-	}
 }

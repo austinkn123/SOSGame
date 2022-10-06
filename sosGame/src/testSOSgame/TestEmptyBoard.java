@@ -33,20 +33,9 @@ public class TestEmptyBoard {
 				assertEquals("", board.getCell(row, column, size), 0); 
 			}
 		}
-		assertEquals("", board.getTurnS(), 'S'); 
+		assertEquals("", board.getTurn(), 'S'); 
 	}
-	
-	//Test board with 5 and turn O after
-	@Test
-	public void testNewBoardTurnO() {
-		for (int row = 0; row<size; row++) {
-			for (int column = 0; column<size; column++) {
-				//"" means message
-				assertEquals("", board.getCell(row, column, size), 0); 
-			}
-		}
-		assertEquals("", board.getTurnO(), 'O'); 
-	}
+
 	
 	// acceptance criterion 1.2
 	@Test
