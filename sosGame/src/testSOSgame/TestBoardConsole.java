@@ -9,11 +9,13 @@ import productSOSgame.Console;
 
 public class TestBoardConsole {
 	private Board board;
+	private int size = 8;
 	
 	@Before
 	public void setUp() throws Exception {
 		//Input any number to create a new board
-		board = new Board(5); 
+		board = new Board(); 
+		board.setSize(size);
 	}
 	
 	@After
@@ -23,7 +25,7 @@ public class TestBoardConsole {
 	@Test
 	public void testEmptyBoard() {
 		//Input any number greater than 2 for displayBoard 
-		new Console(board).displayBoard(5);
+		new Console(board).displayBoard(board.getSize());
 	}
 	
 }

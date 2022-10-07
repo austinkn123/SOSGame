@@ -27,11 +27,12 @@ public class Console {
 
 	    System.out.println("Board: " + size);
 	    
-	    new Console(new Board(size)).displayBoard(size);
+	    new Console(new Board()).displayBoard(size);
 	}
 		
 	
 	public void displayBoard(int boardSize) {
+		board.setSize(boardSize);
 		for(int row = 0; row < boardSize; row++) {
 	    	for(int col = 0; col < boardSize; col++) {
 	    		System.out.print("|" + board.getCell(row, col, boardSize));

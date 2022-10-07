@@ -16,7 +16,8 @@ public class TestEmptyBoard {
 	@Before
 	public void setUp() throws Exception {
 		//Size of board is 5
-		board = new Board(5);
+		board = new Board(); 
+		board.setSize(size);
 	}
 
 	@After

@@ -9,11 +9,13 @@ import productSOSgame.GUI;
 
 public class TestBoardGUI {
 	private Board board;
+	private int size = 8;
 
 	@Before
 	public void setUp() throws Exception {
 		//Can change size of board manually
-		board = new Board(6);
+		board = new Board(); 
+		board.setSize(size);
 		
 //		GUI.frame.setVisible(true);
 	}

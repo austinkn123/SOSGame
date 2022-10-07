@@ -59,7 +59,7 @@ public class GUI extends JFrame{
 	private JButton enterButton = new JButton("Enter");
 	private Container contentPane = getContentPane();
 	//PROBLEM WITH SIZE
-	private int size = 5;
+	private int size;
 	private ButtonGroup modeGroup = new ButtonGroup();
 	private final JRadioButton simpleButton = new JRadioButton("Simple Mode");
 	private final JRadioButton generalButton = new JRadioButton("General Mode");
@@ -72,6 +72,8 @@ public class GUI extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setContentPane();
 		//set size for numbers
+		board.setSize(size);
+		System.out.println(size);
 		pack(); 
 		setTitle("SOS Game");
 		setVisible(true);  
@@ -148,12 +150,10 @@ public class GUI extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == generalButton) {
-					System.out.println("DA GENEREAL");
 					modeString = "GENERAL";
 //					GeneralGameBoard generalGameBoard = new GeneralGameBoard(size);
 				}
 				else if(e.getSource() == simpleButton) {
-					System.out.println("DA SIMP");
 					modeString = "SIMPLE";
 //					SimpleGameBoard simpleGameBoard = new SimpleGameBoard(size);
 				}
@@ -169,6 +169,7 @@ public class GUI extends JFrame{
 				String text = textField.getText();
 				size = Integer.parseInt(text);
 				if(size > 2 && !(modeString == "Not Selected")) {
+					board.setSize(size);
 					setGamePanel();
 //					Validating a container means laying out its subcomponents.
 //					Layout-related changes, such as setting the bounds of a component, or adding a component to the container, 
@@ -201,20 +202,25 @@ public class GUI extends JFrame{
 	
 	class GameBoardCanvas extends JPanel {
 		
+		private SimpleGameBoard simpleGameBoard;
+		private GeneralGameBoard generalGame;
+		
+
 		GameBoardCanvas(){
+//			this.simpleGameBoard = board;
 			addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {  
 						int rowSelected = e.getY() / CELL_SIZE;
 						int colSelected = e.getX() / CELL_SIZE;
-						if(modeString == "GENERAL") {
-							GeneralGameBoard generalGameBoard = new GeneralGameBoard(size);
-							generalGameBoard.makeMove(rowSelected, colSelected, size);
-						}
-						else if (modeString == "SIMPLE"){
-							SimpleGameBoard simpleGameBoard = new SimpleGameBoard(size);
-							simpleGameBoard.makeMove(rowSelected, colSelected, size);
-						}
-//						board.makeMove(rowSelected, colSelected, size);
+//						if(modeString == "GENERAL") {
+//							GeneralGameBoard generalGameBoard = new GeneralGameBoard(size);
+//							generalGameBoard.makeMove(rowSelected, colSelected, size);
+//						}
+//						else if (modeString == "SIMPLE"){
+//							SimpleGameBoard simpleGameBoard = new SimpleGameBoard(size);
+//							simpleGameBoard.makeMove(rowSelected, colSelected, size);
+//						}
+						board.makeMove(rowSelected, colSelected, size);
 					repaint(); 
 				}
 			});
@@ -254,8 +260,8 @@ public class GUI extends JFrame{
 						g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
 					} else if (board.getCell(row,col, size) == 2) {
 						g2d.setColor(Color.RED);
-						g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+10)); 
-						g2d.drawString("S", x1+10, y1+60);
+						g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
+						g2d.drawString("S", x1+5, y1+65);
 					}
 				}
 			}
@@ -271,7 +277,7 @@ public class GUI extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GUI frame = new GUI(new Board(8));
+					GUI frame = new GUI(new Board());
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
