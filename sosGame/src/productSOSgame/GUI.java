@@ -1,5 +1,6 @@
 package productSOSgame;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -7,6 +8,8 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -22,6 +25,7 @@ import javax.swing.border.EmptyBorder;
 import productSOSgame.Board;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -40,22 +44,25 @@ public class GUI extends JFrame{
 
 	private int CANVAS_WIDTH;
 	private int CANVAS_HEIGHT;
+	
 
 	private GameBoardCanvas gameBoardCanvas; 
 
 	private Board board;
 	private GeneralGameBoard generalGame;
 	private SimpleGameBoard simpleGame;
+	char[] charLetter = { 'S'};
 	
 	private JPanel initPanel = new JPanel();
 	private JPanel modePanel = new JPanel();
 	private JTextField textField = new JTextField();
 	private JButton enterButton = new JButton("Enter");
 	private Container contentPane = getContentPane();
-	private static int size = 3;
+	//PROBLEM WITH SIZE
+	private int size = 5;
 	private ButtonGroup modeGroup = new ButtonGroup();
-	private final JRadioButton simpleButton = new JRadioButton("Simple Mode  ");
-	private final JRadioButton generalButton = new JRadioButton("General Mode  ");
+	private final JRadioButton simpleButton = new JRadioButton("Simple Mode");
+	private final JRadioButton generalButton = new JRadioButton("General Mode");
 	private String modeString = "Not Selected";
 	/**
 	 * Create the frame.
@@ -132,6 +139,7 @@ public class GUI extends JFrame{
 		initPanel.add(enterButton, BorderLayout.SOUTH);
 		
 		actionInit();
+
 	}
 	
 	private void actionInit(){
@@ -142,10 +150,12 @@ public class GUI extends JFrame{
 				if(e.getSource() == generalButton) {
 					System.out.println("DA GENEREAL");
 					modeString = "GENERAL";
+//					GeneralGameBoard generalGameBoard = new GeneralGameBoard(size);
 				}
 				else if(e.getSource() == simpleButton) {
 					System.out.println("DA SIMP");
 					modeString = "SIMPLE";
+//					SimpleGameBoard simpleGameBoard = new SimpleGameBoard(size);
 				}
 			}
 		};
@@ -192,7 +202,22 @@ public class GUI extends JFrame{
 	class GameBoardCanvas extends JPanel {
 		
 		GameBoardCanvas(){
-
+			addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {  
+						int rowSelected = e.getY() / CELL_SIZE;
+						int colSelected = e.getX() / CELL_SIZE;
+						if(modeString == "GENERAL") {
+							GeneralGameBoard generalGameBoard = new GeneralGameBoard(size);
+							generalGameBoard.makeMove(rowSelected, colSelected, size);
+						}
+						else if (modeString == "SIMPLE"){
+							SimpleGameBoard simpleGameBoard = new SimpleGameBoard(size);
+							simpleGameBoard.makeMove(rowSelected, colSelected, size);
+						}
+//						board.makeMove(rowSelected, colSelected, size);
+					repaint(); 
+				}
+			});
 		}
 		
 		@Override
@@ -200,6 +225,7 @@ public class GUI extends JFrame{
 			super.paintComponent(g);   
 			setBackground(Color.WHITE);
 			drawGridLines(g);
+			drawBoard(g);
 		}
 		
 		private void drawGridLines(Graphics g){
@@ -215,6 +241,25 @@ public class GUI extends JFrame{
 			}
 
 		}
+		
+		private void drawBoard(Graphics g){
+			Graphics2D g2d = (Graphics2D)g;
+			g2d.setStroke(new BasicStroke(SYMBOL_STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)); 
+			for (int row = 0; row < size; row++) {
+				for (int col = 0; col < size; col++) {
+					int x1 = col * CELL_SIZE + CELL_PADDING;
+					int y1 = row * CELL_SIZE + CELL_PADDING;
+					if (board.getCell(row,col, size) == 1) {
+						g2d.setColor(Color.BLUE);
+						g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
+					} else if (board.getCell(row,col, size) == 2) {
+						g2d.setColor(Color.RED);
+						g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+10)); 
+						g2d.drawString("S", x1+10, y1+60);
+					}
+				}
+			}
+		}
 
 	}
 	
@@ -226,7 +271,7 @@ public class GUI extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GUI frame = new GUI(new Board(size));
+					GUI frame = new GUI(new Board(8));
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

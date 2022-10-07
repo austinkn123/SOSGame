@@ -3,8 +3,16 @@ package productSOSgame;
 public class Board {
 	private int[][] grid;
 	private char turn = 'S';
-	private Boolean gameEnded = false;
-
+//	int size;
+//
+//	public void setSize(int newSize) {
+//	    this.size = newSize;
+//	 }
+//	
+//	public int getSize() {
+//	    return size;
+//	 }
+	
 	public Board(int size) {
 		grid = new int[size][size];
 	}
@@ -21,6 +29,13 @@ public class Board {
 
 	public char getTurn() {
 		return turn;
+	}
+	
+	public void makeMove(int row, int column, int size) {
+		if (row >= 0 && row < size && column >= 0 && column < size && grid[row][column] == 0) {
+			grid[row][column] = (turn == 'S')? 1 : 2; 
+			turn = (turn == 'S')? 'O' : 'S';
+		}
 	}
 	
 }
