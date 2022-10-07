@@ -49,8 +49,8 @@ public class GUI extends JFrame{
 	private GameBoardCanvas gameBoardCanvas; 
 
 	private Board board;
-	private GeneralGameBoard generalGame;
-	private SimpleGameBoard simpleGame;
+	private GeneralGameBoard generalGame = new GeneralGameBoard();
+	private SimpleGameBoard simpleGame = new SimpleGameBoard();
 	char[] charLetter = { 'S'};
 	
 	private JPanel initPanel = new JPanel();
@@ -69,8 +69,9 @@ public class GUI extends JFrame{
 	 */
 	public GUI(Board board) {
 		this.board = board;
+		this.simpleGame = null;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setContentPane();
+		setContentPane(new GeneralGameBoard(), new SimpleGameBoard());
 		//set size for numbers
 		board.setSize(size);
 		System.out.println(size);
@@ -83,8 +84,10 @@ public class GUI extends JFrame{
 		return board;
 	}
 	
-	private void setContentPane(){
+	private void setContentPane(GeneralGameBoard generalGame, SimpleGameBoard simpleGame){
 		contentPane.setLayout(new BorderLayout());
+		this.generalGame = generalGame;
+		this.simpleGame = simpleGame;
 		panel();
 
 	}
@@ -170,6 +173,12 @@ public class GUI extends JFrame{
 				size = Integer.parseInt(text);
 				if(size > 2 && !(modeString == "Not Selected")) {
 					board.setSize(size);
+					if(modeString == "GENERAL") {
+						generalGame.setSize(size);
+					}
+					else if(modeString == "SIMPLE") {
+						simpleGame.setSize(size);
+					}
 					setGamePanel();
 //					Validating a container means laying out its subcomponents.
 //					Layout-related changes, such as setting the bounds of a component, or adding a component to the container, 
@@ -202,28 +211,23 @@ public class GUI extends JFrame{
 	
 	class GameBoardCanvas extends JPanel {
 		
-		private SimpleGameBoard simpleGameBoard;
-		private GeneralGameBoard generalGame;
-		
-
 		GameBoardCanvas(){
-//			this.simpleGameBoard = board;
+			
 			addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {  
 						int rowSelected = e.getY() / CELL_SIZE;
 						int colSelected = e.getX() / CELL_SIZE;
-//						if(modeString == "GENERAL") {
-//							GeneralGameBoard generalGameBoard = new GeneralGameBoard(size);
-//							generalGameBoard.makeMove(rowSelected, colSelected, size);
-//						}
-//						else if (modeString == "SIMPLE"){
-//							SimpleGameBoard simpleGameBoard = new SimpleGameBoard(size);
-//							simpleGameBoard.makeMove(rowSelected, colSelected, size);
-//						}
-						board.makeMove(rowSelected, colSelected, size);
+						if(modeString == "GENERAL") {
+							generalGame.makeMove(rowSelected, colSelected, size);
+						}
+						else if (modeString == "SIMPLE"){
+							simpleGame.makeMove(rowSelected, colSelected, size);
+						}
+//						board.makeMove(rowSelected, colSelected, size);
 					repaint(); 
 				}
 			});
+//			this.simpleGameBoard = simpleGameBoard;
 		}
 		
 		@Override
@@ -250,19 +254,33 @@ public class GUI extends JFrame{
 		
 		private void drawBoard(Graphics g){
 			Graphics2D g2d = (Graphics2D)g;
+			
 			g2d.setStroke(new BasicStroke(SYMBOL_STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)); 
 			for (int row = 0; row < size; row++) {
 				for (int col = 0; col < size; col++) {
 					int x1 = col * CELL_SIZE + CELL_PADDING;
 					int y1 = row * CELL_SIZE + CELL_PADDING;
-					if (board.getCell(row,col, size) == 1) {
+					if(modeString == "GENERAL") {
+						if (generalGame.getCell(row,col, size) == 1) {
+							g2d.setColor(Color.BLUE);
+							g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
+						} else if (generalGame.getCell(row,col, size) == 2) {
+							g2d.setColor(Color.RED);
+							g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
+							g2d.drawString("S", x1+5, y1+65);
+						}
+					}
+					else if(modeString == "SIMPLE") {
+						if (simpleGame.getCell(row,col, size) == 1) {
 						g2d.setColor(Color.BLUE);
 						g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
-					} else if (board.getCell(row,col, size) == 2) {
+					} else if (simpleGame.getCell(row,col, size) == 2) {
 						g2d.setColor(Color.RED);
 						g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
 						g2d.drawString("S", x1+5, y1+65);
 					}
+					}
+					
 				}
 			}
 		}
