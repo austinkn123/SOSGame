@@ -31,7 +31,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JRadioButton;
 
-
+@SuppressWarnings("serial")
 public class GUI extends JFrame{
 	
 	public static final int CELL_SIZE = 100; 
@@ -69,10 +69,9 @@ public class GUI extends JFrame{
 	 */
 	public GUI(Board board) {
 		this.board = board;
-		this.simpleGame = null;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setContentPane(new GeneralGameBoard(), new SimpleGameBoard());
-		//set size for numbers
+
 		board.setSize(size);
 		System.out.println(size);
 		pack(); 
@@ -180,9 +179,6 @@ public class GUI extends JFrame{
 						simpleGame.setSize(size);
 					}
 					setGamePanel();
-//					Validating a container means laying out its subcomponents.
-//					Layout-related changes, such as setting the bounds of a component, or adding a component to the container, 
-//					invalidate the container automatically
 //					**Only works after one use**
 					validate();
 					textField.setEditable(false);
@@ -262,23 +258,23 @@ public class GUI extends JFrame{
 					int y1 = row * CELL_SIZE + CELL_PADDING;
 					if(modeString == "GENERAL") {
 						if (generalGame.getCell(row,col, size) == 1) {
-							g2d.setColor(Color.BLUE);
-							g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
-						} else if (generalGame.getCell(row,col, size) == 2) {
 							g2d.setColor(Color.RED);
 							g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
 							g2d.drawString("S", x1+5, y1+65);
+						} else if (generalGame.getCell(row,col, size) == 2) {
+							g2d.setColor(Color.BLUE);
+							g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
 						}
 					}
 					else if(modeString == "SIMPLE") {
 						if (simpleGame.getCell(row,col, size) == 1) {
-						g2d.setColor(Color.BLUE);
-						g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
-					} else if (simpleGame.getCell(row,col, size) == 2) {
-						g2d.setColor(Color.RED);
-						g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
-						g2d.drawString("S", x1+5, y1+65);
-					}
+							g2d.setColor(Color.RED);
+							g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
+							g2d.drawString("S", x1+5, y1+65);
+						} else if (simpleGame.getCell(row,col, size) == 2) {
+							g2d.setColor(Color.BLUE);
+							g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
+						}
 					}
 					
 				}
