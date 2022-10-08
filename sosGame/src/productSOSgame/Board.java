@@ -4,6 +4,8 @@ public class Board {
 	private int[][] grid;
 	private char turn = 'S';
 	int size;
+	int pointS = 0;
+	int pointO = 0;
 
 	public void setSize(int newSize) {
 	    this.size = newSize;
@@ -13,6 +15,22 @@ public class Board {
 	
 	public int getSize() {
 	    return size;
+	 }
+	
+	public void addPointS() {
+		pointS += 1;
+	}
+	
+	public int getPointS() {
+	    return pointS;
+	 }
+	
+	public void addPointO() {
+		pointO += 1;
+	}
+	
+	public int getPointO() {
+	    return pointO;
 	 }
 	
 	public Board() {
