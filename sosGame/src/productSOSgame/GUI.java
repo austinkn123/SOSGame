@@ -171,12 +171,15 @@ public class GUI extends JFrame{
 				String text = textField.getText();
 				size = Integer.parseInt(text);
 				if(size > 2 && !(modeString == "Not Selected")) {
-					board.setSize(size);
+					
 					if(modeString == "GENERAL") {
 						generalGame.setSize(size);
 					}
 					else if(modeString == "SIMPLE") {
 						simpleGame.setSize(size);
+					}
+					else {
+						board.setSize(size);
 					}
 					setGamePanel();
 //					**Only works after one use**
@@ -186,7 +189,7 @@ public class GUI extends JFrame{
 					enterButton.removeMouseListener(this);
 					generalButton.setEnabled(false);
 					simpleButton.setEnabled(false);
-					System.out.println(modeString);
+					System.out.println(modeString + " MODE: ");
 				}
 				
 			}
@@ -261,9 +264,14 @@ public class GUI extends JFrame{
 							g2d.setColor(Color.RED);
 							g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
 							g2d.drawString("S", x1+5, y1+65);
+							
+							System.out.println(generalGame.getCell(row,col, size)+ "---S");
+							
 						} else if (generalGame.getCell(row,col, size) == 2) {
 							g2d.setColor(Color.BLUE);
 							g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
+							
+							System.out.println(generalGame.getCell(row,col, size)+ "---O");
 						}
 					}
 					else if(modeString == "SIMPLE") {
@@ -271,9 +279,15 @@ public class GUI extends JFrame{
 							g2d.setColor(Color.RED);
 							g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
 							g2d.drawString("S", x1+5, y1+65);
+							
+							System.out.println(simpleGame.getCell(row,col, size)+ "---S");
+							
 						} else if (simpleGame.getCell(row,col, size) == 2) {
+
 							g2d.setColor(Color.BLUE);
 							g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
+							
+							System.out.println(simpleGame.getCell(row,col, size)+ "---O");
 						}
 					}
 					

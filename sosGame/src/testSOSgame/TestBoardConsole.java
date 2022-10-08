@@ -14,6 +14,7 @@ public class TestBoardConsole {
 	private GeneralGameBoard generalBoard;
 	private SimpleGameBoard simpleBoard;
 	private int size = 8;
+	private String modeString;
 	
 	@Before
 	public void setUp() throws Exception {
