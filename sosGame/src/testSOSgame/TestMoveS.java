@@ -9,6 +9,7 @@ import org.junit.Test;
 import productSOSgame.Board;
 import productSOSgame.GeneralGameBoard;
 import productSOSgame.SimpleGameBoard;
+import productSOSgame.Board.Cell;
 
 
 public class TestMoveS {
@@ -36,15 +37,15 @@ public class TestMoveS {
 	@Test
 	public void testSTurnMoveVacantCellinSimpleMode() {
 		simpleBoard.makeMove(0, 0, size);
-		assertEquals("", simpleBoard.getCell(0, 0, size), 1);
+		assertEquals("", simpleBoard.getCell(0, 0, size), Cell.SPLAYER);
 		assertEquals("", simpleBoard.getTurn(), 'O');
 	}
 	//acceptance criterion 4.2
 	@Test
-	public void testSTurnMoveNonVacantCell() {
+	public void testSTurnMoveNonVacantCellinSimpleMode() {
 		simpleBoard.makeMove(0, 0, size);
 		simpleBoard.makeMove(1, 0, size);
-		assertEquals("", simpleBoard.getCell(1, 0, size), 2);
+		assertEquals("", simpleBoard.getCell(1, 0, size), Cell.OPLAYER);
 		assertEquals("", simpleBoard.getTurn(), 'S');
 		simpleBoard.makeMove(0, 0, size);
 		assertEquals("", simpleBoard.getTurn(), 'S');
@@ -52,7 +53,7 @@ public class TestMoveS {
 	
 	//acceptance criterion 4.3
 	@Test
-	public void testSTurnInvalidSizeMove() {
+	public void testSTurnInvalidSizeMoveinSimpleMode() {
 		simpleBoard.makeMove((size + 1), 0, size);
 		assertEquals("", simpleBoard.getTurn(), 'S');
 	}
@@ -61,7 +62,29 @@ public class TestMoveS {
 	@Test
 	public void testSTurnMoveVacantCellinGeneralMode() {
 		generalBoard.makeMove(0, 0, size);
-		assertEquals("", generalBoard.getCell(0, 0, size), 1);
+		assertEquals("", generalBoard.getCell(0, 0, size), Cell.SPLAYER);
 		assertEquals("", generalBoard.getTurn(), 'O');
 	}
+	
+	// acceptance criterion 6.2
+	@Test
+	public void testSTurnMoveNonVacantCellinGeneralMode() {
+		generalBoard.makeMove(0, 0, size);
+		generalBoard.makeMove(1, 0, size);
+		assertEquals("", generalBoard.getCell(1, 0, size), Cell.OPLAYER);
+		assertEquals("", generalBoard.getTurn(), 'S');
+		generalBoard.makeMove(0, 0, size);
+		assertEquals("", generalBoard.getTurn(), 'S');
+	}
+	
+	// acceptance criterion 6.3
+	@Test
+	public void testSTurnInvalidSizeMoveinGeneralMode() {
+		generalBoard.makeMove((size + 1), 0, size);
+		assertEquals("", generalBoard.getTurn(), 'S');
+	}
+	
+	// acceptance criterion 6.4
+	
+	
 }

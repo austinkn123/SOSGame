@@ -2,6 +2,8 @@ package productSOSgame;
 
 import java.util.Scanner;
 
+import productSOSgame.Board.Cell;
+
 public class Console {
 	//object board
 	private Board board;
@@ -35,42 +37,74 @@ public class Console {
 		
 		System.out.print("Enter the game mode (General or Simple): ");
 		Scanner inputMode  = new Scanner(System.in);
-		modeWord = inputMode.next();
+		modeWord = inputMode.nextLine();
+		
+		
 		
 		inputSize.close();
 		inputMode.close();
+		
 
-	    System.out.println("Board: " + size);
-	    if (modeWord != "General" || modeWord != "Simple") {
-	    	modeWord = "Not Selected";
-	    }
+
 	    System.out.println("Mode: " + modeWord);
 	    
 	    if(modeWord == "General") {
 	    	generalMode.setSize(size);
-			new Console(generalMode).displayBoard(size);
+			new Console(generalMode).displayBoardGeneral(size, generalMode);
 		}
 		else if (modeWord == "Simple") {
+			System.out.println("SSSSSSSSSSSSSSSS");
 			simpleMode.setSize(size);
-			new Console(simpleMode).displayBoard(size);
+			new Console(simpleMode).displayBoardSimple(size, simpleMode);
 		}
 		else {
 			modeWord = "Not Selected";
 			newBoard.setSize(size);
 			new Console(newBoard).displayBoard(size);
-			
-			
 		}
-	    
 	    
 	}
 		
 	
+	private char symbol(Cell cell) {
+		if (cell==Cell.SPLAYER)
+			return 'S';
+		else
+			if (cell==Cell.OPLAYER)
+				return 'O';
+			else return ' ';
+	}
+	
 	public void displayBoard(int boardSize) {
-//		board.setSize(boardSize);
+		
 		for(int row = 0; row < boardSize; row++) {
 	    	for(int col = 0; col < boardSize; col++) {
-	    		System.out.print("|" + board.getCell(row, col, boardSize));
+	    		System.out.print("|" + symbol(board.getCell(row, col, boardSize)));
+	    	}
+	    	System.out.print("|");
+	    	System.out.println();
+	    }
+		
+	}
+	
+	public void displayBoardGeneral(int boardSize, GeneralGameBoard generalMode) {
+		this.generalMode = generalMode;
+		for(int row = 0; row < boardSize; row++) {
+	    	for(int col = 0; col < boardSize; col++) {
+	    		System.out.print("|" + symbol(generalMode.getCell(row, col, boardSize)));
+	    	}
+	    	System.out.print("|");
+	    	System.out.println();
+	    }
+		
+	}
+	
+	public void displayBoardSimple(int boardSize, SimpleGameBoard simpleMode) {
+//		board.setSize(boardSize);
+		this.simpleMode = simpleMode;
+		for(int row = 0; row < boardSize; row++) {
+	    	for(int col = 0; col < boardSize; col++) {
+	    		System.out.print("|" + symbol(simpleMode.getCell(row, col, boardSize)));
 	    	}
 	    	System.out.print("|");
 	    	System.out.println();

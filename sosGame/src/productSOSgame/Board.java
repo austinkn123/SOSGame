@@ -1,16 +1,19 @@
 package productSOSgame;
 
+
 public class Board {
-	private int[][] grid;
+	public enum Cell {EMPTY, SPLAYER, OPLAYER}
 	private char turn = 'S';
-	int size;
+	private int size = 0;
+	private Cell[][] grid;
 	int pointS = 0;
 	int pointO = 0;
 
 	public void setSize(int newSize) {
 	    this.size = newSize;
 	    //CAREFUL, MAKES NEW BOARD OF ZEROS
-	    grid = new int[newSize][newSize];
+	    grid = new Cell[newSize][newSize];
+	    initBoard();
 	 }
 	
 	public int getSize() {
@@ -34,16 +37,27 @@ public class Board {
 	 }
 	
 	public Board() {
-		grid = new int[size][size];
+		grid = new Cell[size][size];
+		initBoard();
 	}
+	
+	public void initBoard() {
+		for (int row = 0; row < size; row++) {
+			for (int column = 0; column < size; column++) {
+				grid[row][column] = Cell.EMPTY;
+			}
+		}
+		turn = 'S';
+	} 
 
-	public int getCell(int row, int column, int size) {
+
+	public Cell getCell(int row, int column, int size) {
 //		return grid[row][column];
 		if((row >= 0) && (column >= 0) && (row < size) && (column < size)) {
 			return grid[row][column];
 		}
 		else {
-			return -1;
+			return null;
 		}
 	}
 
@@ -52,8 +66,8 @@ public class Board {
 	}
 	
 	public void makeMove(int row, int column, int boardSize) {
-		if ((row >= 0) && (row < boardSize) && (column >= 0) && (column < boardSize) && (grid[row][column] == 0)) {
-			grid[row][column] = (turn == 'S')? 1 : 2; 
+		if ((row >= 0) && (row < boardSize) && (column >= 0) && (column < boardSize) && (grid[row][column] == Cell.EMPTY)) {
+			grid[row][column] = (turn == 'S')? Cell.SPLAYER : Cell.OPLAYER; 
 			turn = (turn == 'S')? 'O' : 'S';
 		}
 	}

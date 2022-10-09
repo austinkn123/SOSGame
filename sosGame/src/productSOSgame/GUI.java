@@ -1,6 +1,7 @@
 package productSOSgame;
 
 import java.awt.BasicStroke;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -22,7 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import productSOSgame.Board;
+import productSOSgame.Board.Cell;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -189,7 +190,7 @@ public class GUI extends JFrame{
 					enterButton.removeMouseListener(this);
 					generalButton.setEnabled(false);
 					simpleButton.setEnabled(false);
-					System.out.println(modeString + " MODE: ");
+					System.out.println("MODE: " + modeString);
 				}
 				
 			}
@@ -226,7 +227,7 @@ public class GUI extends JFrame{
 					repaint(); 
 				}
 			});
-//			this.simpleGameBoard = simpleGameBoard;
+
 		}
 		
 		@Override
@@ -253,21 +254,20 @@ public class GUI extends JFrame{
 		
 		private void drawBoard(Graphics g){
 			Graphics2D g2d = (Graphics2D)g;
-			
 			g2d.setStroke(new BasicStroke(SYMBOL_STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)); 
 			for (int row = 0; row < size; row++) {
 				for (int col = 0; col < size; col++) {
 					int x1 = col * CELL_SIZE + CELL_PADDING;
 					int y1 = row * CELL_SIZE + CELL_PADDING;
 					if(modeString == "GENERAL") {
-						if (generalGame.getCell(row,col, size) == 1) {
+						if (generalGame.getCell(row,col, size) == Cell.SPLAYER) {
 							g2d.setColor(Color.RED);
 							g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
 							g2d.drawString("S", x1+5, y1+65);
 							
 							System.out.println(generalGame.getCell(row,col, size)+ "---S");
 							
-						} else if (generalGame.getCell(row,col, size) == 2) {
+						} else if (generalGame.getCell(row,col, size) == Cell.OPLAYER) {
 							g2d.setColor(Color.BLUE);
 							g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
 							
@@ -275,14 +275,14 @@ public class GUI extends JFrame{
 						}
 					}
 					else if(modeString == "SIMPLE") {
-						if (simpleGame.getCell(row,col, size) == 1) {
+						if (simpleGame.getCell(row,col, size) == Cell.SPLAYER) {
 							g2d.setColor(Color.RED);
 							g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
 							g2d.drawString("S", x1+5, y1+65);
 							
 							System.out.println(simpleGame.getCell(row,col, size)+ "---S");
 							
-						} else if (simpleGame.getCell(row,col, size) == 2) {
+						} else if (simpleGame.getCell(row,col, size) == Cell.OPLAYER) {
 
 							g2d.setColor(Color.BLUE);
 							g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);

@@ -49,7 +49,7 @@ public class TestBoardConsole {
 	public void testEmptyBoardGeneral() {
 		//Input any number greater than 2 for displayBoard 
 		System.out.println("EMPTY GENERAL MODE");
-		new Console(generalBoard).displayBoard(size);
+		new Console(generalBoard).displayBoardGeneral(size, generalBoard);
 	}
 	
 	@Test
@@ -58,14 +58,14 @@ public class TestBoardConsole {
 		System.out.println("NON EMPTY GENERAL MODE");
 		generalBoard.makeMove(0, 0, size);
 		generalBoard.makeMove(1, 2, size);
-		new Console(generalBoard).displayBoard(size);
+		new Console(generalBoard).displayBoardGeneral(size, generalBoard);
 	}
 	
 	@Test
 	public void testEmptyBoardSimple() {
 		//Input any number greater than 2 for displayBoard 
 		System.out.println("EMPTY SIMPLE MODE");
-		new Console(simpleBoard).displayBoard(size);
+		new Console(simpleBoard).displayBoardSimple(size, simpleBoard);
 	}
 	
 	@Test
@@ -74,7 +74,7 @@ public class TestBoardConsole {
 		System.out.println("NON EMPTY SIMPLE MODE");
 		simpleBoard.makeMove(0, 0, size);
 		simpleBoard.makeMove(1, 1, size);
-		new Console(simpleBoard).displayBoard(size);
+		new Console(simpleBoard).displayBoardSimple(size, simpleBoard);
 	}
 	
 	
