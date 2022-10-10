@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import productSOSgame.Board;
+import productSOSgame.Board.Cell;
 import productSOSgame.GeneralGameBoard;
 import productSOSgame.SimpleGameBoard;
 
@@ -39,7 +40,7 @@ public class TestEmptyBoard {
 		for (int row = 0; row<size; row++) {
 			for (int column = 0; column<size; column++) {
 				//"" means message
-				assertEquals("", board.getCell(row, column, size), 0); 
+				assertEquals("", board.getCell(row, column, size), Cell.EMPTY); 
 			}
 		}
 		assertEquals("", board.getTurn(), 'S'); 
@@ -50,19 +51,19 @@ public class TestEmptyBoard {
 	@Test
 	public void testInvalidSize() {
 		//row, col, size
-		assertEquals("", board.getCell((size + 1), 0, size), -1); 
+		assertEquals("", board.getCell((size + 1), 0, size), null); 
 	}
 	
 	@Test
 	public void testInvalidSizeGeneral() {
 		//row, col, size
-		assertEquals("", generalBoard.getCell((size + 1), 0, size), -1); 
+		assertEquals("", generalBoard.getCell((size + 1), 0, size), null); 
 	}
 	
 	@Test
 	public void testInvalidSizeSimple() {
 		//row, col, size
-		assertEquals("", simpleBoard.getCell((size + 1), 0, size), -1); 
+		assertEquals("", simpleBoard.getCell((size + 1), 0, size), null); 
 	}
 	
 	@Test
@@ -70,7 +71,7 @@ public class TestEmptyBoard {
 		for (int row = 0; row<size; row++) {
 			for (int column = 0; column<size; column++) {
 				//"" means message
-				assertEquals("", simpleBoard.getCell(row, column, size), 0); 
+				assertEquals("", simpleBoard.getCell(row, column, size), Cell.EMPTY); 
 			}
 		}
 		assertEquals("", board.getTurn(), 'S'); 
@@ -81,7 +82,7 @@ public class TestEmptyBoard {
 		for (int row = 0; row<size; row++) {
 			for (int column = 0; column<size; column++) {
 				//"" means message
-				assertEquals("", generalBoard.getCell(row, column, size), 0); 
+				assertEquals("", generalBoard.getCell(row, column, size), Cell.EMPTY); 
 			}
 		}
 		assertEquals("", board.getTurn(), 'S'); 

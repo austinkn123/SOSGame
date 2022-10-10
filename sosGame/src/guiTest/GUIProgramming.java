@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 import javax.swing.JTextPane;
 import javax.swing.JFormattedTextField;
+import java.awt.Color;
 
 public class GUIProgramming extends JFrame {
 
@@ -58,7 +59,7 @@ public class GUIProgramming extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnNewButton.setBounds(90, 200, 130, 60);
+		btnNewButton.setBounds(167, 149, 130, 60);
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Press Right");
@@ -67,7 +68,7 @@ public class GUIProgramming extends JFrame {
 			}
 		});
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 17));
-		btnNewButton_1.setBounds(307, 196, 130, 68);
+		btnNewButton_1.setBounds(398, 145, 130, 68);
 		contentPane.add(btnNewButton_1);
 		
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("Press This Radio Button");
@@ -78,5 +79,17 @@ public class GUIProgramming extends JFrame {
 		JFormattedTextField txtMsg = new JFormattedTextField();
 		txtMsg.setBounds(265, 94, 216, 38);
 		contentPane.add(txtMsg);
+		
+		JLabel lblNewLabel_1 = new JLabel("S Player");
+		lblNewLabel_1.setForeground(new Color(255, 0, 0));
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel_1.setBounds(21, 205, 78, 38);
+		contentPane.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_1_1 = new JLabel("O Player");
+		lblNewLabel_1_1.setForeground(new Color(0, 0, 0));
+		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel_1_1.setBounds(33, 271, 78, 38);
+		contentPane.add(lblNewLabel_1_1);
 	}
 }

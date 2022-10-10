@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import productSOSgame.Board.Cell;
+import productSOSgame.GeneralGameBoard.GameState;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -56,6 +57,12 @@ public class GUI extends JFrame{
 	
 	private JPanel initPanel = new JPanel();
 	private JPanel modePanel = new JPanel();
+	private JPanel sPlayerPanel = new JPanel();
+	private JPanel oPlayerPanel = new JPanel();
+	private JLabel sPlayerLabel = new JLabel("  S Player  ");
+	private JLabel oPlayerLabel = new JLabel("  O Player  ");
+	private JLabel sPlayerPoints;
+	private JLabel oPlayerPoints;
 	private JTextField textField = new JTextField();
 	private JButton enterButton = new JButton("Enter");
 	private Container contentPane = getContentPane();
@@ -174,7 +181,7 @@ public class GUI extends JFrame{
 				if(size > 2 && !(modeString == "Not Selected")) {
 					
 					if(modeString == "GENERAL") {
-						generalGame.setSize(size);
+						generalGame.setSizeGeneral(size);
 					}
 					else if(modeString == "SIMPLE") {
 						simpleGame.setSize(size);
@@ -205,6 +212,36 @@ public class GUI extends JFrame{
 		//Add numbers to w/h to increase size of window
 		gameBoardCanvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
 		contentPane.add(gameBoardCanvas, BorderLayout.CENTER);
+		
+		//Add Player Panels
+		sPlayerPanel.setLayout(new BorderLayout());
+		oPlayerPanel.setLayout(new BorderLayout());
+	
+		sPlayerLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		sPlayerLabel.setForeground(new Color(255, 0, 0));
+		
+		oPlayerLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+
+		
+		sPlayerPanel.add(sPlayerLabel, BorderLayout.NORTH);
+		oPlayerPanel.add(oPlayerLabel, BorderLayout.NORTH);
+		
+		if(modeString == "GENERAL") {
+			sPlayerPoints = new JLabel(String.valueOf(generalGame.getPointS()));
+			oPlayerPoints = new JLabel(String.valueOf(generalGame.getPointO()));
+			sPlayerPoints.setFont(new Font("Tahoma", Font.PLAIN, 30));
+			sPlayerPoints.setForeground(new Color(255, 0, 0));
+			oPlayerPoints.setFont(new Font("Tahoma", Font.PLAIN, 30));
+			
+			sPlayerPanel.add(sPlayerPoints, BorderLayout.CENTER);
+			oPlayerPanel.add(oPlayerPoints, BorderLayout.CENTER);
+		}
+		
+		contentPane.add(sPlayerPanel, BorderLayout.WEST);
+		contentPane.add(oPlayerPanel, BorderLayout.EAST);
+		
+		
+		
 		//Resize for board
 		pack(); 
 	}
@@ -217,8 +254,9 @@ public class GUI extends JFrame{
 				public void mouseClicked(MouseEvent e) {  
 						int rowSelected = e.getY() / CELL_SIZE;
 						int colSelected = e.getX() / CELL_SIZE;
+						
 						if(modeString == "GENERAL") {
-							generalGame.makeMove(rowSelected, colSelected, size);
+							generalGame.makeMoveInGeneralMode(rowSelected, colSelected, size);
 						}
 						else if (modeString == "SIMPLE"){
 							simpleGame.makeMove(rowSelected, colSelected, size);
@@ -236,6 +274,7 @@ public class GUI extends JFrame{
 			setBackground(Color.WHITE);
 			drawGridLines(g);
 			drawBoard(g);
+			playerStatus();
 		}
 		
 		private void drawGridLines(Graphics g){
@@ -265,13 +304,13 @@ public class GUI extends JFrame{
 							g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
 							g2d.drawString("S", x1+5, y1+65);
 							
-							System.out.println(generalGame.getCell(row,col, size)+ "---S");
-							
+//							System.out.println(generalGame.getCell(row,col, size)+ "---S");
 						} else if (generalGame.getCell(row,col, size) == Cell.OPLAYER) {
 							g2d.setColor(Color.BLUE);
 							g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
 							
-							System.out.println(generalGame.getCell(row,col, size)+ "---O");
+							
+//							System.out.println(generalGame.getCell(row,col, size)+ "---O");
 						}
 					}
 					else if(modeString == "SIMPLE") {
@@ -280,20 +319,67 @@ public class GUI extends JFrame{
 							g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
 							g2d.drawString("S", x1+5, y1+65);
 							
-							System.out.println(simpleGame.getCell(row,col, size)+ "---S");
+//							System.out.println(simpleGame.getCell(row,col, size)+ "---S");
+
 							
 						} else if (simpleGame.getCell(row,col, size) == Cell.OPLAYER) {
 
 							g2d.setColor(Color.BLUE);
 							g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
 							
-							System.out.println(simpleGame.getCell(row,col, size)+ "---O");
+//							System.out.println(simpleGame.getCell(row,col, size)+ "---O");
+
 						}
 					}
 					
 				}
 			}
 		}
+		
+		private void playerStatus(){
+				if(modeString == "GENERAL") {
+					if (generalGame.getTurn() == 'S') {
+						sPlayerLabel.setForeground(new Color(255, 0, 0));
+						oPlayerLabel.setForeground(new Color(0, 0, 0));
+						sPlayerPoints.setForeground(new Color(255, 0, 0));
+						oPlayerPoints.setForeground(new Color(0, 0, 0));
+						
+//						sPlayerPoints.setText(String.valueOf(generalGame.getPointS()));
+						
+					} 
+					else if (generalGame.getTurn() == 'O') {
+						sPlayerLabel.setForeground(new Color(0, 0, 0));
+						oPlayerLabel.setForeground(new Color(0, 0, 255));
+						sPlayerPoints.setForeground(new Color(0, 0, 0));
+						oPlayerPoints.setForeground(new Color(0, 0, 255));
+//						oPlayerPoints.setText(String.valueOf(generalGame.getPointO()));
+					}
+					
+					if(generalGame.getGameState() == GameState.SPLAYER_SCORES) {
+						generalGame.addPointS();
+						System.out.println(generalGame.getPointS());
+						sPlayerPoints.setText(String.valueOf(generalGame.getPointS()));
+					}
+					
+					if(generalGame.getGameState() == GameState.OPLAYER_SCORES) {
+						generalGame.addPointO();
+						System.out.println(generalGame.getPointO());
+						oPlayerPoints.setText(String.valueOf(generalGame.getPointO()));
+					}
+				}
+				else if (modeString == "SIMPLE"){
+					if (simpleGame.getTurn() == 'S') {
+						sPlayerLabel.setForeground(new Color(255, 0, 0));
+						oPlayerLabel.setForeground(new Color(0, 0, 0));
+
+					} else {
+						sPlayerLabel.setForeground(new Color(0, 0, 0));
+						oPlayerLabel.setForeground(new Color(0, 0, 255));
+
+					}
+				}
+		}
+
 
 	}
 	

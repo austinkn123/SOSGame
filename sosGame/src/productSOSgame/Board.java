@@ -2,12 +2,11 @@ package productSOSgame;
 
 
 public class Board {
-	public enum Cell {EMPTY, SPLAYER, OPLAYER}
-	private char turn = 'S';
-	private int size = 0;
-	private Cell[][] grid;
-	int pointS = 0;
-	int pointO = 0;
+	public enum Cell {EMPTY, SPLAYER, OPLAYER};
+	protected char turn = 'S';
+	protected int size = 0;
+	protected Cell[][] grid;
+	
 
 	public void setSize(int newSize) {
 	    this.size = newSize;
@@ -18,22 +17,6 @@ public class Board {
 	
 	public int getSize() {
 	    return size;
-	 }
-	
-	public void addPointS() {
-		pointS += 1;
-	}
-	
-	public int getPointS() {
-	    return pointS;
-	 }
-	
-	public void addPointO() {
-		pointO += 1;
-	}
-	
-	public int getPointO() {
-	    return pointO;
 	 }
 	
 	public Board() {
