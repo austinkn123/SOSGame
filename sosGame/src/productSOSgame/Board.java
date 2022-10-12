@@ -2,8 +2,8 @@ package productSOSgame;
 
 
 public class Board {
-	public enum Cell {EMPTY, SPLAYER, OPLAYER};
-	protected char turn = 'S';
+	public enum Cell {EMPTY, RED_PLAYER, BLUE_PLAYER};
+	protected char turn = 'R';
 	protected int size = 0;
 	protected Cell[][] grid;
 	
@@ -19,6 +19,19 @@ public class Board {
 	    return size;
 	 }
 	
+	public int setMode(String modeKey,int newSize) {
+		if(newSize < 3) {
+			return -1;
+		}
+	    if(modeKey == "GENERAL") {
+	    	return 1;
+	    }
+	    else if(modeKey == "SIMPLE") {
+	    	return 2;
+	    }
+	    return -1;
+	 }
+	
 	public Board() {
 		grid = new Cell[size][size];
 		initBoard();
@@ -30,7 +43,7 @@ public class Board {
 				grid[row][column] = Cell.EMPTY;
 			}
 		}
-		turn = 'S';
+		turn = 'R';
 	} 
 
 
@@ -50,8 +63,8 @@ public class Board {
 	
 	public void makeMove(int row, int column, int boardSize) {
 		if ((row >= 0) && (row < boardSize) && (column >= 0) && (column < boardSize) && (grid[row][column] == Cell.EMPTY)) {
-			grid[row][column] = (turn == 'S')? Cell.SPLAYER : Cell.OPLAYER; 
-			turn = (turn == 'S')? 'O' : 'S';
+			grid[row][column] = (turn == 'R')? Cell.RED_PLAYER : Cell.BLUE_PLAYER; 
+			turn = (turn == 'R')? 'B' : 'R';
 		}
 	}
 	

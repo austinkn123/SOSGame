@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -53,25 +54,31 @@ public class GUI extends JFrame{
 	private Board board;
 	private GeneralGameBoard generalGame = new GeneralGameBoard();
 	private SimpleGameBoard simpleGame = new SimpleGameBoard();
-	char[] charLetter = { 'S'};
 	
 	private JPanel initPanel = new JPanel();
 	private JPanel modePanel = new JPanel();
-	private JPanel sPlayerPanel = new JPanel();
-	private JPanel oPlayerPanel = new JPanel();
-	private JLabel sPlayerLabel = new JLabel("  S Player  ");
-	private JLabel oPlayerLabel = new JLabel("  O Player  ");
-	private JLabel sPlayerPoints;
-	private JLabel oPlayerPoints;
+	private JPanel redPlayerPanel = new JPanel();
+	private JPanel bluePlayerPanel = new JPanel();
+	private JLabel redPlayerLabel = new JLabel("  Red Player  ");
+	private JLabel bluePlayerLabel = new JLabel("  Blue Player  ");
+	private final JRadioButton sPlayerRed = new JRadioButton("S");
+	private final JRadioButton oPlayerRed = new JRadioButton("O");
+	private final JRadioButton sPlayerBlue = new JRadioButton("S");
+	private final JRadioButton oPlayerBlue = new JRadioButton("O");
+	private JLabel redPlayerPoints;
+	private JLabel bluePlayerPoints;
 	private JTextField textField = new JTextField();
 	private JButton enterButton = new JButton("Enter");
 	private Container contentPane = getContentPane();
 	//PROBLEM WITH SIZE
 	private int size;
-	private ButtonGroup modeGroup = new ButtonGroup();
 	private final JRadioButton simpleButton = new JRadioButton("Simple Mode");
 	private final JRadioButton generalButton = new JRadioButton("General Mode");
+	private ButtonGroup modeGroup = new ButtonGroup();
+	private ButtonGroup redPlayerGroup = new ButtonGroup();
+	private ButtonGroup bluePlayerGroup = new ButtonGroup();
 	private String modeString = "Not Selected";
+	private char playerKeyRed = 'X';
 	/**
 	 * Create the frame.
 	 */
@@ -112,15 +119,21 @@ public class GUI extends JFrame{
 		initPanel.add(titleLabel, BorderLayout.NORTH);
 		
 		
-		//MODE BUTTONS
+		//MODE BUTTONS and PLAYER BUTTONS
 		modePanel.setLayout(new BorderLayout());
 		initPanel.add(modePanel, BorderLayout.EAST);
 		modeGroup.add(generalButton);
 		modeGroup.add(simpleButton);
+		redPlayerGroup.add(sPlayerRed);
+		redPlayerGroup.add(oPlayerRed);
+		bluePlayerGroup.add(sPlayerBlue);
+		bluePlayerGroup.add(oPlayerBlue);
 		modePanel.add(generalButton, BorderLayout.NORTH);
 		modePanel.add(simpleButton, BorderLayout.CENTER);
 
-		//SIEZE LABEL
+		
+
+		//SIZE LABEL
 		JLabel sizeLabel = new JLabel("Enter Size(>2):");
 		sizeLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		sizeLabel.setBounds(10, 10, 195, 47);
@@ -161,16 +174,65 @@ public class GUI extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == generalButton) {
 					modeString = "GENERAL";
-//					GeneralGameBoard generalGameBoard = new GeneralGameBoard(size);
 				}
 				else if(e.getSource() == simpleButton) {
 					modeString = "SIMPLE";
-//					SimpleGameBoard simpleGameBoard = new SimpleGameBoard(size);
 				}
 			}
 		};
 		generalButton.addActionListener(buttonListener);
 		simpleButton.addActionListener(buttonListener);
+		
+		sPlayerBlue.setEnabled(false);
+		oPlayerBlue.setEnabled(false);
+		
+		//ACTION FOR RED PLAYER BUTTONS 
+		ActionListener buttonListenerRedPlayer = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == sPlayerRed) {
+					sPlayerBlue.setEnabled(true);
+					oPlayerBlue.setEnabled(true);
+					playerKeyRed = 'R';
+					oPlayerBlue.doClick();
+					sPlayerBlue.setEnabled(false);
+					oPlayerBlue.setEnabled(false);
+				}
+				if(e.getSource() == oPlayerRed) {
+					sPlayerBlue.setEnabled(true);
+					oPlayerBlue.setEnabled(true);
+					playerKeyRed = 'B';
+					sPlayerBlue.doClick();
+					sPlayerBlue.setEnabled(false);
+					oPlayerBlue.setEnabled(false);
+				}
+			}
+		};
+		
+		sPlayerRed.addActionListener(buttonListenerRedPlayer);
+		oPlayerRed.addActionListener(buttonListenerRedPlayer);
+		
+		//Add Player Panels
+		redPlayerPanel.setLayout(new BorderLayout());
+		bluePlayerPanel.setLayout(new BorderLayout());
+	
+		redPlayerLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		redPlayerLabel.setForeground(new Color(255, 0, 0));
+		
+		bluePlayerLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		bluePlayerLabel.setForeground(new Color(0, 0, 255));
+
+		bluePlayerPanel.add(bluePlayerLabel, BorderLayout.NORTH);
+		bluePlayerPanel.add(oPlayerBlue, BorderLayout.EAST);
+		bluePlayerPanel.add(sPlayerBlue, BorderLayout.WEST);
+		redPlayerPanel.add(redPlayerLabel, BorderLayout.NORTH);
+		redPlayerPanel.add(oPlayerRed, BorderLayout.EAST);
+		redPlayerPanel.add(sPlayerRed, BorderLayout.WEST);
+		
+		
+		contentPane.add(redPlayerPanel, BorderLayout.WEST);
+		contentPane.add(bluePlayerPanel, BorderLayout.EAST);
+		
 		
 		//ACTION FOR ENTER BUTTON
 		enterButton.addMouseListener(new MouseAdapter() {
@@ -178,17 +240,17 @@ public class GUI extends JFrame{
 			public void mouseClicked(MouseEvent e) {
 				String text = textField.getText();
 				size = Integer.parseInt(text);
-				if(size > 2 && !(modeString == "Not Selected")) {
-					
-					if(modeString == "GENERAL") {
-						generalGame.setSizeGeneral(size);
-					}
-					else if(modeString == "SIMPLE") {
-						simpleGame.setSize(size);
-					}
-					else {
-						board.setSize(size);
-					}
+				if(playerKeyRed != 'X') {
+					if(board.setMode(modeString, size) != -1) {
+						if(board.setMode(modeString, size) == 1) {
+							generalGame.setSizeGeneral(size);
+						}
+						else if (board.setMode(modeString, size) == 2) {
+							simpleGame.setSize(size);
+						}
+						else {
+							board.setSize(size);
+						}
 					setGamePanel();
 //					**Only works after one use**
 					validate();
@@ -197,12 +259,16 @@ public class GUI extends JFrame{
 					enterButton.removeMouseListener(this);
 					generalButton.setEnabled(false);
 					simpleButton.setEnabled(false);
+					sPlayerRed.setEnabled(false);
+					oPlayerRed.setEnabled(false);
 					System.out.println("MODE: " + modeString);
+				}
 				}
 				
 			}
 		});
 	}
+
 	
 	private void setGamePanel(){
 		gameBoardCanvas = new GameBoardCanvas(); 
@@ -213,34 +279,16 @@ public class GUI extends JFrame{
 		gameBoardCanvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
 		contentPane.add(gameBoardCanvas, BorderLayout.CENTER);
 		
-		//Add Player Panels
-		sPlayerPanel.setLayout(new BorderLayout());
-		oPlayerPanel.setLayout(new BorderLayout());
-	
-		sPlayerLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		sPlayerLabel.setForeground(new Color(255, 0, 0));
-		
-		oPlayerLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-
-		
-		sPlayerPanel.add(sPlayerLabel, BorderLayout.NORTH);
-		oPlayerPanel.add(oPlayerLabel, BorderLayout.NORTH);
-		
-		if(modeString == "GENERAL") {
-			sPlayerPoints = new JLabel(String.valueOf(generalGame.getPointS()));
-			oPlayerPoints = new JLabel(String.valueOf(generalGame.getPointO()));
-			sPlayerPoints.setFont(new Font("Tahoma", Font.PLAIN, 30));
-			sPlayerPoints.setForeground(new Color(255, 0, 0));
-			oPlayerPoints.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		if(board.setMode(modeString, size) == 1) {
+			redPlayerPoints = new JLabel(String.valueOf(generalGame.getPointRed()));
+			bluePlayerPoints = new JLabel(String.valueOf(generalGame.getPointBlue()));
+			redPlayerPoints.setFont(new Font("Tahoma", Font.PLAIN, 30));
+			redPlayerPoints.setForeground(new Color(255, 0, 0));
+			bluePlayerPoints.setFont(new Font("Tahoma", Font.PLAIN, 30));
 			
-			sPlayerPanel.add(sPlayerPoints, BorderLayout.CENTER);
-			oPlayerPanel.add(oPlayerPoints, BorderLayout.CENTER);
+			redPlayerPanel.add(redPlayerPoints, BorderLayout.CENTER);
+			bluePlayerPanel.add(bluePlayerPoints, BorderLayout.CENTER);
 		}
-		
-		contentPane.add(sPlayerPanel, BorderLayout.WEST);
-		contentPane.add(oPlayerPanel, BorderLayout.EAST);
-		
-		
 		
 		//Resize for board
 		pack(); 
@@ -255,13 +303,12 @@ public class GUI extends JFrame{
 						int rowSelected = e.getY() / CELL_SIZE;
 						int colSelected = e.getX() / CELL_SIZE;
 						
-						if(modeString == "GENERAL") {
-							generalGame.makeMoveInGeneralMode(rowSelected, colSelected, size);
+						if(board.setMode(modeString, size) == 1) {
+							generalGame.makeMoveInGeneralMode(rowSelected, colSelected, size, playerKeyRed);
 						}
-						else if (modeString == "SIMPLE"){
+						else if (board.setMode(modeString, size) == 2) {
 							simpleGame.makeMove(rowSelected, colSelected, size);
 						}
-//						board.makeMove(rowSelected, colSelected, size);
 					repaint(); 
 				}
 			});
@@ -298,36 +345,56 @@ public class GUI extends JFrame{
 				for (int col = 0; col < size; col++) {
 					int x1 = col * CELL_SIZE + CELL_PADDING;
 					int y1 = row * CELL_SIZE + CELL_PADDING;
-					if(modeString == "GENERAL") {
-						if (generalGame.getCell(row,col, size) == Cell.SPLAYER) {
-							g2d.setColor(Color.RED);
-							g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
-							g2d.drawString("S", x1+5, y1+65);
+					if(board.setMode(modeString, size) == 1) {
+						if (generalGame.getCell(row,col, size) == Cell.RED_PLAYER) { //Red Player
+							if(playerKeyRed == 'R') {
+								g2d.setColor(Color.RED);
+								g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
+								g2d.drawString("S", x1+5, y1+65);
+							}
+							else{
+								g2d.setColor(Color.RED);
+								g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
+							}
 							
-//							System.out.println(generalGame.getCell(row,col, size)+ "---S");
-						} else if (generalGame.getCell(row,col, size) == Cell.OPLAYER) {
-							g2d.setColor(Color.BLUE);
-							g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
 							
-							
-//							System.out.println(generalGame.getCell(row,col, size)+ "---O");
+						} else if (generalGame.getCell(row,col, size) == Cell.BLUE_PLAYER) { //Blue Player
+							if(playerKeyRed == 'B') {
+								g2d.setColor(Color.BLUE);
+								g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
+								g2d.drawString("S", x1+5, y1+65);
+							}
+							else {
+								g2d.setColor(Color.BLUE);
+								g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
+							}
+
 						}
 					}
-					else if(modeString == "SIMPLE") {
-						if (simpleGame.getCell(row,col, size) == Cell.SPLAYER) {
-							g2d.setColor(Color.RED);
-							g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
-							g2d.drawString("S", x1+5, y1+65);
-							
-//							System.out.println(simpleGame.getCell(row,col, size)+ "---S");
+					else if(board.setMode(modeString, size) == 2) {
+						if (simpleGame.getCell(row,col, size) == Cell.RED_PLAYER) { //Red Player
+							if(playerKeyRed == 'R') {
+								g2d.setColor(Color.RED);
+								g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
+								g2d.drawString("S", x1+5, y1+65);
+							}
+							else{
+								g2d.setColor(Color.RED);
+								g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
+							}
 
-							
-						} else if (simpleGame.getCell(row,col, size) == Cell.OPLAYER) {
+						} else if (simpleGame.getCell(row,col, size) == Cell.BLUE_PLAYER) { //Blue Player
 
-							g2d.setColor(Color.BLUE);
-							g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
+							if(playerKeyRed == 'B') {
+								g2d.setColor(Color.BLUE);
+								g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
+								g2d.drawString("S", x1+5, y1+65);
+							}
+							else {
+								g2d.setColor(Color.BLUE);
+								g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
+							}
 							
-//							System.out.println(simpleGame.getCell(row,col, size)+ "---O");
 
 						}
 					}
@@ -337,44 +404,41 @@ public class GUI extends JFrame{
 		}
 		
 		private void playerStatus(){
-				if(modeString == "GENERAL") {
-					if (generalGame.getTurn() == 'S') {
-						sPlayerLabel.setForeground(new Color(255, 0, 0));
-						oPlayerLabel.setForeground(new Color(0, 0, 0));
-						sPlayerPoints.setForeground(new Color(255, 0, 0));
-						oPlayerPoints.setForeground(new Color(0, 0, 0));
-						
-//						sPlayerPoints.setText(String.valueOf(generalGame.getPointS()));
-						
+				if(board.setMode(modeString, size) == 1) {
+					if (generalGame.getTurn() == 'R') {
+						redPlayerLabel.setForeground(new Color(255, 0, 0));
+						bluePlayerLabel.setForeground(new Color(0, 0, 0));
+						redPlayerPoints.setForeground(new Color(255, 0, 0));
+						bluePlayerPoints.setForeground(new Color(0, 0, 0));
 					} 
-					else if (generalGame.getTurn() == 'O') {
-						sPlayerLabel.setForeground(new Color(0, 0, 0));
-						oPlayerLabel.setForeground(new Color(0, 0, 255));
-						sPlayerPoints.setForeground(new Color(0, 0, 0));
-						oPlayerPoints.setForeground(new Color(0, 0, 255));
-//						oPlayerPoints.setText(String.valueOf(generalGame.getPointO()));
+					else{
+						redPlayerLabel.setForeground(new Color(0, 0, 0));
+						bluePlayerLabel.setForeground(new Color(0, 0, 255));
+						redPlayerPoints.setForeground(new Color(0, 0, 0));
+						bluePlayerPoints.setForeground(new Color(0, 0, 255));
 					}
 					
-					if(generalGame.getGameState() == GameState.SPLAYER_SCORES) {
-						generalGame.addPointS();
-						System.out.println(generalGame.getPointS());
-						sPlayerPoints.setText(String.valueOf(generalGame.getPointS()));
+					if(generalGame.getGameState() == GameState.RED_SCORES) {
+						generalGame.addPointRed();
+						System.out.println(generalGame.getPointRed());
+						redPlayerPoints.setText(String.valueOf(generalGame.getPointRed()));
+						System.out.println(generalGame.getTurn());
 					}
 					
-					if(generalGame.getGameState() == GameState.OPLAYER_SCORES) {
-						generalGame.addPointO();
-						System.out.println(generalGame.getPointO());
-						oPlayerPoints.setText(String.valueOf(generalGame.getPointO()));
+					if(generalGame.getGameState() == GameState.BLUE_SCORES) {
+						generalGame.addPointBlue();
+						System.out.println(generalGame.getPointBlue());
+						bluePlayerPoints.setText(String.valueOf(generalGame.getPointBlue()));
 					}
 				}
-				else if (modeString == "SIMPLE"){
-					if (simpleGame.getTurn() == 'S') {
-						sPlayerLabel.setForeground(new Color(255, 0, 0));
-						oPlayerLabel.setForeground(new Color(0, 0, 0));
+				else if (board.setMode(modeString, size) == 2){
+					if (simpleGame.getTurn() == 'R') {
+						redPlayerLabel.setForeground(new Color(255, 0, 0));
+						bluePlayerLabel.setForeground(new Color(0, 0, 0));
 
 					} else {
-						sPlayerLabel.setForeground(new Color(0, 0, 0));
-						oPlayerLabel.setForeground(new Color(0, 0, 255));
+						redPlayerLabel.setForeground(new Color(0, 0, 0));
+						bluePlayerLabel.setForeground(new Color(0, 0, 255));
 
 					}
 				}

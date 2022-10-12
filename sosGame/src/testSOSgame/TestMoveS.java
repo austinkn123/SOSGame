@@ -37,33 +37,33 @@ public class TestMoveS {
 	@Test
 	public void testSTurnMoveVacantCellinSimpleMode() {
 		simpleBoard.makeMove(0, 0, size);
-		assertEquals("", simpleBoard.getCell(0, 0, size), Cell.SPLAYER);
-		assertEquals("", simpleBoard.getTurn(), 'O');
+		assertEquals("", simpleBoard.getCell(0, 0, size), Cell.RED_PLAYER);
+		assertEquals("", simpleBoard.getTurn(), 'B');
 	}
 	//acceptance criterion 4.2
 	@Test
 	public void testSTurnMoveNonVacantCellinSimpleMode() {
 		simpleBoard.makeMove(0, 0, size);
 		simpleBoard.makeMove(1, 0, size);
-		assertEquals("", simpleBoard.getCell(1, 0, size), Cell.OPLAYER);
-		assertEquals("", simpleBoard.getTurn(), 'S');
+		assertEquals("", simpleBoard.getCell(1, 0, size), Cell.BLUE_PLAYER);
+		assertEquals("", simpleBoard.getTurn(), 'R');
 		simpleBoard.makeMove(0, 0, size);
-		assertEquals("", simpleBoard.getTurn(), 'S');
+		assertEquals("", simpleBoard.getTurn(), 'R');
 	}
 	
 	//acceptance criterion 4.3
 	@Test
 	public void testSTurnInvalidSizeMoveinSimpleMode() {
 		simpleBoard.makeMove((size + 1), 0, size);
-		assertEquals("", simpleBoard.getTurn(), 'S');
+		assertEquals("", simpleBoard.getTurn(), 'R');
 	}
 	
 	// acceptance criterion 6.1
 	@Test
 	public void testSTurnMoveVacantCellinGeneralMode() {
 		generalBoard.makeMove(0, 0, size);
-		assertEquals("", generalBoard.getCell(0, 0, size), Cell.SPLAYER);
-		assertEquals("", generalBoard.getTurn(), 'O');
+		assertEquals("", generalBoard.getCell(0, 0, size), Cell.RED_PLAYER);
+		assertEquals("", generalBoard.getTurn(), 'B');
 	}
 	
 	// acceptance criterion 6.2
@@ -71,20 +71,20 @@ public class TestMoveS {
 	public void testSTurnMoveNonVacantCellinGeneralMode() {
 		generalBoard.makeMove(0, 0, size);
 		generalBoard.makeMove(1, 0, size);
-		assertEquals("", generalBoard.getCell(1, 0, size), Cell.OPLAYER);
-		assertEquals("", generalBoard.getTurn(), 'S');
+		assertEquals("", generalBoard.getCell(1, 0, size), Cell.BLUE_PLAYER);
+		assertEquals("", generalBoard.getTurn(), 'R');
 		generalBoard.makeMove(0, 0, size);
-		assertEquals("", generalBoard.getTurn(), 'S');
+		assertEquals("", generalBoard.getTurn(), 'R');
 	}
 	
 	// acceptance criterion 6.3
 	@Test
 	public void testSTurnInvalidSizeMoveinGeneralMode() {
 		generalBoard.makeMove((size + 1), 0, size);
-		assertEquals("", generalBoard.getTurn(), 'S');
+		assertEquals("", generalBoard.getTurn(), 'R');
 	}
 	
-	// acceptance criterion 6.4
+	// acceptance criterion 6.4 (for next sprint)
 	
 	
 }

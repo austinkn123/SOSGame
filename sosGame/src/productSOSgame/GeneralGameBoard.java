@@ -6,25 +6,25 @@ public class GeneralGameBoard extends Board {
 //		super(size);
 //		// TODO Auto-generated constructor stub
 //	}
-	public enum GameState {PLAYING, DRAW, SPLAYER_SCORES, OPLAYER_SCORES};
+	public enum GameState {PLAYING, DRAW, RED_SCORES, BLUE_SCORES};
 	private GameState currentGameState;
-	private int pointS = 0;
-	private int pointO = 0;
+	private int pointRed = 0;
+	private int pointBlue = 0;
 	
-	public void addPointS() {
-		pointS += 1;
+	public void addPointRed() {
+		pointRed += 1;
 	}
 	
-	public int getPointS() {
-	    return pointS;
+	public int getPointRed() {
+	    return pointRed;
 	 }
 	
-	public void addPointO() {
-		pointO += 1;
+	public void addPointBlue() {
+		pointBlue += 1;
 	}
 	
-	public int getPointO() {
-	    return pointO;
+	public int getPointBlue() {
+	    return pointBlue;
 	 }
 	
 	public void setSizeGeneral(int newSize) {
@@ -41,87 +41,124 @@ public class GeneralGameBoard extends Board {
 			}
 		}
 		currentGameState = GameState.PLAYING;
-		turn = 'S';
+		turn = 'R';
 	} 
 	
-	public void makeMoveInGeneralMode(int row, int column, int boardSize) {
+	
+	//!!! FOR NEXT SPRINT, I WORKED AHEAD A LITTLE
+	
+	public void makeMoveInGeneralMode(int row, int column, int boardSize, char playerKey) {
 		if ((row >= 0) && (row < boardSize) && (column >= 0) && (column < boardSize) && (grid[row][column] == Cell.EMPTY)) {
-			grid[row][column] = (turn == 'S')? Cell.SPLAYER : Cell.OPLAYER; 
-			updateGameState(turn, row, column); 
-			turn = (turn == 'S')? 'O' : 'S';
+			grid[row][column] = (turn == 'R')? Cell.RED_PLAYER : Cell.BLUE_PLAYER; 
+			updateGameState(turn, row, column, playerKey); 
+			turn = (turn == 'R')? 'B' : 'R';
+			if(currentGameState == GameState.RED_SCORES) {
+				turn = 'R';
+			}
+			else if(currentGameState == GameState.BLUE_SCORES) {
+				turn = 'B';
+			}
 		}
 	}
 	
-	private boolean hasScored(char turn, int row, int column, int size) {
-		Cell token = (turn=='S')? Cell.SPLAYER: Cell.OPLAYER;
+	private boolean hasScored(char turn, int row, int column, int size, char playerKey) {
+		Cell token = (turn=='R')? Cell.RED_PLAYER: Cell.BLUE_PLAYER;
 		boolean score = false;
 		
-		//S Player
-		if(token == Cell.SPLAYER) {
-			//Row Score Right
-			if((column < size - 2)) {
-				if(grid[row][column + 1] == Cell.OPLAYER && (grid[row][column + 2] == Cell.SPLAYER)) {
-					return true;
-				}
+		//RED'S TURN
+		if(token == Cell.RED_PLAYER) {
+			//RED IS S
+			if(playerKey == 'R') {
+				return findScoreSRED(row, column, size);
 			}
-			//Row Score Left
-			if((column > 1)) {
-				if(grid[row][column - 1] == Cell.OPLAYER && (grid[row][column - 2] == Cell.SPLAYER)) {
-					return true;
-				}
+			//RED IS O
+			else if(playerKey == 'B'){
+				return findScoreORED(row, column, size);
 			}
-			//Column Score down
-			if((row < size - 2)) {
-				if(grid[row + 1][column] == Cell.OPLAYER && (grid[row + 2][column] == Cell.SPLAYER)) {
-					return true;
-				}
-			}
-			//Column Score up
-			if((row > 1)) {
-				if(grid[row - 1][column] == Cell.OPLAYER && (grid[row - 2][column] == Cell.SPLAYER)) {
-					return true;
-				}
-			}
-			//Down diagonal Left Score
-			if((column > 1) && (row > 1)) {
-				if(grid[row - 1][column - 1] == Cell.OPLAYER && (grid[row - 2][column - 2] == Cell.SPLAYER)) {
-					return true;
-				}
+		}
+		//BLUE'S TURN
+		if(token == Cell.BLUE_PLAYER) {
+			//RED IS S
+			if(playerKey == 'R') {
+				return findScoreOBLUE(row, column, size);
 				
+			}
+			//RED IS O
+			else if(playerKey == 'B'){
+				return findScoreSBLUE(row, column, size);
+			}
+		}
+		
+		
+		
+		return score;
+	}
+	
+	//RED = S
+	private boolean findScoreSRED(int row, int column, int size) {
+		boolean score = false;
+		//Row Score Right
+		if((column < size - 2)) {
+			if(grid[row][column + 1] == Cell.BLUE_PLAYER && (grid[row][column + 2] == Cell.RED_PLAYER)) {
+				return true;
 			}
 			//Down diagonal Right Score
-			if((column < size - 2) && (row < size - 2)) {
-				
-				if(grid[row + 1][column + 1] == Cell.OPLAYER && (grid[row + 2][column + 2] == Cell.SPLAYER)) {
+			if(row < size - 2) {
+				if(grid[row + 1][column + 1] == Cell.BLUE_PLAYER && (grid[row + 2][column + 2] == Cell.RED_PLAYER)) {
 					return true;
 				}
-				
 			}
 			//Up diagonal Left
-			if((column < size - 2) && (row > 1)) {
-				if(grid[row - 1][column + 1] == Cell.OPLAYER && (grid[row - 2][column + 2] == Cell.SPLAYER)) {
+			if(row > 1) {
+				if(grid[row - 1][column + 1] == Cell.BLUE_PLAYER && (grid[row - 2][column + 2] == Cell.RED_PLAYER)) {
+					return true;
+				}
+			}
+		}
+		//Row Score Left
+		if((column > 1)) {
+			if(grid[row][column - 1] == Cell.BLUE_PLAYER && (grid[row][column - 2] == Cell.RED_PLAYER)) {
+				return true;
+			}
+			//Down diagonal Left Score
+			if(row > 1) {
+				if(grid[row - 1][column - 1] == Cell.BLUE_PLAYER && (grid[row - 2][column - 2] == Cell.RED_PLAYER)) {
 					return true;
 				}
 			}
 			//Up diagonal Right
-			if((column > 1) && (row < size - 2)) {
-				if(grid[row + 1][column - 1] == Cell.OPLAYER && (grid[row + 2][column - 2] == Cell.SPLAYER)) {
+			if(row < size - 2) {
+				if(grid[row + 1][column - 1] == Cell.BLUE_PLAYER && (grid[row + 2][column - 2] == Cell.RED_PLAYER)) {
 					return true;
 				}
 			}
-			
-			
-
+		}
+		//Column Score down
+		if((row < size - 2)) {
+			if(grid[row + 1][column] == Cell.BLUE_PLAYER && (grid[row + 2][column] == Cell.RED_PLAYER)) {
+				return true;
+			}
+		}
+		//Column Score up
+		if((row > 1)) {
+			if(grid[row - 1][column] == Cell.BLUE_PLAYER && (grid[row - 2][column] == Cell.RED_PLAYER)) {
+				return true;
+			}
 		}
 		
+		return score;
+	}
+	
+	//BLUE == O
+	private boolean findScoreOBLUE(int row, int column, int size) {
 		//O Player
-		if(token == Cell.OPLAYER) {
+		boolean score = false;
 			//O Player Row Score
 			if((column == 0) || (column == size - 1)) {
 				score = false;
 			}
 			else{
-				if(grid[row][column - 1] == Cell.SPLAYER && (grid[row][column + 1] == Cell.SPLAYER)) {
+				if(grid[row][column - 1] == Cell.RED_PLAYER && (grid[row][column + 1] == Cell.RED_PLAYER)) {
 					return true;
 				}
 			}
@@ -130,7 +167,7 @@ public class GeneralGameBoard extends Board {
 				score = false;
 			}
 			else {
-				if(grid[row - 1][column] == Cell.SPLAYER && (grid[row + 1][column] == Cell.SPLAYER)) {
+				if(grid[row - 1][column] == Cell.RED_PLAYER && (grid[row + 1][column] == Cell.RED_PLAYER)) {
 					return true;
 				}
 			}
@@ -139,16 +176,110 @@ public class GeneralGameBoard extends Board {
 			}
 			else {
 				//O Player Down Diagonal Score
-				if(grid[row - 1][column - 1] == Cell.SPLAYER && (grid[row + 1][column + 1] == Cell.SPLAYER)) {
+				if(grid[row - 1][column - 1] == Cell.RED_PLAYER && (grid[row + 1][column + 1] == Cell.RED_PLAYER)) {
 					return true;
 				}
 				//O Player Up Diagonal Score
-				if(grid[row + 1][column - 1] == Cell.SPLAYER && (grid[row - 1][column + 1] == Cell.SPLAYER)) {
+				if(grid[row + 1][column - 1] == Cell.RED_PLAYER && (grid[row - 1][column + 1] == Cell.RED_PLAYER)) {
+					return true;
+				}
+			}
+
+		return score;
+	}
+	
+	//BLUE == S!!!!!!!!!!!!!!!
+	private boolean findScoreSBLUE(int row, int column, int size) {
+		boolean score = false;
+		//Row Score Right
+		if((column < size - 2)) {
+			if(grid[row][column + 1] == Cell.RED_PLAYER && (grid[row][column + 2] == Cell.BLUE_PLAYER)) {
+				return true;
+			}
+			//Down diagonal Right Score
+			if(row < size - 2) {
+				if(grid[row + 1][column + 1] == Cell.RED_PLAYER && (grid[row + 2][column + 2] == Cell.BLUE_PLAYER)) {
+					return true;
+				}
+			}
+			//Up diagonal Left
+			if(row > 1) {
+				if(grid[row - 1][column + 1] == Cell.RED_PLAYER && (grid[row - 2][column + 2] == Cell.BLUE_PLAYER)) {
 					return true;
 				}
 			}
 		}
+		//Row Score Left
+		if((column > 1)) {
+			if(grid[row][column - 1] == Cell.RED_PLAYER && (grid[row][column - 2] == Cell.BLUE_PLAYER)) {
+				return true;
+			}
+			//Down diagonal Left Score
+			if(row > 1) {
+				if(grid[row - 1][column - 1] == Cell.RED_PLAYER && (grid[row - 2][column - 2] == Cell.BLUE_PLAYER)) {
+					return true;
+				}
+			}
+			//Up diagonal Right
+			if(row < size - 2) {
+				if(grid[row + 1][column - 1] == Cell.RED_PLAYER && (grid[row + 2][column - 2] == Cell.BLUE_PLAYER)) {
+					return true;
+				}
+			}
+		}
+		//Column Score down
+		if((row < size - 2)) {
+			if(grid[row + 1][column] == Cell.RED_PLAYER && (grid[row + 2][column] == Cell.BLUE_PLAYER)) {
+				return true;
+			}
+		}
+		//Column Score up
+		if((row > 1)) {
+			if(grid[row - 1][column] == Cell.RED_PLAYER && (grid[row - 2][column] == Cell.BLUE_PLAYER)) {
+				return true;
+			}
+		}
 		
+		return score;
+	}
+	
+	
+	//RED == O
+	private boolean findScoreORED(int row, int column, int size) {
+		//O Player
+		boolean score = false;
+			//O Player Row Score
+			if((column == 0) || (column == size - 1)) {
+				score = false;
+			}
+			else{
+				if(grid[row][column - 1] == Cell.BLUE_PLAYER && (grid[row][column + 1] == Cell.BLUE_PLAYER)) {
+					return true;
+				}
+			}
+			//O Player Column Score
+			if((row == 0) || (row == size - 1) ) {
+				score = false;
+			}
+			else {
+				if(grid[row - 1][column] == Cell.BLUE_PLAYER && (grid[row + 1][column] == Cell.BLUE_PLAYER)) {
+					return true;
+				}
+			}
+			if((row == 0) || (row == size - 1) || (column == 0) || (column == size - 1)) {
+				score = false;
+			}
+			else {
+				//O Player Down Diagonal Score
+				if(grid[row - 1][column - 1] == Cell.BLUE_PLAYER && (grid[row + 1][column + 1] == Cell.BLUE_PLAYER)) {
+					return true;
+				}
+				//O Player Up Diagonal Score
+				if(grid[row + 1][column - 1] == Cell.BLUE_PLAYER && (grid[row - 1][column + 1] == Cell.BLUE_PLAYER)) {
+					return true;
+				}
+			}
+
 		return score;
 	}
 	
@@ -156,9 +287,9 @@ public class GeneralGameBoard extends Board {
 		return currentGameState;
 	}
 	
-	private void updateGameState(char turn, int row, int column) {
-		if (hasScored(turn, row, column, size)) { // check for player scoring
-			currentGameState = (turn == 'S') ? GameState.SPLAYER_SCORES : GameState.OPLAYER_SCORES;
+	private void updateGameState(char turn, int row, int column, char colorKey) {
+		if (hasScored(turn, row, column, size, colorKey)) { // check for player scoring
+			currentGameState = (turn == 'R') ? GameState.RED_SCORES : GameState.BLUE_SCORES;
 		// Otherwise, no change to current state (still GameState.PLAYING).
 		}
 		else {

@@ -67,11 +67,11 @@ public class Console {
 		
 	
 	private char symbol(Cell cell) {
-		if (cell==Cell.SPLAYER)
-			return 'S';
+		if (cell==Cell.RED_PLAYER)
+			return 'R';
 		else
-			if (cell==Cell.OPLAYER)
-				return 'O';
+			if (cell==Cell.BLUE_PLAYER)
+				return 'B';
 			else return ' ';
 	}
 	

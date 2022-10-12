@@ -33,7 +33,7 @@ public class TestEmptyBoard {
 	public void tearDown() throws Exception {
 	}
 	
-	// acceptance criterion 1
+	// acceptance criterion 1.1
 	//Test board with 5 and turn S after
 	@Test
 	public void testNewBoardTurn() {
@@ -43,7 +43,7 @@ public class TestEmptyBoard {
 				assertEquals("", board.getCell(row, column, size), Cell.EMPTY); 
 			}
 		}
-		assertEquals("", board.getTurn(), 'S'); 
+		assertEquals("", board.getTurn(), 'R'); 
 	}
 
 	
@@ -54,18 +54,17 @@ public class TestEmptyBoard {
 		assertEquals("", board.getCell((size + 1), 0, size), null); 
 	}
 	
+	//acceptance criterion 2.1 - 2.3 Test if the game mode and board size is valid
 	@Test
-	public void testInvalidSizeGeneral() {
-		//row, col, size
-		assertEquals("", generalBoard.getCell((size + 1), 0, size), null); 
+	public void testValidGameModeandSize() {
+		assertEquals("", board.setMode("GENERAL", size), 1); 
+		assertEquals("", board.setMode("SIMPLE", size), 2); 
+		assertEquals("", board.setMode("Non Selected", size), -1); 
+		assertEquals("", board.setMode("GENERAL", 0), -1); 
+		assertEquals("", board.setMode("SIMPLE", 0), -1); 
 	}
 	
-	@Test
-	public void testInvalidSizeSimple() {
-		//row, col, size
-		assertEquals("", simpleBoard.getCell((size + 1), 0, size), null); 
-	}
-	
+	//acceptance criterion 3.1 start with simple mode and size is valid
 	@Test
 	public void testNewSimpleBoardTurn() {
 		for (int row = 0; row<size; row++) {
@@ -74,9 +73,10 @@ public class TestEmptyBoard {
 				assertEquals("", simpleBoard.getCell(row, column, size), Cell.EMPTY); 
 			}
 		}
-		assertEquals("", board.getTurn(), 'S'); 
+		assertEquals("", board.getTurn(), 'R'); 
 	}
 	
+	//acceptance criterion 3.2 start with general mode and size is valid
 	@Test
 	public void testNewGeneralBoardTurn() {
 		for (int row = 0; row<size; row++) {
@@ -85,8 +85,23 @@ public class TestEmptyBoard {
 				assertEquals("", generalBoard.getCell(row, column, size), Cell.EMPTY); 
 			}
 		}
-		assertEquals("", board.getTurn(), 'S'); 
+		assertEquals("", board.getTurn(), 'R'); 
 	}
+	
+	//acceptance criterion 3.3 Get cell of general board that is not valid
+	@Test
+	public void testInvalidSizeGeneral() {
+		//row, col, size
+		assertEquals("", generalBoard.getCell((size + 1), 0, size), null); 
+	}
+	
+	//acceptance criterion 3.4 Get cell of simple board that is not valid
+	@Test
+	public void testInvalidSizeSimple() {
+		//row, col, size
+		assertEquals("", simpleBoard.getCell((size + 1), 0, size), null); 
+	}
+	
 	
 	
 	
