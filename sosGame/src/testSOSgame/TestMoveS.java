@@ -24,9 +24,9 @@ public class TestMoveS {
 		board = new Board();
 		generalBoard = new GeneralGameBoard();
 		simpleBoard = new SimpleGameBoard();
-		board.setSize(size);
-		generalBoard.setSize(size);
-		simpleBoard.setSize(size);
+		board.setSizeBoard(size);
+		generalBoard.setSizeGeneral(size);
+		simpleBoard.setSizeBoard(size);
 	}
 
 	@After
@@ -82,7 +82,7 @@ public class TestMoveS {
 	public void testSTurnInvalidSizeMoveinGeneralMode() {
 		generalBoard.makeMove((size + 1), 0, size);
 		assertEquals("", generalBoard.getTurn(), 'R');
-	}
+	} 
 	
 	// acceptance criterion 6.4 (for next sprint)
 	

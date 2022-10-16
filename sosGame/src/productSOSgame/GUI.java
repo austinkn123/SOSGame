@@ -1,17 +1,13 @@
 package productSOSgame;
 
-import java.awt.BasicStroke;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -19,83 +15,75 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import productSOSgame.Board.Cell;
-import productSOSgame.GeneralGameBoard.GameState;
-
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.JRadioButton;
+import javax.swing.border.EmptyBorder;
 
-@SuppressWarnings("serial")
-public class GUI extends JFrame{
-	
-	public static final int CELL_SIZE = 100; 
-	public static final int GRID_WIDTH = 8;
-	public static final int GRID_WIDHT_HALF = GRID_WIDTH / 2; 
-
-	public static final int CELL_PADDING = CELL_SIZE / 6;
-	public static final int SYMBOL_SIZE = CELL_SIZE - CELL_PADDING * 2; 
-	public static final int SYMBOL_STROKE_WIDTH = 8; 
-
-	private int CANVAS_WIDTH;
-	private int CANVAS_HEIGHT;
-	
-
-	private GameBoardCanvas gameBoardCanvas; 
-
-	private Board board;
-	private GeneralGameBoard generalGame = new GeneralGameBoard();
-	private SimpleGameBoard simpleGame = new SimpleGameBoard();
-	
+public class GUI extends JFrame {
+	public static JPanel contentPane = new JPanel();
 	private JPanel initPanel = new JPanel();
-	private JPanel modePanel = new JPanel();
+	
+	protected int CANVAS_WIDTH;
+	protected int CANVAS_HEIGHT;
+	public static int CELL_SIZE = 100; 
+	
+	private Board board;
+	private GeneralGameBoard generalGame;
+	private SimpleGameBoard simpleGame;
+	
+	private ButtonGroup modeGroup = new ButtonGroup();
+	private ButtonGroup redPlayerGroup = new ButtonGroup();
+	private ButtonGroup bluePlayerGroup = new ButtonGroup();
+	
+	JTextField sizeInput = new JTextField();
+	JButton enterButton = new JButton("Enter");
+	
 	private JPanel redPlayerPanel = new JPanel();
 	private JPanel bluePlayerPanel = new JPanel();
-	private JLabel redPlayerLabel = new JLabel("  Red Player  ");
-	private JLabel bluePlayerLabel = new JLabel("  Blue Player  ");
+	protected JLabel redPlayerLabel = new JLabel("  Red Player  ");
+	protected JLabel bluePlayerLabel = new JLabel("  Blue Player  ");
+	
+	private final JRadioButton simpleButton = new JRadioButton("Simple Mode");
+	private final JRadioButton generalButton = new JRadioButton("General Mode");
 	private final JRadioButton sPlayerRed = new JRadioButton("S");
 	private final JRadioButton oPlayerRed = new JRadioButton("O");
 	private final JRadioButton sPlayerBlue = new JRadioButton("S");
 	private final JRadioButton oPlayerBlue = new JRadioButton("O");
-	private JLabel redPlayerPoints;
-	private JLabel bluePlayerPoints;
-	private JTextField textField = new JTextField();
-	private JButton enterButton = new JButton("Enter");
-	private Container contentPane = getContentPane();
-	//PROBLEM WITH SIZE
-	private int size;
-	private final JRadioButton simpleButton = new JRadioButton("Simple Mode");
-	private final JRadioButton generalButton = new JRadioButton("General Mode");
-	private ButtonGroup modeGroup = new ButtonGroup();
-	private ButtonGroup redPlayerGroup = new ButtonGroup();
-	private ButtonGroup bluePlayerGroup = new ButtonGroup();
-	private String modeString = "Not Selected";
-	private char playerKeyRed = 'X';
+	protected JLabel redPlayerPoints;
+	protected JLabel bluePlayerPoints;
+	
+	GridBagConstraints gbc = new GridBagConstraints();
+	
+	int size;
+	String modeString = "Not Selected";
+	char playerKeyRed = 'X';
+	
+
+
+
 	/**
 	 * Create the frame.
+	 * @param board 
 	 */
 	public GUI(Board board) {
-		this.board = board;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.board = board;;
 		setContentPane(new GeneralGameBoard(), new SimpleGameBoard());
 
-		board.setSize(size);
+		board.setSizeBoard(size);
 		System.out.println(size);
-		pack(); 
+		
 		setTitle("SOS Game");
+		setContentPane(contentPane);
+		pack(); 
 		setVisible(true);  
-	}
-	
-	public Board getBoard(){
-		return board;
+		
 	}
 	
 	private void setContentPane(GeneralGameBoard generalGame, SimpleGameBoard simpleGame){
@@ -103,49 +91,84 @@ public class GUI extends JFrame{
 		this.generalGame = generalGame;
 		this.simpleGame = simpleGame;
 		panel();
-
 	}
 	
 	private void panel(){
 		//SET INIT PANEL
-		initPanel.setLayout(new BorderLayout());
+		initPanel.setLayout(new GridBagLayout());
 		contentPane.add(initPanel, BorderLayout.NORTH);
 		
 		//TITLE LABEL
 		JLabel titleLabel = new JLabel("SOS GAME");
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		titleLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		titleLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
 		titleLabel.setBounds(10, 10, 195, 47);
-		initPanel.add(titleLabel, BorderLayout.NORTH);
+		gbc.gridwidth = 6;
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		initPanel.add(titleLabel, gbc);
 		
+		//SIZE LABEL
+		JLabel sizeLabel = new JLabel("Enter Size(>2):");
+		sizeLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		sizeLabel.setBounds(10, 10, 195, 47);
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		initPanel.add(sizeLabel, gbc);
+		
+		//TEXTFIELD SIZE
+		sizeInput.setHorizontalAlignment(SwingConstants.CENTER);
+		sizeInput.setText("");
+		sizeInput.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		sizeInput.setBounds(215, 17, 47, 33);
+		sizeInput.setColumns(5);
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		initPanel.add(sizeInput, gbc);
+		
+		//ENTER BUTTON
+		enterButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		enterButton.setBounds(272, 14, 92, 39);
+		gbc.gridwidth = 6;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		initPanel.add(enterButton, gbc);
+		
+		//SIZE LABEL
+		JLabel modeLabel = new JLabel("  Choose a Mode: ");
+		modeLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		modeLabel.setBounds(10, 10, 195, 47);
+		gbc.gridwidth = 1;
+		gbc.gridx = 3;
+		gbc.gridy = 1;
+		initPanel.add(modeLabel, gbc);
 		
 		//MODE BUTTONS and PLAYER BUTTONS
-		modePanel.setLayout(new BorderLayout());
-		initPanel.add(modePanel, BorderLayout.EAST);
 		modeGroup.add(generalButton);
 		modeGroup.add(simpleButton);
 		redPlayerGroup.add(sPlayerRed);
 		redPlayerGroup.add(oPlayerRed);
 		bluePlayerGroup.add(sPlayerBlue);
 		bluePlayerGroup.add(oPlayerBlue);
-		modePanel.add(generalButton, BorderLayout.NORTH);
-		modePanel.add(simpleButton, BorderLayout.CENTER);
-
+		gbc.gridx = 4;
+		gbc.gridy = 1;
+		initPanel.add(generalButton, gbc);
+		gbc.gridx = 5;
+		gbc.gridy = 1;
+		initPanel.add(simpleButton, gbc);
 		
-
-		//SIZE LABEL
-		JLabel sizeLabel = new JLabel("Enter Size(>2):");
-		sizeLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		sizeLabel.setBounds(10, 10, 195, 47);
-		initPanel.add(sizeLabel, BorderLayout.WEST);
+		contentPane.add(redPlayerPanel, BorderLayout.WEST);
+		contentPane.add(bluePlayerPanel, BorderLayout.EAST);
 		
-		//TEXTFIELD SIZE
-		textField.setHorizontalAlignment(SwingConstants.CENTER);
-		textField.setText("");
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		textField.setBounds(215, 17, 47, 33);
-		textField.setColumns(5);
-		textField.addKeyListener(new KeyAdapter() {
+		actionInit();
+		
+	}
+	
+	private void actionInit(){
+		//TAKE IN SIZE INPUT
+		sizeInput.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
@@ -154,20 +177,8 @@ public class GUI extends JFrame{
 					e.consume();
 				}
 			}
-		});
-		initPanel.add(textField, BorderLayout.CENTER);
+		}); 
 		
-
-		//ENTER BUTTON
-		enterButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		enterButton.setBounds(272, 14, 92, 39);
-		initPanel.add(enterButton, BorderLayout.SOUTH);
-		
-		actionInit();
-
-	}
-	
-	private void actionInit(){
 		//ACTION FOR MODE BUTTONS
 		ActionListener buttonListener = new ActionListener() {
 			@Override
@@ -193,7 +204,7 @@ public class GUI extends JFrame{
 				if(e.getSource() == sPlayerRed) {
 					sPlayerBlue.setEnabled(true);
 					oPlayerBlue.setEnabled(true);
-					playerKeyRed = 'R';
+					playerKeyRed = 'S';
 					oPlayerBlue.doClick();
 					sPlayerBlue.setEnabled(false);
 					oPlayerBlue.setEnabled(false);
@@ -201,7 +212,7 @@ public class GUI extends JFrame{
 				if(e.getSource() == oPlayerRed) {
 					sPlayerBlue.setEnabled(true);
 					oPlayerBlue.setEnabled(true);
-					playerKeyRed = 'B';
+					playerKeyRed = 'O';
 					sPlayerBlue.doClick();
 					sPlayerBlue.setEnabled(false);
 					oPlayerBlue.setEnabled(false);
@@ -212,49 +223,62 @@ public class GUI extends JFrame{
 		sPlayerRed.addActionListener(buttonListenerRedPlayer);
 		oPlayerRed.addActionListener(buttonListenerRedPlayer);
 		
-		//Add Player Panels
-		redPlayerPanel.setLayout(new BorderLayout());
-		bluePlayerPanel.setLayout(new BorderLayout());
-	
-		redPlayerLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		//RED PLAYER LABEL
+		JLabel redPlayerLabel = new JLabel("  Red Player  ");
+		redPlayerLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		redPlayerLabel.setForeground(new Color(255, 0, 0));
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		initPanel.add(redPlayerLabel, gbc);
 		
-		bluePlayerLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		gbc.gridx = 1;
+		gbc.gridy = 2;
+		initPanel.add(sPlayerRed, gbc);
+		gbc.gridx = 2;
+		gbc.gridy = 2;
+		initPanel.add(oPlayerRed, gbc);
+		
+		//BLUE PLAYER LABEL
+		JLabel bluePlayerLabel = new JLabel("  Blue Player  ");
+		bluePlayerLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		bluePlayerLabel.setForeground(new Color(0, 0, 255));
-
-		bluePlayerPanel.add(bluePlayerLabel, BorderLayout.NORTH);
-		bluePlayerPanel.add(oPlayerBlue, BorderLayout.EAST);
-		bluePlayerPanel.add(sPlayerBlue, BorderLayout.WEST);
-		redPlayerPanel.add(redPlayerLabel, BorderLayout.NORTH);
-		redPlayerPanel.add(oPlayerRed, BorderLayout.EAST);
-		redPlayerPanel.add(sPlayerRed, BorderLayout.WEST);
+		gbc.gridx = 3;
+		gbc.gridy = 2;
+		initPanel.add(bluePlayerLabel, gbc);
 		
-		
-		contentPane.add(redPlayerPanel, BorderLayout.WEST);
-		contentPane.add(bluePlayerPanel, BorderLayout.EAST);
-		
+		gbc.gridx = 4;
+		gbc.gridy = 2;
+		initPanel.add(sPlayerBlue, gbc);
+		gbc.gridx = 5;
+		gbc.gridy = 2;
+		initPanel.add(oPlayerBlue, gbc);
 		
 		//ACTION FOR ENTER BUTTON
 		enterButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				String text = textField.getText();
+				String text = sizeInput.getText();
 				size = Integer.parseInt(text);
 				if(playerKeyRed != 'X') {
+					board.setSize(size);
+					board.setModeString(modeString);
+					board.setRedPlayerKey(playerKeyRed);
+					
 					if(board.setMode(modeString, size) != -1) {
 						if(board.setMode(modeString, size) == 1) {
 							generalGame.setSizeGeneral(size);
 						}
 						else if (board.setMode(modeString, size) == 2) {
-							simpleGame.setSize(size);
+							simpleGame.setSizeBoard(size);
 						}
 						else {
-							board.setSize(size);
+							board.setSizeBoard(size);
 						}
 					setGamePanel();
-//					**Only works after one use**
+					
+//							**Only works after one use**
 					validate();
-					textField.setEditable(false);
+					sizeInput.setEditable(false);
 					enterButton.setEnabled(false);
 					enterButton.removeMouseListener(this);
 					generalButton.setEnabled(false);
@@ -268,186 +292,19 @@ public class GUI extends JFrame{
 			}
 		});
 	}
-
 	
-	private void setGamePanel(){
-		gameBoardCanvas = new GameBoardCanvas(); 
-		//Change size
-		CANVAS_WIDTH = CELL_SIZE * size;  
-		CANVAS_HEIGHT = CELL_SIZE * size;
-		//Add numbers to w/h to increase size of window
+	private void setGamePanel() {
+		CANVAS_WIDTH = 600;  
+		CANVAS_HEIGHT = 600;
+		CELL_SIZE = CANVAS_WIDTH / size;
+		GameBoardCanvas gameBoardCanvas = new GameBoardCanvas(board, generalGame, simpleGame);
 		gameBoardCanvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
 		contentPane.add(gameBoardCanvas, BorderLayout.CENTER);
-		
-		if(board.setMode(modeString, size) == 1) {
-			redPlayerPoints = new JLabel(String.valueOf(generalGame.getPointRed()));
-			bluePlayerPoints = new JLabel(String.valueOf(generalGame.getPointBlue()));
-			redPlayerPoints.setFont(new Font("Tahoma", Font.PLAIN, 30));
-			redPlayerPoints.setForeground(new Color(255, 0, 0));
-			bluePlayerPoints.setFont(new Font("Tahoma", Font.PLAIN, 30));
-			
-			redPlayerPanel.add(redPlayerPoints, BorderLayout.CENTER);
-			bluePlayerPanel.add(bluePlayerPoints, BorderLayout.CENTER);
-		}
-		
-		//Resize for board
 		pack(); 
 	}
 	
-	class GameBoardCanvas extends JPanel {
-		
-		GameBoardCanvas(){
-			
-			addMouseListener(new MouseAdapter() {
-				public void mouseClicked(MouseEvent e) {  
-						int rowSelected = e.getY() / CELL_SIZE;
-						int colSelected = e.getX() / CELL_SIZE;
-						
-						if(board.setMode(modeString, size) == 1) {
-							generalGame.makeMoveInGeneralMode(rowSelected, colSelected, size, playerKeyRed);
-						}
-						else if (board.setMode(modeString, size) == 2) {
-							simpleGame.makeMove(rowSelected, colSelected, size);
-						}
-					repaint(); 
-				}
-			});
 
-		}
-		
-		@Override
-		public void paintComponent(Graphics g) { 
-			super.paintComponent(g);   
-			setBackground(Color.WHITE);
-			drawGridLines(g);
-			drawBoard(g);
-			playerStatus();
-		}
-		
-		private void drawGridLines(Graphics g){
-			//Have to change these sizes too
-			g.setColor(Color.LIGHT_GRAY);
-			for (int row = 1; row < size; row++) {
-				g.fillRoundRect(0, CELL_SIZE * row - GRID_WIDHT_HALF,
-						CANVAS_WIDTH-1, GRID_WIDTH, GRID_WIDTH, GRID_WIDTH);
-			}
-			for (int col = 1; col < size; col++) {
-				g.fillRoundRect(CELL_SIZE * col - GRID_WIDHT_HALF, 0,
-						GRID_WIDTH, CANVAS_HEIGHT-1, GRID_WIDTH, GRID_WIDTH);
-			}
-
-		}
-		
-		private void drawBoard(Graphics g){
-			Graphics2D g2d = (Graphics2D)g;
-			g2d.setStroke(new BasicStroke(SYMBOL_STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)); 
-			for (int row = 0; row < size; row++) {
-				for (int col = 0; col < size; col++) {
-					int x1 = col * CELL_SIZE + CELL_PADDING;
-					int y1 = row * CELL_SIZE + CELL_PADDING;
-					if(board.setMode(modeString, size) == 1) {
-						if (generalGame.getCell(row,col, size) == Cell.RED_PLAYER) { //Red Player
-							if(playerKeyRed == 'R') {
-								g2d.setColor(Color.RED);
-								g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
-								g2d.drawString("S", x1+5, y1+65);
-							}
-							else{
-								g2d.setColor(Color.RED);
-								g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
-							}
-							
-							
-						} else if (generalGame.getCell(row,col, size) == Cell.BLUE_PLAYER) { //Blue Player
-							if(playerKeyRed == 'B') {
-								g2d.setColor(Color.BLUE);
-								g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
-								g2d.drawString("S", x1+5, y1+65);
-							}
-							else {
-								g2d.setColor(Color.BLUE);
-								g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
-							}
-
-						}
-					}
-					else if(board.setMode(modeString, size) == 2) {
-						if (simpleGame.getCell(row,col, size) == Cell.RED_PLAYER) { //Red Player
-							if(playerKeyRed == 'R') {
-								g2d.setColor(Color.RED);
-								g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
-								g2d.drawString("S", x1+5, y1+65);
-							}
-							else{
-								g2d.setColor(Color.RED);
-								g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
-							}
-
-						} else if (simpleGame.getCell(row,col, size) == Cell.BLUE_PLAYER) { //Blue Player
-
-							if(playerKeyRed == 'B') {
-								g2d.setColor(Color.BLUE);
-								g2d.setFont(new Font("TimesRoman", Font.PLAIN, SYMBOL_SIZE+20)); 
-								g2d.drawString("S", x1+5, y1+65);
-							}
-							else {
-								g2d.setColor(Color.BLUE);
-								g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
-							}
-							
-
-						}
-					}
-					
-				}
-			}
-		}
-		
-		private void playerStatus(){
-				if(board.setMode(modeString, size) == 1) {
-					if (generalGame.getTurn() == 'R') {
-						redPlayerLabel.setForeground(new Color(255, 0, 0));
-						bluePlayerLabel.setForeground(new Color(0, 0, 0));
-						redPlayerPoints.setForeground(new Color(255, 0, 0));
-						bluePlayerPoints.setForeground(new Color(0, 0, 0));
-					} 
-					else{
-						redPlayerLabel.setForeground(new Color(0, 0, 0));
-						bluePlayerLabel.setForeground(new Color(0, 0, 255));
-						redPlayerPoints.setForeground(new Color(0, 0, 0));
-						bluePlayerPoints.setForeground(new Color(0, 0, 255));
-					}
-					
-					if(generalGame.getGameState() == GameState.RED_SCORES) {
-						generalGame.addPointRed();
-						System.out.println(generalGame.getPointRed());
-						redPlayerPoints.setText(String.valueOf(generalGame.getPointRed()));
-						System.out.println(generalGame.getTurn());
-					}
-					
-					if(generalGame.getGameState() == GameState.BLUE_SCORES) {
-						generalGame.addPointBlue();
-						System.out.println(generalGame.getPointBlue());
-						bluePlayerPoints.setText(String.valueOf(generalGame.getPointBlue()));
-					}
-				}
-				else if (board.setMode(modeString, size) == 2){
-					if (simpleGame.getTurn() == 'R') {
-						redPlayerLabel.setForeground(new Color(255, 0, 0));
-						bluePlayerLabel.setForeground(new Color(0, 0, 0));
-
-					} else {
-						redPlayerLabel.setForeground(new Color(0, 0, 0));
-						bluePlayerLabel.setForeground(new Color(0, 0, 255));
-
-					}
-				}
-		}
-
-
-	}
 	
-
 	/**
 	 * Launch the application.
 	 */
@@ -463,6 +320,4 @@ public class GUI extends JFrame{
 			}
 		});
 	}
-	
-
 }

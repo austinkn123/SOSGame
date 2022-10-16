@@ -24,9 +24,9 @@ public class TestEmptyBoard {
 		board = new Board(); 
 		generalBoard =  new GeneralGameBoard();
 		simpleBoard = new SimpleGameBoard();
-		board.setSize(size);
-		generalBoard.setSize(size);
-		simpleBoard.setSize(size);
+		board.setSizeBoard(size);
+		generalBoard.setSizeGeneral(size);
+		simpleBoard.setSizeBoard(size);
 	}
 
 	@After

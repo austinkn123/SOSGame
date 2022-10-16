@@ -5,18 +5,39 @@ public class Board {
 	public enum Cell {EMPTY, RED_PLAYER, BLUE_PLAYER};
 	protected char turn = 'R';
 	protected int size = 0;
+	protected String modeString;
+	protected char redPlayerKey = 'S';
 	protected Cell[][] grid;
 	
-
 	public void setSize(int newSize) {
 	    this.size = newSize;
-	    //CAREFUL, MAKES NEW BOARD OF ZEROS
-	    grid = new Cell[newSize][newSize];
-	    initBoard();
 	 }
 	
 	public int getSize() {
 	    return size;
+	 }
+	
+	public void setModeString(String mode) {
+	    this.modeString = mode;
+	 }
+	
+	public String getModeString() {
+	    return modeString;
+	 }
+	
+	public void setRedPlayerKey(char redPlayerKey) {
+	    this.redPlayerKey = redPlayerKey;
+	 }
+	
+	public char getRedPlayerKey() {
+	    return redPlayerKey;
+	 }
+	
+	public void setSizeBoard(int newSize) {
+		setSize(newSize);
+	    //CAREFUL, MAKES NEW BOARD OF ZEROS
+	    grid = new Cell[newSize][newSize];
+	    initBoard();
 	 }
 	
 	public int setMode(String modeKey,int newSize) {
