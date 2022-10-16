@@ -27,7 +27,7 @@ public class TestMoveO {
 		generalBoard.setSizeGeneral(size);
 		simpleBoard.setSizeBoard(size);
 		simpleBoard.makeMove(1, 1, size);
-		generalBoard.makeMove(1, 1, size);
+		generalBoard.makeMove(1, 1, size); 
 	}
 
 	@After

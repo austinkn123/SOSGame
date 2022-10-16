@@ -42,7 +42,7 @@ public class TestMoveS {
 	}
 	//acceptance criterion 4.2
 	@Test
-	public void testSTurnMoveNonVacantCellinSimpleMode() {
+	public void testSTurnMoveNonVacantCellinSimpleMode() { 
 		simpleBoard.makeMove(0, 0, size);
 		simpleBoard.makeMove(1, 0, size);
 		assertEquals("", simpleBoard.getCell(1, 0, size), Cell.BLUE_PLAYER);

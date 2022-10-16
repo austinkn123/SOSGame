@@ -50,15 +50,22 @@ public class GeneralGameBoard extends Board {
 	public void makeMoveInGeneralMode(int row, int column, int boardSize, char redPlayer) {
 		if ((row >= 0) && (row < boardSize) && (column >= 0) && (column < boardSize) && (grid[row][column] == Cell.EMPTY)) {
 			grid[row][column] = (turn == 'R')? Cell.RED_PLAYER : Cell.BLUE_PLAYER; 
+			
 			updateGameState(turn, row, column, redPlayer); 
-			turn = (turn == 'R')? 'B' : 'R';
+			
 			if(currentGameState == GameState.RED_SCORES) {
 				turn = 'R';
 			}
 			else if(currentGameState == GameState.BLUE_SCORES) {
 				turn = 'B';
 			}
+			else {
+				turn = (turn == 'R')? 'B' : 'R';
+			}
+			
 		}
+		
+		
 	}
 	
 	private boolean hasScored(char turn, int row, int column, int size, char redPlayer) {
@@ -145,6 +152,8 @@ public class GeneralGameBoard extends Board {
 				return true;
 			}
 		}
+			
+
 		
 		return score;
 	}
@@ -281,6 +290,10 @@ public class GeneralGameBoard extends Board {
 			}
 
 		return score;
+	}
+	
+	public void setGameState(GameState currentGameState) {
+		this.currentGameState = currentGameState;
 	}
 	
 	public GameState getGameState() {

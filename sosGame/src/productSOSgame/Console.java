@@ -84,7 +84,7 @@ public class Console {
 	    	System.out.print("|");
 	    	System.out.println();
 	    }
-		
+		 
 	}
 	
 	public void displayBoardGeneral(int boardSize, GeneralGameBoard generalMode) {

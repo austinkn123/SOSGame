@@ -104,7 +104,6 @@ public class GameBoardCanvas extends JPanel {
 			public void mouseClicked(MouseEvent e) {  
 					int rowSelected = e.getY() / CELL_SIZE;
 					int colSelected = e.getX() / CELL_SIZE;
-					
 					if(modeString == "GENERAL") {
 						generalGame.makeMoveInGeneralMode(rowSelected, colSelected, size, playerKeyRed);
 					}
@@ -220,17 +219,19 @@ public class GameBoardCanvas extends JPanel {
 					redPlayerPoints.setForeground(new Color(0, 0, 0));
 					bluePlayerPoints.setForeground(new Color(0, 0, 255));
 				}
-				if(generalGame.getGameState() == GameState.RED_SCORES) {
+				if(generalGame.getGameState() == GameState.RED_SCORES ) {
 					generalGame.addPointRed();
 					System.out.println(generalGame.getPointRed());
 					redPlayerPoints.setText(String.valueOf(generalGame.getPointRed()));
 					System.out.println(generalGame.getTurn());
+					generalGame.setGameState(GameState.PLAYING);
 				}
 				
 				if(generalGame.getGameState() == GameState.BLUE_SCORES) {
 					generalGame.addPointBlue();
 					System.out.println(generalGame.getPointBlue());
 					bluePlayerPoints.setText(String.valueOf(generalGame.getPointBlue()));
+					generalGame.setGameState(GameState.PLAYING);
 				}
 			}
 			else if (board.setMode(modeString, size) == 2){
