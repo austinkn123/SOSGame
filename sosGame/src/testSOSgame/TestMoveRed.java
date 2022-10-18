@@ -12,7 +12,7 @@ import productSOSgame.SimpleGameBoard;
 import productSOSgame.Board.Cell;
 
 
-public class TestMoveS {
+public class TestMoveRed {
 
 	private Board board;
 	private GeneralGameBoard generalBoard;
@@ -35,14 +35,14 @@ public class TestMoveS {
 	
 	// acceptance criterion 4.1
 	@Test
-	public void testSTurnMoveVacantCellinSimpleMode() {
+	public void testRedTurnMoveVacantCellinSimpleMode() {
 		simpleBoard.makeMove(0, 0, size);
 		assertEquals("", simpleBoard.getCell(0, 0, size), Cell.RED_PLAYER);
 		assertEquals("", simpleBoard.getTurn(), 'B');
 	}
 	//acceptance criterion 4.2
 	@Test
-	public void testSTurnMoveNonVacantCellinSimpleMode() { 
+	public void testRedTurnMoveNonVacantCellinSimpleMode() { 
 		simpleBoard.makeMove(0, 0, size);
 		simpleBoard.makeMove(1, 0, size);
 		assertEquals("", simpleBoard.getCell(1, 0, size), Cell.BLUE_PLAYER);
@@ -53,14 +53,14 @@ public class TestMoveS {
 	
 	//acceptance criterion 4.3
 	@Test
-	public void testSTurnInvalidSizeMoveinSimpleMode() {
+	public void testRedTurnInvalidSizeMoveinSimpleMode() {
 		simpleBoard.makeMove((size + 1), 0, size);
 		assertEquals("", simpleBoard.getTurn(), 'R');
 	}
 	
 	// acceptance criterion 6.1
 	@Test
-	public void testSTurnMoveVacantCellinGeneralMode() {
+	public void testRedTurnMoveVacantCellinGeneralMode() {
 		generalBoard.makeMove(0, 0, size);
 		assertEquals("", generalBoard.getCell(0, 0, size), Cell.RED_PLAYER);
 		assertEquals("", generalBoard.getTurn(), 'B');
@@ -68,7 +68,7 @@ public class TestMoveS {
 	
 	// acceptance criterion 6.2
 	@Test
-	public void testSTurnMoveNonVacantCellinGeneralMode() {
+	public void testRedTurnMoveNonVacantCellinGeneralMode() {
 		generalBoard.makeMove(0, 0, size);
 		generalBoard.makeMove(1, 0, size);
 		assertEquals("", generalBoard.getCell(1, 0, size), Cell.BLUE_PLAYER);
@@ -79,7 +79,7 @@ public class TestMoveS {
 	
 	// acceptance criterion 6.3
 	@Test
-	public void testSTurnInvalidSizeMoveinGeneralMode() {
+	public void testRedTurnInvalidSizeMoveinGeneralMode() {
 		generalBoard.makeMove((size + 1), 0, size);
 		assertEquals("", generalBoard.getTurn(), 'R');
 	} 

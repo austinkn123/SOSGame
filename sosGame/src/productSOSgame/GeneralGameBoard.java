@@ -47,51 +47,54 @@ public class GeneralGameBoard extends Board {
 	
 	//!!! FOR NEXT SPRINT, I WORKED AHEAD A LITTLE
 	
-	public void makeMoveInGeneralMode(int row, int column, int boardSize, char redPlayer) {
+	public void makeMoveInGeneralMode(int row, int column, int boardSize, char redPlayer, char bluePlayer) {
 		if ((row >= 0) && (row < boardSize) && (column >= 0) && (column < boardSize) && (grid[row][column] == Cell.EMPTY)) {
 			grid[row][column] = (turn == 'R')? Cell.RED_PLAYER : Cell.BLUE_PLAYER; 
 			
-			updateGameState(turn, row, column, redPlayer); 
+			updateGameState(turn, row, column, redPlayer, bluePlayer); 
 			
 			if(currentGameState == GameState.RED_SCORES) {
+				addPointRed();
 				turn = 'R';
+				
+				
 			}
 			else if(currentGameState == GameState.BLUE_SCORES) {
+				addPointBlue();
 				turn = 'B';
 			}
 			else {
 				turn = (turn == 'R')? 'B' : 'R';
 			}
-			
 		}
 		
 		
 	}
 	
-	private boolean hasScored(char turn, int row, int column, int size, char redPlayer) {
+	private boolean hasScored(char turn, int row, int column, int size, char redPlayer, char bluePlayer) {
 		Cell token = (turn=='R')? Cell.RED_PLAYER: Cell.BLUE_PLAYER;
 		boolean score = false;
 		
 		//RED'S TURN
 		if(token == Cell.RED_PLAYER) {
 			//RED IS S
-			if(redPlayer == 'S') {
+			if(redPlayer == 'S' && bluePlayer == 'O') {
 				return findScoreSRED(row, column, size);
 			}
 			//RED IS O
-			else if(redPlayer == 'O'){
+			else if(redPlayer == 'O' && bluePlayer == 'S'){
 				return findScoreORED(row, column, size);
 			}
 		}
 		//BLUE'S TURN
 		if(token == Cell.BLUE_PLAYER) {
 			//RED IS S
-			if(redPlayer == 'S') {
+			if(redPlayer == 'S' && bluePlayer == 'O') {
 				return findScoreOBLUE(row, column, size);
 				
 			}
 			//RED IS O
-			else if(redPlayer == 'O'){
+			else if(redPlayer == 'O' && bluePlayer == 'S'){
 				return findScoreSBLUE(row, column, size);
 			}
 		}
@@ -300,8 +303,8 @@ public class GeneralGameBoard extends Board {
 		return currentGameState;
 	}
 	
-	private void updateGameState(char turn, int row, int column, char redPlayer) {
-		if (hasScored(turn, row, column, size, redPlayer)) { // check for player scoring
+	private void updateGameState(char turn, int row, int column, char redPlayer, char bluePlayer) {
+		if (hasScored(turn, row, column, size, redPlayer, bluePlayer)) { // check for player scoring
 			currentGameState = (turn == 'R') ? GameState.RED_SCORES : GameState.BLUE_SCORES;
 		// Otherwise, no change to current state (still GameState.PLAYING).
 		}

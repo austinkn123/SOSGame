@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import productSOSgame.GUIOneFile;
 import productSOSgame.Board.Cell;
 import productSOSgame.GeneralGameBoard.GameState;
 
@@ -49,11 +48,10 @@ public class GameBoardCanvas extends JPanel {
 	protected JLabel redPlayerPoints;
 	protected JLabel bluePlayerPoints;
 	
-	
-	//PROBLEM WITH SIZE
 	int size = 8;
 	String modeString = "GENERAL";
 	char playerKeyRed = 'S';
+	char playerKeyBlue = 'S';
 	
 	public void setMode(String modeString) {
 		this.modeString = modeString;
@@ -68,17 +66,20 @@ public class GameBoardCanvas extends JPanel {
 	}
 	
 	
-	public GameBoardCanvas(Board board, GeneralGameBoard generalGame, SimpleGameBoard simpleGame){
+	public GameBoardCanvas(Board board, GeneralGameBoard generalGame, SimpleGameBoard simpleGame, int pSize){
 		this.board = board;
 		this.generalGame = generalGame;
 		this.simpleGame = simpleGame;
 		
 		size= board.getSize();
+		size = pSize;
 		modeString = board.getModeString();
 		playerKeyRed = board.getRedPlayerKey();
-		
+		playerKeyBlue = board.getBluePlayerKey();
 		System.out.println(size);
 		System.out.println(modeString);
+		System.out.println(playerKeyRed);
+		System.out.println(playerKeyBlue);
 		
 		GUI.contentPane.add(redPlayerPanel, BorderLayout.WEST);
 		GUI.contentPane.add(bluePlayerPanel, BorderLayout.EAST);
@@ -87,7 +88,7 @@ public class GameBoardCanvas extends JPanel {
 		
 		CANVAS_WIDTH = 600;  
 		CANVAS_HEIGHT = 600;
-		CELL_SIZE = CANVAS_WIDTH / size;
+		CELL_SIZE = CANVAS_WIDTH / pSize;
 		
 		if(modeString == "GENERAL") {
 			redPlayerPoints = new JLabel(String.valueOf(generalGame.getPointRed()));
@@ -101,20 +102,27 @@ public class GameBoardCanvas extends JPanel {
 		}
 		
 		addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {  
+			public void mouseClicked(MouseEvent e) {
 					int rowSelected = e.getY() / CELL_SIZE;
 					int colSelected = e.getX() / CELL_SIZE;
-					if(modeString == "GENERAL") {
-						generalGame.makeMoveInGeneralMode(rowSelected, colSelected, size, playerKeyRed);
-					}
-					else if (modeString == "SIMPLE") {
-						simpleGame.makeMove(rowSelected, colSelected, size);
-					}
+					makeMoveonBoard(generalGame, simpleGame, rowSelected, colSelected, pSize, playerKeyRed, playerKeyBlue, modeString);
 				repaint(); 
 			}
 		});
-
+ 
 	}
+	
+	public void makeMoveonBoard(GeneralGameBoard generalMode, SimpleGameBoard simpleMode, int row, int col, int pSize, 
+			char redPlayer, char bluePlayer, String pModString) { 
+		if(pModString == "GENERAL") {
+			generalMode.makeMoveInGeneralMode(row, col, pSize, redPlayer, bluePlayer);
+		}
+		else if (pModString == "SIMPLE") {
+			simpleMode.makeMove(row, col, pSize);
+		}
+//		repaint(); 
+	}
+	
 	
 
 	@Override
@@ -137,7 +145,7 @@ public class GameBoardCanvas extends JPanel {
 
 	}
 	
-	private void drawBoard(Graphics g){
+	public void drawBoard(Graphics g){
 		Graphics2D g2d = (Graphics2D)g;
 //		Image i = new ImageIcon("redS").getImage(); 
 		g2d.setStroke(new BasicStroke(SYMBOL_STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)); 
@@ -158,9 +166,9 @@ public class GameBoardCanvas extends JPanel {
 							g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
 						}
 						
-						
+						checkScore();
 					} else if (generalGame.getCell(row,col, size) == Cell.BLUE_PLAYER) { //Blue Player
-						if(playerKeyRed == 'O') {
+						if(playerKeyBlue == 'S') {
 							g2d.setColor(Color.BLUE);
 							g2d.setFont(new Font("TimesRoman", Font.PLAIN, CANVAS_WIDTH / size)); 
 							g2d.drawString("S", x1, y1+ (CELL_SIZE -  CELL_PADDING * 2) + 5);
@@ -169,7 +177,7 @@ public class GameBoardCanvas extends JPanel {
 							g2d.setColor(Color.BLUE);
 							g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
 						}
-
+						checkScore();
 					}
 				}
 				else if(board.setMode(modeString, size) == 2) {
@@ -186,7 +194,7 @@ public class GameBoardCanvas extends JPanel {
 
 					} else if (simpleGame.getCell(row,col, size) == Cell.BLUE_PLAYER) { //Blue Player
 
-						if(playerKeyRed == 'O') {
+						if(playerKeyBlue == 'S') {
 							g2d.setColor(Color.BLUE);
 							g2d.setFont(new Font("TimesRoman", Font.PLAIN, CANVAS_WIDTH / size)); 
 							g2d.drawString("S", x1, y1+ (CELL_SIZE -  CELL_PADDING * 2) + 5);
@@ -201,6 +209,18 @@ public class GameBoardCanvas extends JPanel {
 				}
 				
 			}
+		}
+	}
+	
+	private void checkScore() {
+		if(generalGame.getGameState() == GameState.RED_SCORES ) {
+			System.out.println(generalGame.getPointRed());
+			redPlayerPoints.setText(String.valueOf(generalGame.getPointRed()));
+		}
+		
+		if(generalGame.getGameState() == GameState.BLUE_SCORES) {
+			System.out.println(generalGame.getPointBlue());
+			bluePlayerPoints.setText(String.valueOf(generalGame.getPointBlue()));
 		}
 	}
 	
@@ -219,20 +239,7 @@ public class GameBoardCanvas extends JPanel {
 					redPlayerPoints.setForeground(new Color(0, 0, 0));
 					bluePlayerPoints.setForeground(new Color(0, 0, 255));
 				}
-				if(generalGame.getGameState() == GameState.RED_SCORES ) {
-					generalGame.addPointRed();
-					System.out.println(generalGame.getPointRed());
-					redPlayerPoints.setText(String.valueOf(generalGame.getPointRed()));
-					System.out.println(generalGame.getTurn());
-					generalGame.setGameState(GameState.PLAYING);
-				}
-				
-				if(generalGame.getGameState() == GameState.BLUE_SCORES) {
-					generalGame.addPointBlue();
-					System.out.println(generalGame.getPointBlue());
-					bluePlayerPoints.setText(String.valueOf(generalGame.getPointBlue()));
-					generalGame.setGameState(GameState.PLAYING);
-				}
+
 			}
 			else if (board.setMode(modeString, size) == 2){
 				if (simpleGame.getTurn() == 'R') {

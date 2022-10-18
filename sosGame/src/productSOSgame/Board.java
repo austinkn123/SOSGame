@@ -7,6 +7,7 @@ public class Board {
 	protected int size = 0;
 	protected String modeString;
 	protected char redPlayerKey = 'S';
+	protected char bluePlayerKey = 'S';
 	protected Cell[][] grid;
 	
 	public void setSize(int newSize) {
@@ -31,6 +32,14 @@ public class Board {
 	
 	public char getRedPlayerKey() {
 	    return redPlayerKey;
+	 }
+	
+	public void setBluePlayerKey(char bluePlayerKey) {
+	    this.bluePlayerKey = bluePlayerKey;
+	 }
+	
+	public char getBluePlayerKey() {
+	    return bluePlayerKey;
 	 }
 	
 	public void setSizeBoard(int newSize) {

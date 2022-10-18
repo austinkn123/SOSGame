@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -24,6 +25,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
+import productSOSgame.Board.Cell;
 
 public class GUI extends JFrame {
 	public static JPanel contentPane = new JPanel();
@@ -63,7 +66,7 @@ public class GUI extends JFrame {
 	int size;
 	String modeString = "Not Selected";
 	char playerKeyRed = 'X';
-	
+	char playerKeyBlue = 'X';
 
 
 
@@ -193,35 +196,30 @@ public class GUI extends JFrame {
 		};
 		generalButton.addActionListener(buttonListener);
 		simpleButton.addActionListener(buttonListener);
-		
-		sPlayerBlue.setEnabled(false);
-		oPlayerBlue.setEnabled(false);
-		
+
 		//ACTION FOR RED PLAYER BUTTONS 
 		ActionListener buttonListenerRedPlayer = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == sPlayerRed) {
-					sPlayerBlue.setEnabled(true);
-					oPlayerBlue.setEnabled(true);
 					playerKeyRed = 'S';
-					oPlayerBlue.doClick();
-					sPlayerBlue.setEnabled(false);
-					oPlayerBlue.setEnabled(false);
 				}
 				if(e.getSource() == oPlayerRed) {
-					sPlayerBlue.setEnabled(true);
-					oPlayerBlue.setEnabled(true);
 					playerKeyRed = 'O';
-					sPlayerBlue.doClick();
-					sPlayerBlue.setEnabled(false);
-					oPlayerBlue.setEnabled(false);
+				}
+				if(e.getSource() == sPlayerBlue) {
+					playerKeyBlue = 'S';
+				}
+				if(e.getSource() == oPlayerBlue) {
+					playerKeyBlue = 'O';
 				}
 			}
 		};
 		
 		sPlayerRed.addActionListener(buttonListenerRedPlayer);
 		oPlayerRed.addActionListener(buttonListenerRedPlayer);
+		sPlayerBlue.addActionListener(buttonListenerRedPlayer);
+		oPlayerBlue.addActionListener(buttonListenerRedPlayer);
 		
 		//RED PLAYER LABEL
 		JLabel redPlayerLabel = new JLabel("  Red Player  ");
@@ -259,11 +257,11 @@ public class GUI extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				String text = sizeInput.getText();
 				size = Integer.parseInt(text);
-				if(playerKeyRed != 'X') {
+				if(playerKeyRed != 'X' && playerKeyBlue != 'X') {
 					board.setSize(size);
 					board.setModeString(modeString);
 					board.setRedPlayerKey(playerKeyRed);
-					
+					board.setBluePlayerKey(playerKeyBlue);
 					if(board.setMode(modeString, size) != -1) {
 						if(board.setMode(modeString, size) == 1) {
 							generalGame.setSizeGeneral(size);
@@ -274,7 +272,7 @@ public class GUI extends JFrame {
 						else {
 							board.setSizeBoard(size);
 						}
-					setGamePanel();
+					setGamePanel( board, generalGame, simpleGame, size);
 					
 //							**Only works after one use**
 					validate();
@@ -285,6 +283,8 @@ public class GUI extends JFrame {
 					simpleButton.setEnabled(false);
 					sPlayerRed.setEnabled(false);
 					oPlayerRed.setEnabled(false);
+					sPlayerBlue.setEnabled(false);
+					oPlayerBlue.setEnabled(false);
 					System.out.println("MODE: " + modeString);
 				}
 				}
@@ -293,17 +293,27 @@ public class GUI extends JFrame {
 		});
 	}
 	
-	private void setGamePanel() {
+	public void setGamePanel(Board board, GeneralGameBoard generalGame, SimpleGameBoard simpleGame, int pSize) {
 		CANVAS_WIDTH = 600;  
 		CANVAS_HEIGHT = 600;
-		CELL_SIZE = CANVAS_WIDTH / size;
-		GameBoardCanvas gameBoardCanvas = new GameBoardCanvas(board, generalGame, simpleGame);
+		CELL_SIZE = CANVAS_WIDTH / pSize;
+		GameBoardCanvas gameBoardCanvas = new GameBoardCanvas(board, generalGame, simpleGame, pSize);
 		gameBoardCanvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
 		contentPane.add(gameBoardCanvas, BorderLayout.CENTER);
 		pack(); 
 	}
 	
-
+	//For testing GUI
+	public void nonEmptyBoard(GeneralGameBoard generalGame, SimpleGameBoard simpleGame, int pSize) {
+		CANVAS_WIDTH = 600;  
+		CANVAS_HEIGHT = 600;
+		CELL_SIZE = CANVAS_WIDTH / pSize;
+		GameBoardCanvas gameBoardCanvas = new GameBoardCanvas(board, generalGame, simpleGame, pSize);
+		gameBoardCanvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT)); 
+		gameBoardCanvas.makeMoveonBoard(generalGame, simpleGame, 1, 1, pSize, playerKeyRed, playerKeyBlue, "GENERAL");
+		contentPane.add(gameBoardCanvas, BorderLayout.CENTER);
+		pack(); 
+	}
 	
 	/**
 	 * Launch the application.

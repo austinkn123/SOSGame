@@ -11,7 +11,7 @@ import productSOSgame.GeneralGameBoard;
 import productSOSgame.SimpleGameBoard;
 import productSOSgame.Board.Cell;
 
-public class TestMoveO {
+public class TestMoveBlue {
 
 	private Board board;
 	private GeneralGameBoard generalBoard;
@@ -36,7 +36,7 @@ public class TestMoveO {
 	
 	// acceptance criterion 4.4
 	@Test
-	public void testOTurnMoveVacantCellinSimpleMode() {
+	public void testBlueTurnMoveVacantCellinSimpleMode() {
 		simpleBoard.makeMove(0, 0, size);
 		assertEquals("", simpleBoard.getCell(0, 0, size), Cell.BLUE_PLAYER);
 		assertEquals("", simpleBoard.getTurn(), 'R');
@@ -44,7 +44,7 @@ public class TestMoveO {
 	
 	// acceptance criterion 4.5
 	@Test
-	public void testOTurnMoveNonVacantCellinSimpleMode() {
+	public void testBlueTurnMoveNonVacantCellinSimpleMode() {
 		simpleBoard.makeMove(0, 0, size); // O move
 		simpleBoard.makeMove(1, 0, size); // S move
 		assertEquals("", simpleBoard.getTurn(), 'B');
@@ -54,14 +54,14 @@ public class TestMoveO {
 	
 	// acceptance criterion 4.6
 	@Test
-	public void testOTurnInvalidSizeMoveinSimpleMode() {
+	public void testBlueTurnInvalidSizeMoveinSimpleMode() {
 		simpleBoard.makeMove((size + 1), 0, size); 
 		assertEquals("", simpleBoard.getTurn(), 'B');
 	}
 	
 	// acceptance criterion 6.5
 	@Test
-	public void testOTurnMoveVacantCellinGeneralMode() {
+	public void testBlueTurnMoveVacantCellinGeneralMode() {
 		generalBoard.makeMove(0, 0, size);
 		assertEquals("", generalBoard.getCell(0, 0, size), Cell.BLUE_PLAYER);
 		assertEquals("", generalBoard.getTurn(), 'R');
@@ -69,7 +69,7 @@ public class TestMoveO {
 	
 	// acceptance criterion 6.6
 	@Test
-	public void testOTurnMoveNonVacantCellinGeneralMode() {
+	public void testBlueTurnMoveNonVacantCellinGeneralMode() {
 		generalBoard.makeMove(0, 0, size); // O move
 		generalBoard.makeMove(1, 0, size); // S move
 		assertEquals("", generalBoard.getTurn(), 'B');
@@ -79,7 +79,7 @@ public class TestMoveO {
 	
 	// acceptance criterion 6.7
 	@Test
-	public void testOTurnInvalidSizeMoveinGeneralMode() {
+	public void testBlueTurnInvalidSizeMoveinGeneralMode() {
 		generalBoard.makeMove((size + 1), 0, size); 
 		assertEquals("", generalBoard.getTurn(), 'B');
 	}

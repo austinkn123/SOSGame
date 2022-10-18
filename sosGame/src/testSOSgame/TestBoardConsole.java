@@ -76,7 +76,7 @@ public class TestBoardConsole {
 		simpleBoard.makeMove(1, 1, size);
 		new Console(simpleBoard).displayBoardSimple(size, simpleBoard);
 	}
-	
+	 
 	
 	
 	

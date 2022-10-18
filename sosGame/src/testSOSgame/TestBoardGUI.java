@@ -15,10 +15,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import productSOSgame.Board;
-import productSOSgame.GUIOneFile;
 import productSOSgame.GeneralGameBoard;
 import productSOSgame.SimpleGameBoard;
-import productSOSgame.TestingBoardFrame;
 import productSOSgame.GUI;
 import productSOSgame.GameBoardCanvas;
 
@@ -39,9 +37,7 @@ public class TestBoardGUI {
 		generalBoard =  new GeneralGameBoard();
 		simpleBoard = new SimpleGameBoard();
 		board.setSizeBoard(size); 
-		generalBoard.setSizeGeneral(size);
-		simpleBoard.setSizeBoard(size);
-		gameBoardCanvas = new GameBoardCanvas(board, generalBoard, simpleBoard);
+		gameBoardCanvas = new GameBoardCanvas(board, generalBoard, simpleBoard, size);
 		gameBoardCanvas.setMode("GENERAL");
 		gameBoardCanvas.setGameSize(size);
 		gameBoardCanvas.setPlayerKeyRed('S');
@@ -57,10 +53,20 @@ public class TestBoardGUI {
 	}
 	
 	@Test
-	public void testEmptyBoard() {
-		//Click on the jtextfield area to type in the input
-//		new GameBoardCanvas(board, generalBoard, simpleBoard);
-		new TestingBoardFrame(board,generalBoard, simpleBoard);
+	public void test() {
+		new GUI(board);
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testEmptyGeneralBoard() {
+		generalBoard.setSizeGeneral(size);
+		GUI gui = new GUI(board);
+		gui.setGamePanel(board, generalBoard, simpleBoard, size);
 		
 		
 		try {
@@ -72,7 +78,22 @@ public class TestBoardGUI {
 	}
 	
 	@Test
+	public void testEmptySimpleBoard() {
+		simpleBoard.setSizeBoard(size);
+		GUI gui = new GUI(board);
+		gui.setGamePanel(board, generalBoard, simpleBoard, size);
+		
+		try {
+			Thread.sleep(15000);
+			
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
 	public void testNonEmptyBoardGeneral() {
+		generalBoard.setSizeGeneral(size);
 		System.out.println("GENERAL BOARD");
 		generalBoard.makeMove(0, 0, size);
 		generalBoard.makeMove(1, 1, size);	
@@ -83,9 +104,10 @@ public class TestBoardGUI {
 		System.out.println(generalBoard.getCell(1, 1, size));
 		System.out.println("S makes Move");
 		System.out.println(generalBoard.getCell(1, 4, size));
-		new TestingBoardFrame(board,generalBoard, simpleBoard);
+		GUI gui = new GUI(board);
+		gui.nonEmptyBoard(generalBoard, simpleBoard, size);
 		try {
-			Thread.sleep(9000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -93,6 +115,7 @@ public class TestBoardGUI {
 	
 	@Test
 	public void testNonEmptyBoardSimple() {
+		simpleBoard.setSizeBoard(size);
 		System.out.println("SIMPLE BOARD");
 		simpleBoard.makeMove(0, 0, size);
 		simpleBoard.makeMove(1, 1, size);	
@@ -102,14 +125,17 @@ public class TestBoardGUI {
 		System.out.println("O makes Move");
 		System.out.println(simpleBoard.getCell(1, 1, size));
 		System.out.println("S makes Move");
-		System.out.println(generalBoard.getCell(1, 4, size));
-		new GUI(board);
+		System.out.println(simpleBoard.getCell(1, 4, size));
+		GUI gui = new GUI(board);
+		gui.setGamePanel(board, generalBoard, simpleBoard, size);
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
+	
+
 
 
 }
