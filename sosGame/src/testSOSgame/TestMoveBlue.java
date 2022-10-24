@@ -31,7 +31,7 @@ public class TestMoveBlue {
 		generalBoardPlayerS.setSizeGeneral(size);
 		generalBoardPlayerO.setSizeGeneral(size);
 		simpleBoard.setSizeBoard(size);
-		simpleBoard.makeMove(1, 1, size);
+		simpleBoard.makeMoveInSimpleMode(1, 1, size, 'S', 'O'); //RED is S
 		generalBoardPlayerO.makeMoveInGeneralMode(1, 1, size, 'S', 'O'); //RED is S
 		generalBoardPlayerS.makeMoveInGeneralMode(1, 1, size, 'O', 'S'); // RED IS O
 	}
@@ -43,7 +43,7 @@ public class TestMoveBlue {
 	// acceptance criterion 4.4
 	@Test
 	public void testBlueTurnMoveVacantCellinSimpleMode() {
-		simpleBoard.makeMove(0, 0, size);
+		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'S', 'O'); //BLUE is O
 		assertEquals("", simpleBoard.getCell(0, 0, size), Cell.BLUE_PLAYER);
 		assertEquals("", simpleBoard.getTurn(), 'R');
 	}
@@ -51,17 +51,17 @@ public class TestMoveBlue {
 	// acceptance criterion 4.5
 	@Test
 	public void testBlueTurnMoveNonVacantCellinSimpleMode() {
-		simpleBoard.makeMove(0, 0, size); // O move
-		simpleBoard.makeMove(1, 0, size); // S move
+		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'S', 'O'); //BLUE is O
+		simpleBoard.makeMoveInSimpleMode(1, 0, size, 'S', 'O'); //RED is S
 		assertEquals("", simpleBoard.getTurn(), 'B');
-		simpleBoard.makeMove(1, 0, size); // invalid O move
+		simpleBoard.makeMoveInSimpleMode(1, 0, size, 'S', 'O'); //RED is S // invalid O move
 		assertEquals("", simpleBoard.getTurn(), 'B');
 	}
 	
 	// acceptance criterion 4.6
 	@Test
 	public void testBlueTurnInvalidSizeMoveinSimpleMode() {
-		simpleBoard.makeMove((size + 1), 0, size); 
+		simpleBoard.makeMoveInSimpleMode(0, size + 1, size, 'S', 'O'); //BLUE is O
 		assertEquals("", simpleBoard.getTurn(), 'B');
 	}
 	

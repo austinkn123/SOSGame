@@ -37,25 +37,25 @@ public class TestMoveRed {
 	// acceptance criterion 4.1
 	@Test
 	public void testRedTurnMoveVacantCellinSimpleMode() {
-		simpleBoard.makeMove(0, 0, size);
+		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'S', 'O'); //RED is S
 		assertEquals("", simpleBoard.getCell(0, 0, size), Cell.RED_PLAYER);
 		assertEquals("", simpleBoard.getTurn(), 'B');
 	}
 	//acceptance criterion 4.2
 	@Test
 	public void testRedTurnMoveNonVacantCellinSimpleMode() { 
-		simpleBoard.makeMove(0, 0, size);
-		simpleBoard.makeMove(1, 0, size);
-		assertEquals("", simpleBoard.getCell(1, 0, size), Cell.BLUE_PLAYER);
+		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'S', 'O'); //RED is S
+		simpleBoard.makeMoveInSimpleMode(0, 1, size, 'S', 'O'); //BLUE is O
+		assertEquals("", simpleBoard.getCell(0, 1, size), Cell.BLUE_PLAYER);
 		assertEquals("", simpleBoard.getTurn(), 'R');
-		simpleBoard.makeMove(0, 0, size); //Invalid Move
+		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'S', 'O'); //RED is S
 		assertEquals("", simpleBoard.getTurn(), 'R');
 	}
 	
 	//acceptance criterion 4.3
 	@Test
 	public void testRedTurnInvalidSizeMoveinSimpleMode() {
-		simpleBoard.makeMove((size + 1), 0, size);
+		simpleBoard.makeMoveInSimpleMode(0, size + 1, size, 'S', 'O'); //RED is S
 		assertEquals("", simpleBoard.getTurn(), 'R');
 	}
 	
