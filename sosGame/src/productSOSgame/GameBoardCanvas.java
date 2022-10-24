@@ -18,7 +18,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import productSOSgame.Board.Cell;
-import productSOSgame.GeneralGameBoard.GameState;
+import productSOSgame.GeneralGameBoard.GameStateGeneral;
+import productSOSgame.Board.GameState;;
 
 public class GameBoardCanvas extends JPanel {
 	public static int CELL_SIZE = 100; 
@@ -33,7 +34,6 @@ public class GameBoardCanvas extends JPanel {
 
 	protected int CANVAS_WIDTH;
 	protected int CANVAS_HEIGHT;
-	
 
 
 	protected Board board;
@@ -48,11 +48,14 @@ public class GameBoardCanvas extends JPanel {
 	protected JLabel redPlayerPoints;
 	protected JLabel bluePlayerPoints;
 	
+	private JLabel gameStatusBar = new JLabel("  ");;
+	
 	int size = 8;
 	String modeString = "GENERAL";
 	char playerKeyRed = 'S';
 	char playerKeyBlue = 'S';
 	
+	//For test cases
 	public void setMode(String modeString) {
 		this.modeString = modeString;
 	}
@@ -78,11 +81,12 @@ public class GameBoardCanvas extends JPanel {
 		playerKeyBlue = board.getBluePlayerKey();
 		System.out.println(size);
 		System.out.println(modeString);
-		System.out.println(playerKeyRed);
-		System.out.println(playerKeyBlue);
+		System.out.println("RED PLAYER -- " + playerKeyRed);
+		System.out.println("BLUE PLAYER -- " + playerKeyBlue);
 		
 		GUI.contentPane.add(redPlayerPanel, BorderLayout.WEST);
 		GUI.contentPane.add(bluePlayerPanel, BorderLayout.EAST);
+		GUI.contentPane.add(gameStatusBar, BorderLayout.SOUTH);
 		bluePlayerPanel.add(bluePlayerLabel);
 		redPlayerPanel.add(redPlayerLabel);
 		
@@ -115,11 +119,16 @@ public class GameBoardCanvas extends JPanel {
 	public void makeMoveonBoard(GeneralGameBoard generalMode, SimpleGameBoard simpleMode, int row, int col, int pSize, 
 			char redPlayer, char bluePlayer, String pModString) { 
 		if(pModString == "GENERAL") {
-			generalMode.makeMoveInGeneralMode(row, col, pSize, redPlayer, bluePlayer);
+			if(generalMode.getGameState() == GameState.PLAYING) {
+				generalMode.makeMoveInGeneralMode(row, col, pSize, redPlayer, bluePlayer);
+			}
 		}
-		else if (pModString == "SIMPLE") {
-			simpleMode.makeMove(row, col, pSize);
+		if(pModString == "SIMPLE") {
+			if (simpleMode.getGameState() == GameState.PLAYING) {
+				simpleMode.makeMoveInSimpleMode(row, col, pSize, redPlayer, bluePlayer);
+			}
 		}
+		
 //		repaint(); 
 	}
 	
@@ -154,7 +163,7 @@ public class GameBoardCanvas extends JPanel {
 			for (int col = 0; col < size; col++) {
 				int x1 = col * CELL_SIZE + CELL_PADDING ;
 				int y1 = row * CELL_SIZE + CELL_PADDING ;
-				if(board.setMode(modeString, size) == 1) {
+				if(board.setMode(modeString, size) == 1) { //General Game
 					if (generalGame.getCell(row,col, size) == Cell.RED_PLAYER) { //Red Player
 						if(playerKeyRed == 'S') {
 							g2d.setColor(Color.RED);
@@ -180,7 +189,7 @@ public class GameBoardCanvas extends JPanel {
 						checkScore();
 					}
 				}
-				else if(board.setMode(modeString, size) == 2) {
+				else if(board.setMode(modeString, size) == 2) { //Simple Game
 					if (simpleGame.getCell(row,col, size) == Cell.RED_PLAYER) { //Red Player
 						if(playerKeyRed == 'S') {
 							g2d.setColor(Color.RED);
@@ -213,45 +222,76 @@ public class GameBoardCanvas extends JPanel {
 	}
 	
 	private void checkScore() {
-		if(generalGame.getGameState() == GameState.RED_SCORES ) {
-			System.out.println(generalGame.getPointRed());
+		if(generalGame.getGameScore() == GameStateGeneral.RED_SCORES ) {
+//			System.out.println(generalGame.getPointRed());
 			redPlayerPoints.setText(String.valueOf(generalGame.getPointRed()));
+			gameStatusBar.setText("Red Scores");
 		}
-		
-		if(generalGame.getGameState() == GameState.BLUE_SCORES) {
-			System.out.println(generalGame.getPointBlue());
+		if(generalGame.getGameScore() == GameStateGeneral.BLUE_SCORES) {
+//			System.out.println(generalGame.getPointBlue());
 			bluePlayerPoints.setText(String.valueOf(generalGame.getPointBlue()));
+			gameStatusBar.setText("Blue Scores");
 		}
 	}
 	
 	private void playerStatus(){
-//		contentPane
-			if(board.setMode(modeString, size) == 1) {
-				if (generalGame.getTurn() == 'R') {
-					redPlayerLabel.setForeground(new Color(255, 0, 0));
-					bluePlayerLabel.setForeground(new Color(0, 0, 0));
-					redPlayerPoints.setForeground(new Color(255, 0, 0));
-					bluePlayerPoints.setForeground(new Color(0, 0, 0));
-				} 
-				else{
-					redPlayerLabel.setForeground(new Color(0, 0, 0));
-					bluePlayerLabel.setForeground(new Color(0, 0, 255));
-					redPlayerPoints.setForeground(new Color(0, 0, 0));
-					bluePlayerPoints.setForeground(new Color(0, 0, 255));
-				}
-
+		if(board.setMode(modeString, size) == 1) {
+			if (generalGame.getTurn() == 'R') {
+				redPlayerLabel.setForeground(Color.RED);
+				bluePlayerLabel.setForeground(Color.BLACK);
+				redPlayerPoints.setForeground(Color.RED);
+				bluePlayerPoints.setForeground(Color.BLACK);
+				gameStatusBar.setForeground(Color.RED);
+				gameStatusBar.setText("Red's Turn");
+			} 
+			else{
+				redPlayerLabel.setForeground(Color.BLACK);
+				bluePlayerLabel.setForeground(Color.BLUE);
+				redPlayerPoints.setForeground(Color.BLACK);
+				bluePlayerPoints.setForeground(Color.BLUE);
+				gameStatusBar.setForeground(Color.BLUE);
+				gameStatusBar.setText("Blue's Turn");
 			}
-			else if (board.setMode(modeString, size) == 2){
-				if (simpleGame.getTurn() == 'R') {
-					redPlayerLabel.setForeground(new Color(255, 0, 0));
-					bluePlayerLabel.setForeground(new Color(0, 0, 0));
-
-				} else {
-					redPlayerLabel.setForeground(new Color(0, 0, 0));
-					bluePlayerLabel.setForeground(new Color(0, 0, 255));
-
-				}
+			if (generalGame.getGameState() == GameState.DRAW) {
+				gameStatusBar.setForeground(Color.BLACK);
+				gameStatusBar.setText("Game is a Draw");
 			}
+			if (generalGame.getGameState() == GameState.RED_WINS) {
+				gameStatusBar.setForeground(Color.RED);
+				gameStatusBar.setText("Red Wins");
+			}
+			if (generalGame.getGameState() == GameState.BLUE_WINS) {
+				gameStatusBar.setForeground(Color.BLUE);
+				gameStatusBar.setText("Blue Wins");
+			}
+
+		}
+		else if (board.setMode(modeString, size) == 2){
+			if (simpleGame.getTurn() == 'R') {
+				redPlayerLabel.setForeground(Color.RED);
+				bluePlayerLabel.setForeground(Color.BLACK);
+				gameStatusBar.setForeground(Color.RED);
+				gameStatusBar.setText("Red's Turn");
+			} 
+			else {
+				redPlayerLabel.setForeground(Color.BLACK);
+				bluePlayerLabel.setForeground(Color.BLUE);
+				gameStatusBar.setForeground(Color.BLUE);
+				gameStatusBar.setText("Blue's Turn");
+			}
+			if (simpleGame.getGameState() == GameState.DRAW) {
+				gameStatusBar.setForeground(Color.BLACK);
+				gameStatusBar.setText("Game is a Draw");
+			}
+			if (simpleGame.getGameState() == GameState.RED_WINS) {
+				gameStatusBar.setForeground(Color.RED);
+				gameStatusBar.setText("Red Wins");
+			}
+			if (simpleGame.getGameState() == GameState.BLUE_WINS) {
+				gameStatusBar.setForeground(Color.BLUE);
+				gameStatusBar.setText("Blue Wins");
+			}
+		}
 	}
 
 }

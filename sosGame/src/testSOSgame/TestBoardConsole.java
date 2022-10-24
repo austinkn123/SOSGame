@@ -22,7 +22,7 @@ public class TestBoardConsole {
 		generalBoard =  new GeneralGameBoard();
 		simpleBoard = new SimpleGameBoard();
 		board.setSizeBoard(size);
-		generalBoard.setSizeGeneral(size); 
+		generalBoard.setSizeGeneral(size);  
 		simpleBoard.setSizeBoard(size);
 	}
 	
@@ -76,8 +76,5 @@ public class TestBoardConsole {
 		simpleBoard.makeMove(1, 1, size);
 		new Console(simpleBoard).displayBoardSimple(size, simpleBoard);
 	}
-	 
-	
-	
 	
 }

@@ -3,6 +3,8 @@ package productSOSgame;
 
 public class Board {
 	public enum Cell {EMPTY, RED_PLAYER, BLUE_PLAYER};
+	public enum GameState {PLAYING, DRAW, RED_WINS, BLUE_WINS};
+	public GameState currentGameState;
 	protected char turn = 'R';
 	protected int size = 0;
 	protected String modeString;
@@ -42,7 +44,7 @@ public class Board {
 	    return bluePlayerKey;
 	 }
 	
-	public void setSizeBoard(int newSize) {
+	public void setSizeBoard(int newSize) { 
 		setSize(newSize);
 	    //CAREFUL, MAKES NEW BOARD OF ZEROS
 	    grid = new Cell[newSize][newSize];
@@ -74,6 +76,7 @@ public class Board {
 			}
 		}
 		turn = 'R';
+		currentGameState = GameState.PLAYING;
 	} 
 
 
@@ -96,6 +99,246 @@ public class Board {
 			grid[row][column] = (turn == 'R')? Cell.RED_PLAYER : Cell.BLUE_PLAYER; 
 			turn = (turn == 'R')? 'B' : 'R';
 		}
+	}
+	
+	protected boolean isFilled() {
+		for (int row = 0; row < size; ++row) {
+			for (int col = 0; col < size; ++col) {
+				if (grid[row][col] == Cell.EMPTY) {
+					return false; // an empty cell found, not filled
+				}
+			}
+		}
+		return true;
+	}
+	
+	protected boolean hasScored(char turn, int row, int column, int size, char redPlayer, char bluePlayer) {
+		Cell token = (turn=='R')? Cell.RED_PLAYER: Cell.BLUE_PLAYER;
+		boolean score = false;
+		
+		//RED'S TURN
+		if(token == Cell.RED_PLAYER) {
+			//RED IS S
+			if(redPlayer == 'S' && bluePlayer == 'O') {
+				return findScoreSRED(row, column, size);
+			}
+			//RED IS O
+			else if(redPlayer == 'O' && bluePlayer == 'S'){
+				return findScoreORED(row, column, size);
+			}
+		}
+		//BLUE'S TURN
+		if(token == Cell.BLUE_PLAYER) {
+			//RED IS S
+			if(redPlayer == 'S' && bluePlayer == 'O') {
+				return findScoreOBLUE(row, column, size);
+				
+			}
+			//RED IS O
+			else if(redPlayer == 'O' && bluePlayer == 'S'){
+				return findScoreSBLUE(row, column, size);
+			}
+		}
+		return score;
+	}
+	
+	public void setGameState(GameState currentGameState) {
+		this.currentGameState = currentGameState;
+	}
+	
+	public GameState getGameState() {
+		return currentGameState;
+	}
+	
+	//RED = S
+	protected boolean findScoreSRED(int row, int column, int size) {
+		boolean score = false;
+		//Row Score Right
+		if((column < size - 2)) {
+			if(grid[row][column + 1] == Cell.BLUE_PLAYER && (grid[row][column + 2] == Cell.RED_PLAYER)) {
+				return true;
+			}
+			//Down diagonal Right Score
+			if(row < size - 2) {
+				if(grid[row + 1][column + 1] == Cell.BLUE_PLAYER && (grid[row + 2][column + 2] == Cell.RED_PLAYER)) {
+					return true;
+				}
+			}
+			//Up diagonal Left
+			if(row > 1) {
+				if(grid[row - 1][column + 1] == Cell.BLUE_PLAYER && (grid[row - 2][column + 2] == Cell.RED_PLAYER)) {
+					return true;
+				}
+			}
+		}
+		//Row Score Left
+		if((column > 1)) {
+			if(grid[row][column - 1] == Cell.BLUE_PLAYER && (grid[row][column - 2] == Cell.RED_PLAYER)) {
+				return true;
+			}
+			//Down diagonal Left Score
+			if(row > 1) {
+				if(grid[row - 1][column - 1] == Cell.BLUE_PLAYER && (grid[row - 2][column - 2] == Cell.RED_PLAYER)) {
+					return true;
+				}
+			}
+			//Up diagonal Right
+			if(row < size - 2) {
+				if(grid[row + 1][column - 1] == Cell.BLUE_PLAYER && (grid[row + 2][column - 2] == Cell.RED_PLAYER)) {
+					return true;
+				}
+			}
+		}
+		//Column Score down
+		if((row < size - 2)) {
+			if(grid[row + 1][column] == Cell.BLUE_PLAYER && (grid[row + 2][column] == Cell.RED_PLAYER)) {
+				return true;
+			}
+		}
+		//Column Score up
+		if((row > 1)) {
+			if(grid[row - 1][column] == Cell.BLUE_PLAYER && (grid[row - 2][column] == Cell.RED_PLAYER)) {
+				return true;
+			}
+		}
+			
+
+		
+		return score;
+	}
+	
+	//BLUE == O
+	protected boolean findScoreOBLUE(int row, int column, int size) {
+		//O Player
+		boolean score = false;
+			//O Player Row Score
+			if((column == 0) || (column == size - 1)) {
+				score = false;
+			}
+			else{
+				if(grid[row][column - 1] == Cell.RED_PLAYER && (grid[row][column + 1] == Cell.RED_PLAYER)) {
+					return true;
+				}
+			}
+			//O Player Column Score
+			if((row == 0) || (row == size - 1) ) {
+				score = false;
+			}
+			else {
+				if(grid[row - 1][column] == Cell.RED_PLAYER && (grid[row + 1][column] == Cell.RED_PLAYER)) {
+					return true;
+				}
+			}
+			if((row == 0) || (row == size - 1) || (column == 0) || (column == size - 1)) {
+				score = false;
+			}
+			else {
+				//O Player Down Diagonal Score
+				if(grid[row - 1][column - 1] == Cell.RED_PLAYER && (grid[row + 1][column + 1] == Cell.RED_PLAYER)) {
+					return true;
+				}
+				//O Player Up Diagonal Score
+				if(grid[row + 1][column - 1] == Cell.RED_PLAYER && (grid[row - 1][column + 1] == Cell.RED_PLAYER)) {
+					return true;
+				}
+			}
+
+		return score;
+	}
+	
+	//BLUE == S
+	protected boolean findScoreSBLUE(int row, int column, int size) {
+		boolean score = false;
+		//Row Score Right
+		if((column < size - 2)) {
+			if(grid[row][column + 1] == Cell.RED_PLAYER && (grid[row][column + 2] == Cell.BLUE_PLAYER)) {
+				return true;
+			}
+			//Down diagonal Right Score
+			if(row < size - 2) {
+				if(grid[row + 1][column + 1] == Cell.RED_PLAYER && (grid[row + 2][column + 2] == Cell.BLUE_PLAYER)) {
+					return true;
+				}
+			}
+			//Up diagonal Left
+			if(row > 1) {
+				if(grid[row - 1][column + 1] == Cell.RED_PLAYER && (grid[row - 2][column + 2] == Cell.BLUE_PLAYER)) {
+					return true;
+				}
+			}
+		}
+		//Row Score Left
+		if((column > 1)) {
+			if(grid[row][column - 1] == Cell.RED_PLAYER && (grid[row][column - 2] == Cell.BLUE_PLAYER)) {
+				return true;
+			}
+			//Down diagonal Left Score
+			if(row > 1) {
+				if(grid[row - 1][column - 1] == Cell.RED_PLAYER && (grid[row - 2][column - 2] == Cell.BLUE_PLAYER)) {
+					return true;
+				}
+			}
+			//Up diagonal Right
+			if(row < size - 2) {
+				if(grid[row + 1][column - 1] == Cell.RED_PLAYER && (grid[row + 2][column - 2] == Cell.BLUE_PLAYER)) {
+					return true;
+				}
+			}
+		}
+		//Column Score down
+		if((row < size - 2)) {
+			if(grid[row + 1][column] == Cell.RED_PLAYER && (grid[row + 2][column] == Cell.BLUE_PLAYER)) {
+				return true;
+			}
+		}
+		//Column Score up
+		if((row > 1)) {
+			if(grid[row - 1][column] == Cell.RED_PLAYER && (grid[row - 2][column] == Cell.BLUE_PLAYER)) {
+				return true;
+			}
+		}
+		
+		return score;
+	}
+	
+	
+	//RED == O
+	protected boolean findScoreORED(int row, int column, int size) {
+		//O Player
+		boolean score = false;
+			//O Player Row Score
+			if((column == 0) || (column == size - 1)) {
+				score = false;
+			}
+			else{
+				if(grid[row][column - 1] == Cell.BLUE_PLAYER && (grid[row][column + 1] == Cell.BLUE_PLAYER)) {
+					return true;
+				}
+			}
+			//O Player Column Score
+			if((row == 0) || (row == size - 1) ) {
+				score = false;
+			}
+			else {
+				if(grid[row - 1][column] == Cell.BLUE_PLAYER && (grid[row + 1][column] == Cell.BLUE_PLAYER)) {
+					return true;
+				}
+			}
+			if((row == 0) || (row == size - 1) || (column == 0) || (column == size - 1)) {
+				score = false;
+			}
+			else {
+				//O Player Down Diagonal Score
+				if(grid[row - 1][column - 1] == Cell.BLUE_PLAYER && (grid[row + 1][column + 1] == Cell.BLUE_PLAYER)) {
+					return true;
+				}
+				//O Player Up Diagonal Score
+				if(grid[row + 1][column - 1] == Cell.BLUE_PLAYER && (grid[row - 1][column + 1] == Cell.BLUE_PLAYER)) {
+					return true;
+				}
+			}
+
+		return score;
 	}
 	
 }

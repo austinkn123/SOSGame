@@ -84,7 +84,7 @@ public class TestBoardGUI {
 		gui.setGamePanel(board, generalBoard, simpleBoard, size);
 		
 		try {
-			Thread.sleep(15000);
+			Thread.sleep(2000);
 			
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -134,8 +134,4 @@ public class TestBoardGUI {
 			e.printStackTrace();
 		}
 	}
-	
-
-
-
 }

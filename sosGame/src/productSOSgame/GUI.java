@@ -274,7 +274,7 @@ public class GUI extends JFrame {
 						}
 					setGamePanel( board, generalGame, simpleGame, size);
 					
-//							**Only works after one use**
+//					**Only works after one use**
 					validate();
 					sizeInput.setEditable(false);
 					enterButton.setEnabled(false);

@@ -109,8 +109,5 @@ public class Console {
 	    	System.out.print("|");
 	    	System.out.println();
 	    }
-		
 	}
-	
-
 }

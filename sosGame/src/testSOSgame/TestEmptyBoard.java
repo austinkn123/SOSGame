@@ -1,6 +1,6 @@
 package testSOSgame;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -23,7 +23,7 @@ public class TestEmptyBoard {
 		//Size of board is 5
 		board = new Board(); 
 		generalBoard =  new GeneralGameBoard();
-		simpleBoard = new SimpleGameBoard();
+		simpleBoard = new SimpleGameBoard(); 
 		board.setSizeBoard(size);
 		generalBoard.setSizeGeneral(size);
 		simpleBoard.setSizeBoard(size);
@@ -34,9 +34,9 @@ public class TestEmptyBoard {
 	}
 	
 	// acceptance criterion 1.1
-	//Test board with 5 and turn S after
+	//Test board and turn R after
 	@Test
-	public void testNewBoardTurn() {
+	public void testNewEmptyBoard() {
 		for (int row = 0; row<size; row++) {
 			for (int column = 0; column<size; column++) {
 				//"" means message
@@ -52,6 +52,8 @@ public class TestEmptyBoard {
 	public void testInvalidSize() {
 		//row, col, size
 		assertEquals("", board.getCell((size + 1), 0, size), null); 
+		assertEquals("", generalBoard.getCell((size + 1), 0, size), null); 
+		assertEquals("", simpleBoard.getCell((size + 1), 0, size), null); 
 	}
 	
 	//acceptance criterion 2.1 - 2.3 Test if the game mode and board size is valid
@@ -87,23 +89,4 @@ public class TestEmptyBoard {
 		}
 		assertEquals("", board.getTurn(), 'R'); 
 	}
-	
-	//acceptance criterion 3.3 Get cell of general board that is not valid
-	@Test
-	public void testInvalidSizeGeneral() {
-		//row, col, size
-		assertEquals("", generalBoard.getCell((size + 1), 0, size), null); 
-	}
-	
-	//acceptance criterion 3.4 Get cell of simple board that is not valid
-	@Test
-	public void testInvalidSizeSimple() {
-		//row, col, size
-		assertEquals("", simpleBoard.getCell((size + 1), 0, size), null); 
-	}
-	
-	
-	
-	
-	 
 }
