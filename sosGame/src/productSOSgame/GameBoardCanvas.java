@@ -27,7 +27,7 @@ public class GameBoardCanvas extends JPanel {
 	public static final int GRID_WIDHT_HALF = GRID_WIDTH / 2; 
 
 	public static final int CELL_PADDING = CELL_SIZE / 6;
-	public static int SYMBOL_SIZE = CELL_SIZE - CELL_PADDING * 2; 
+	public static int SYMBOL_SIZE = CELL_SIZE - CELL_PADDING * 2;
 //	public static final int CELL_PADDING = CELL_SIZE / 6;
 //	public static  int SYMBOL_SIZE = (CANVAS_WIDTH / size)  - CELL_PADDING * 2; 
 	public static final int SYMBOL_STROKE_WIDTH = 8; 
@@ -79,6 +79,7 @@ public class GameBoardCanvas extends JPanel {
 		modeString = board.getModeString();
 		playerKeyRed = board.getRedPlayerKey();
 		playerKeyBlue = board.getBluePlayerKey();
+		
 		System.out.println(size);
 		System.out.println(modeString);
 		System.out.println("RED PLAYER -- " + playerKeyRed);
@@ -110,7 +111,7 @@ public class GameBoardCanvas extends JPanel {
 					int rowSelected = e.getY() / CELL_SIZE;
 					int colSelected = e.getX() / CELL_SIZE;
 					makeMoveonBoard(generalGame, simpleGame, rowSelected, colSelected, pSize, playerKeyRed, playerKeyBlue, modeString);
-				repaint(); 
+//				repaint(); 
 			}
 		});
  
@@ -129,7 +130,7 @@ public class GameBoardCanvas extends JPanel {
 			}
 		}
 		
-//		repaint(); 
+		repaint(); 
 	}
 	
 	
@@ -163,6 +164,10 @@ public class GameBoardCanvas extends JPanel {
 			for (int col = 0; col < size; col++) {
 				int x1 = col * CELL_SIZE + CELL_PADDING ;
 				int y1 = row * CELL_SIZE + CELL_PADDING ;
+				
+//				g2d.setColor(Color.BLUE);
+//				g2d.drawLine(x1, y1, CELL_SIZE, CELL_SIZE);
+				
 				if(board.setMode(modeString, size) == 1) { //General Game
 					if (generalGame.getCell(row,col, size) == Cell.RED_PLAYER) { //Red Player
 						if(playerKeyRed == 'S') {
@@ -202,7 +207,6 @@ public class GameBoardCanvas extends JPanel {
 						}
 
 					} else if (simpleGame.getCell(row,col, size) == Cell.BLUE_PLAYER) { //Blue Player
-
 						if(playerKeyBlue == 'S') {
 							g2d.setColor(Color.BLUE);
 							g2d.setFont(new Font("TimesRoman", Font.PLAIN, CANVAS_WIDTH / size)); 

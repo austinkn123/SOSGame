@@ -85,7 +85,7 @@ public class GUI extends JFrame {
 		setTitle("SOS Game");
 		setContentPane(contentPane);
 		pack(); 
-		setVisible(true);  
+		setVisible(true);
 		
 	}
 	
@@ -310,7 +310,8 @@ public class GUI extends JFrame {
 		CELL_SIZE = CANVAS_WIDTH / pSize;
 		GameBoardCanvas gameBoardCanvas = new GameBoardCanvas(board, generalGame, simpleGame, pSize);
 		gameBoardCanvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT)); 
-		gameBoardCanvas.makeMoveonBoard(generalGame, simpleGame, 1, 1, pSize, playerKeyRed, playerKeyBlue, "GENERAL");
+//		gameBoardCanvas.makeMoveonBoard(generalGame, simpleGame, 1, 1, pSize, playerKeyRed, playerKeyBlue, "GENERAL");
+//		gameBoardCanvas.makeMoveonBoard(generalGame, simpleGame, 0, 0, pSize, playerKeyRed, playerKeyBlue, "GENERAL");
 		contentPane.add(gameBoardCanvas, BorderLayout.CENTER);
 		pack(); 
 	}

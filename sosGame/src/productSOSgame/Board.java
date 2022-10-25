@@ -101,7 +101,7 @@ public class Board {
 		}
 	}
 	
-	protected boolean isFilled() {
+	public boolean isFilled() {
 		for (int row = 0; row < size; ++row) {
 			for (int col = 0; col < size; ++col) {
 				if (grid[row][col] == Cell.EMPTY) {
