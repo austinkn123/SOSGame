@@ -13,7 +13,6 @@ import productSOSgame.SimpleGameBoard;
 import productSOSgame.GUI;
 
 public class TestBoardGUI { 
-	private JFrame frame = new JFrame();
 	public static JPanel contentPane = new JPanel();
 	private Board board;
 	private GeneralGameBoard generalBoard;
@@ -81,9 +80,9 @@ public class TestBoardGUI {
 		board.setModeString("GENERAL");
 		generalBoard.setSizeGeneral(size);
 		System.out.println("GENERAL BOARD");
-		generalBoard.makeMove(0, 0, size);
-		generalBoard.makeMove(1, 1, size);	
-		generalBoard.makeMove(1, 4, size);	
+		generalBoard.makeMoveInGeneralMode(0, 0, size, 'S', 'O'); //RED is S
+		generalBoard.makeMoveInGeneralMode(1, 1, size, 'S', 'O'); //BLUE is O
+		generalBoard.makeMoveInGeneralMode(1, 4, size, 'S', 'O'); //RED is S
 		System.out.println("S makes Move");
 		System.out.println(generalBoard.getCell(0, 0, size));
 		System.out.println("O makes Move");
@@ -103,10 +102,9 @@ public class TestBoardGUI {
 	public void testNonEmptyBoardSimple() {
 		board.setModeString("SIMPLE");
 		simpleBoard.setSizeBoard(size);
-		System.out.println("SIMPLE BOARD");
-		simpleBoard.makeMove(0, 0, size);
-		simpleBoard.makeMove(1, 1, size);	
-		simpleBoard.makeMove(1, 4, size);	
+		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'O', 'S'); //RED is O
+		simpleBoard.makeMoveInSimpleMode(1, 1, size, 'O', 'S'); //BLUE is S
+		simpleBoard.makeMoveInSimpleMode(1, 4, size, 'O', 'S'); //RED is O
 		System.out.println("S makes Move");
 		System.out.println(simpleBoard.getCell(0, 0, size));
 		System.out.println("O makes Move");
