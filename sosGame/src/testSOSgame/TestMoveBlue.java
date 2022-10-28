@@ -28,8 +28,8 @@ public class TestMoveBlue {
 		generalBoardPlayerO = new GeneralGameBoard();
 		simpleBoard = new SimpleGameBoard();
 		board.setSizeBoard(size);
-		generalBoardPlayerS.setSizeGeneral(size);
-		generalBoardPlayerO.setSizeGeneral(size);
+		generalBoardPlayerS.setSizeBoard(size);
+		generalBoardPlayerO.setSizeBoard(size);
 		simpleBoard.setSizeBoard(size);
 		simpleBoard.makeMoveInSimpleMode(1, 1, size, 'S', 'O'); //RED is S
 		generalBoardPlayerO.makeMoveInGeneralMode(1, 1, size, 'S', 'O'); //RED is S

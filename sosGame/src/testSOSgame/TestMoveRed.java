@@ -26,7 +26,7 @@ public class TestMoveRed {
 		generalBoard = new GeneralGameBoard();
 		simpleBoard = new SimpleGameBoard();
 		board.setSizeBoard(size);
-		generalBoard.setSizeGeneral(size);
+		generalBoard.setSizeBoard(size);
 		simpleBoard.setSizeBoard(size);
 	}
 

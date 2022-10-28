@@ -80,7 +80,6 @@ public class GUI extends JFrame {
 		setContentPane(new GeneralGameBoard(), new SimpleGameBoard());
 
 		board.setSizeBoard(size);
-		System.out.println(size);
 		
 		setTitle("SOS Game");
 		setContentPane(contentPane);
@@ -264,7 +263,7 @@ public class GUI extends JFrame {
 					board.setBluePlayerKey(playerKeyBlue);
 					if(board.setMode(modeString, size) != -1) {
 						if(board.setMode(modeString, size) == 1) {
-							generalGame.setSizeGeneral(size);
+							generalGame.setSizeBoard(size);
 						}
 						else if (board.setMode(modeString, size) == 2) {
 							simpleGame.setSizeBoard(size);

@@ -2,7 +2,9 @@ package productSOSgame;
 
 
 public class Board {
-	public enum Cell {EMPTY, RED_PLAYER, BLUE_PLAYER};
+	public enum Cell {EMPTY, RED_PLAYER, BLUE_PLAYER, HAS_SCORED};
+	public enum scoredCell {NOT_SCORED, S_ROW_LEFT, S_ROW_RIGHT, S_COL_UP, S_COL_DOWN, S_LEFT_DIAG_DOWN, 
+		S_LEFT_DIAG_UP, S_RIGHT_DIAG_DOWN, S_RIGHT_DIAG_UP, O_ROW, O_COL, O_DOWN_DIAG, O_UP_DIAG};
 	public enum GameState {PLAYING, DRAW, RED_WINS, BLUE_WINS};
 	public GameState currentGameState;
 	protected char turn = 'R';
@@ -11,6 +13,7 @@ public class Board {
 	protected char redPlayerKey = 'S';
 	protected char bluePlayerKey = 'S';
 	protected Cell[][] grid;
+	protected scoredCell[][] scoredGrid;
 	
 	public void setSize(int newSize) {
 	    this.size = newSize;
@@ -48,6 +51,10 @@ public class Board {
 		setSize(newSize);
 	    //CAREFUL, MAKES NEW BOARD OF ZEROS
 	    grid = new Cell[newSize][newSize];
+	    
+	    //TESTING
+	    scoredGrid = new scoredCell[newSize][newSize];
+	    
 	    initBoard();
 	 }
 	
@@ -73,6 +80,9 @@ public class Board {
 		for (int row = 0; row < size; row++) {
 			for (int column = 0; column < size; column++) {
 				grid[row][column] = Cell.EMPTY;
+				
+				//TESTING
+				scoredGrid[row][column] = scoredCell.NOT_SCORED;
 			}
 		}
 		turn = 'R';
@@ -81,9 +91,18 @@ public class Board {
 
 
 	public Cell getCell(int row, int column, int size) {
-//		return grid[row][column];
 		if((row >= 0) && (column >= 0) && (row < size) && (column < size)) {
 			return grid[row][column];
+		}
+		else {
+			return null;
+		}
+	}
+	
+	//TESTING
+	public scoredCell getScoredCell(int row, int column, int size) {
+		if((row >= 0) && (column >= 0) && (row < size) && (column < size)) {
+			return scoredGrid[row][column];
 		}
 		else {
 			return null;
@@ -153,57 +172,79 @@ public class Board {
 	//RED = S
 	protected boolean findScoreSRED(int row, int column, int size) {
 		boolean score = false;
-		//Row Score Right
 		if((column < size - 2)) {
+			//Row Score Right
 			if(grid[row][column + 1] == Cell.BLUE_PLAYER && (grid[row][column + 2] == Cell.RED_PLAYER)) {
+				
+				scoredGrid[row][column] = scoredCell.S_ROW_RIGHT;
+				
 				return true;
 			}
-			//Down diagonal Right Score
+			//Right side Diagonal Down Score
 			if(row < size - 2) {
 				if(grid[row + 1][column + 1] == Cell.BLUE_PLAYER && (grid[row + 2][column + 2] == Cell.RED_PLAYER)) {
+					
+					scoredGrid[row][column] = scoredCell.S_RIGHT_DIAG_DOWN;
+					
 					return true;
 				}
 			}
-			//Up diagonal Left
+			//Right side Diagonal Up Score
 			if(row > 1) {
 				if(grid[row - 1][column + 1] == Cell.BLUE_PLAYER && (grid[row - 2][column + 2] == Cell.RED_PLAYER)) {
+					
+					scoredGrid[row][column] = scoredCell.S_RIGHT_DIAG_UP;
+					
 					return true;
 				}
 			}
 		}
-		//Row Score Left
 		if((column > 1)) {
+			//Row Score Left
 			if(grid[row][column - 1] == Cell.BLUE_PLAYER && (grid[row][column - 2] == Cell.RED_PLAYER)) {
+				
+				scoredGrid[row][column] = scoredCell.S_ROW_LEFT;
+				
 				return true;
 			}
-			//Down diagonal Left Score
+			//Left side Diagonal Down Score
 			if(row > 1) {
 				if(grid[row - 1][column - 1] == Cell.BLUE_PLAYER && (grid[row - 2][column - 2] == Cell.RED_PLAYER)) {
+					
+					scoredGrid[row][column] = scoredCell.S_LEFT_DIAG_DOWN;
+					
 					return true;
 				}
 			}
-			//Up diagonal Right
+			//Left side Diagonal Up Score
 			if(row < size - 2) {
 				if(grid[row + 1][column - 1] == Cell.BLUE_PLAYER && (grid[row + 2][column - 2] == Cell.RED_PLAYER)) {
+					
+					scoredGrid[row][column] = scoredCell.S_LEFT_DIAG_UP;
+					
 					return true;
 				}
 			}
 		}
-		//Column Score down
 		if((row < size - 2)) {
+			//Column Score down
 			if(grid[row + 1][column] == Cell.BLUE_PLAYER && (grid[row + 2][column] == Cell.RED_PLAYER)) {
+				
+				scoredGrid[row][column] = scoredCell.S_COL_DOWN;
+				
 				return true;
 			}
 		}
-		//Column Score up
 		if((row > 1)) {
+			//Column Score up
 			if(grid[row - 1][column] == Cell.BLUE_PLAYER && (grid[row - 2][column] == Cell.RED_PLAYER)) {
+				
+				scoredGrid[row][column] = scoredCell.S_COL_UP;
+				
 				return true;
 			}
 		}
 			
-
-		
 		return score;
 	}
 	
@@ -211,21 +252,29 @@ public class Board {
 	protected boolean findScoreOBLUE(int row, int column, int size) {
 		//O Player
 		boolean score = false;
-			//O Player Row Score
+		
 			if((column == 0) || (column == size - 1)) {
 				score = false;
 			}
 			else{
+				//O Player Row Score
 				if(grid[row][column - 1] == Cell.RED_PLAYER && (grid[row][column + 1] == Cell.RED_PLAYER)) {
+					
+					scoredGrid[row][column] = scoredCell.O_ROW;
+					
 					return true;
 				}
 			}
-			//O Player Column Score
+			
 			if((row == 0) || (row == size - 1) ) {
 				score = false;
 			}
 			else {
+				//O Player Column Score
 				if(grid[row - 1][column] == Cell.RED_PLAYER && (grid[row + 1][column] == Cell.RED_PLAYER)) {
+					
+					scoredGrid[row][column] = scoredCell.O_COL;
+					
 					return true;
 				}
 			}
@@ -235,10 +284,16 @@ public class Board {
 			else {
 				//O Player Down Diagonal Score
 				if(grid[row - 1][column - 1] == Cell.RED_PLAYER && (grid[row + 1][column + 1] == Cell.RED_PLAYER)) {
+					
+					scoredGrid[row][column] = scoredCell.O_DOWN_DIAG;
+					
 					return true;
 				}
 				//O Player Up Diagonal Score
 				if(grid[row + 1][column - 1] == Cell.RED_PLAYER && (grid[row - 1][column + 1] == Cell.RED_PLAYER)) {
+					
+					scoredGrid[row][column] = scoredCell.O_UP_DIAG;
+					
 					return true;
 				}
 			}
@@ -249,38 +304,58 @@ public class Board {
 	//BLUE == S
 	protected boolean findScoreSBLUE(int row, int column, int size) {
 		boolean score = false;
-		//Row Score Right
+		
 		if((column < size - 2)) {
+			//Row Score Right
 			if(grid[row][column + 1] == Cell.RED_PLAYER && (grid[row][column + 2] == Cell.BLUE_PLAYER)) {
+				
+				scoredGrid[row][column] = scoredCell.S_ROW_RIGHT;
+				
 				return true;
 			}
-			//Down diagonal Right Score
+			//Right side Diagonal Down Score
 			if(row < size - 2) {
 				if(grid[row + 1][column + 1] == Cell.RED_PLAYER && (grid[row + 2][column + 2] == Cell.BLUE_PLAYER)) {
+					
+					scoredGrid[row][column] = scoredCell.S_RIGHT_DIAG_DOWN;
+					
 					return true;
 				}
 			}
-			//Up diagonal Left
+			//Right side Diagonal Up Score
 			if(row > 1) {
 				if(grid[row - 1][column + 1] == Cell.RED_PLAYER && (grid[row - 2][column + 2] == Cell.BLUE_PLAYER)) {
+					
+					scoredGrid[row][column] = scoredCell.S_RIGHT_DIAG_UP;
+					
 					return true;
 				}
 			}
 		}
-		//Row Score Left
+		
 		if((column > 1)) {
+			//Row Score Left
 			if(grid[row][column - 1] == Cell.RED_PLAYER && (grid[row][column - 2] == Cell.BLUE_PLAYER)) {
+				
+				scoredGrid[row][column] = scoredCell.S_ROW_LEFT;
+				
 				return true;
 			}
-			//Down diagonal Left Score
+			//Left side Diagonal Down Score
 			if(row > 1) {
 				if(grid[row - 1][column - 1] == Cell.RED_PLAYER && (grid[row - 2][column - 2] == Cell.BLUE_PLAYER)) {
+					
+					scoredGrid[row][column] = scoredCell.S_LEFT_DIAG_DOWN;
+					
 					return true;
 				}
 			}
-			//Up diagonal Right
+			//Left side Diagonal Up Score
 			if(row < size - 2) {
 				if(grid[row + 1][column - 1] == Cell.RED_PLAYER && (grid[row + 2][column - 2] == Cell.BLUE_PLAYER)) {
+					
+					scoredGrid[row][column] = scoredCell.S_LEFT_DIAG_UP;
+					
 					return true;
 				}
 			}
@@ -288,12 +363,18 @@ public class Board {
 		//Column Score down
 		if((row < size - 2)) {
 			if(grid[row + 1][column] == Cell.RED_PLAYER && (grid[row + 2][column] == Cell.BLUE_PLAYER)) {
+				
+				scoredGrid[row][column] = scoredCell.S_COL_DOWN;
+				
 				return true;
 			}
 		}
 		//Column Score up
 		if((row > 1)) {
 			if(grid[row - 1][column] == Cell.RED_PLAYER && (grid[row - 2][column] == Cell.BLUE_PLAYER)) {
+				
+				scoredGrid[row][column] = scoredCell.S_COL_UP;
+				
 				return true;
 			}
 		}
@@ -306,21 +387,28 @@ public class Board {
 	protected boolean findScoreORED(int row, int column, int size) {
 		//O Player
 		boolean score = false;
-			//O Player Row Score
+			
 			if((column == 0) || (column == size - 1)) {
 				score = false;
 			}
 			else{
+				//O Player Row Score
 				if(grid[row][column - 1] == Cell.BLUE_PLAYER && (grid[row][column + 1] == Cell.BLUE_PLAYER)) {
+					
+					scoredGrid[row][column] = scoredCell.O_ROW;
+					
 					return true;
 				}
 			}
-			//O Player Column Score
 			if((row == 0) || (row == size - 1) ) {
 				score = false;
 			}
 			else {
+				//O Player Column Score
 				if(grid[row - 1][column] == Cell.BLUE_PLAYER && (grid[row + 1][column] == Cell.BLUE_PLAYER)) {
+					
+					scoredGrid[row][column] = scoredCell.O_COL;
+					
 					return true;
 				}
 			}
@@ -330,10 +418,16 @@ public class Board {
 			else {
 				//O Player Down Diagonal Score
 				if(grid[row - 1][column - 1] == Cell.BLUE_PLAYER && (grid[row + 1][column + 1] == Cell.BLUE_PLAYER)) {
+					
+					scoredGrid[row][column] = scoredCell.O_DOWN_DIAG;
+					
 					return true;
 				}
 				//O Player Up Diagonal Score
 				if(grid[row + 1][column - 1] == Cell.BLUE_PLAYER && (grid[row - 1][column + 1] == Cell.BLUE_PLAYER)) {
+					
+					scoredGrid[row][column] = scoredCell.O_UP_DIAG;
+					
 					return true;
 				}
 			}

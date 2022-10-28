@@ -1,6 +1,5 @@
 package testSOSgame;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.junit.After;
@@ -47,7 +46,7 @@ public class TestBoardGUI {
 	
 	@Test
 	public void testEmptyGeneralBoard() {
-		generalBoard.setSizeGeneral(size);
+		generalBoard.setSizeBoard(size);
 		GUI gui = new GUI(board);
 		gui.setGamePanel(board, generalBoard, simpleBoard, size);
 		
@@ -78,7 +77,7 @@ public class TestBoardGUI {
 	@Test
 	public void testNonEmptyBoardGeneral() {
 		board.setModeString("GENERAL");
-		generalBoard.setSizeGeneral(size);
+		generalBoard.setSizeBoard(size);
 		System.out.println("GENERAL BOARD");
 		generalBoard.makeMoveInGeneralMode(0, 0, size, 'S', 'O'); //RED is S
 		generalBoard.makeMoveInGeneralMode(1, 1, size, 'S', 'O'); //BLUE is O
@@ -102,6 +101,8 @@ public class TestBoardGUI {
 	public void testNonEmptyBoardSimple() {
 		board.setModeString("SIMPLE");
 		simpleBoard.setSizeBoard(size);
+		board.setRedPlayerKey('O');
+		board.setBluePlayerKey('S');
 		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'O', 'S'); //RED is O
 		simpleBoard.makeMoveInSimpleMode(1, 1, size, 'O', 'S'); //BLUE is S
 		simpleBoard.makeMoveInSimpleMode(1, 4, size, 'O', 'S'); //RED is O

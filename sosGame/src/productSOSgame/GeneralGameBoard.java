@@ -22,26 +22,6 @@ public class GeneralGameBoard extends Board {
 	    return pointBlue;
 	 }
 	
-	public void setSizeGeneral(int newSize) {
-	    this.size = newSize;
-	    //CAREFUL, MAKES NEW BOARD OF ZEROS
-	    grid = new Cell[newSize][newSize];
-	    initBoardGeneral();
-	 }
-	
-	public void initBoardGeneral() {
-		for (int row = 0; row < size; row++) {
-			for (int column = 0; column < size; column++) {
-				grid[row][column] = Cell.EMPTY;
-			}
-		}
-		currentGameState = GameState.PLAYING;
-		turn = 'R';
-	} 
-	
-	
-	//!!! FOR NEXT SPRINT, I WORKED AHEAD A LITTLE
-	
 	public void makeMoveInGeneralMode(int row, int column, int boardSize, char redPlayer, char bluePlayer) {
 		if ((row >= 0) && (row < boardSize) && (column >= 0) && (column < boardSize) && (grid[row][column] == Cell.EMPTY)) {
 			grid[row][column] = (turn == 'R')? Cell.RED_PLAYER : Cell.BLUE_PLAYER; 

@@ -3,24 +3,21 @@ package productSOSgame;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Line2D;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
-
 import productSOSgame.Board.Cell;
 import productSOSgame.GeneralGameBoard.GameStateGeneral;
-import productSOSgame.Board.GameState;;
+import productSOSgame.Board.GameState;
+import productSOSgame.Board.scoredCell;;
 
+@SuppressWarnings("serial")
 public class GameBoardCanvas extends JPanel {
 	public static int CELL_SIZE = 100; 
 	public static final int GRID_WIDTH = 8;
@@ -80,10 +77,7 @@ public class GameBoardCanvas extends JPanel {
 		playerKeyRed = board.getRedPlayerKey();
 		playerKeyBlue = board.getBluePlayerKey();
 		
-		System.out.println(size);
-		System.out.println(modeString);
-		System.out.println("RED PLAYER -- " + playerKeyRed);
-		System.out.println("BLUE PLAYER -- " + playerKeyBlue);
+		gameStatusBar.setFont(new Font("Calibri", Font.BOLD, 25));
 		
 		GUI.contentPane.add(redPlayerPanel, BorderLayout.WEST);
 		GUI.contentPane.add(bluePlayerPanel, BorderLayout.EAST);
@@ -111,7 +105,6 @@ public class GameBoardCanvas extends JPanel {
 					int rowSelected = e.getY() / CELL_SIZE;
 					int colSelected = e.getX() / CELL_SIZE;
 					makeMoveonBoard(generalGame, simpleGame, rowSelected, colSelected, pSize, playerKeyRed, playerKeyBlue, modeString);
-//				repaint(); 
 			}
 		});
  
@@ -129,19 +122,18 @@ public class GameBoardCanvas extends JPanel {
 				simpleMode.makeMoveInSimpleMode(row, col, pSize, redPlayer, bluePlayer);
 			}
 		}
-		
 		repaint(); 
 	}
 	
 	
-
 	@Override
-	public void paintComponent(Graphics g) { 
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);   
 		setBackground(Color.WHITE);
 		drawGridLines(g);
 		drawBoard(g);
 		playerStatus();
+		checkScore();
 	}
 	
 	private void drawGridLines(Graphics g){
@@ -157,7 +149,6 @@ public class GameBoardCanvas extends JPanel {
 	
 	public void drawBoard(Graphics g){
 		Graphics2D g2d = (Graphics2D)g;
-//		Image i = new ImageIcon("redS").getImage(); 
 		g2d.setStroke(new BasicStroke(SYMBOL_STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)); 
 		SYMBOL_SIZE = (CANVAS_WIDTH / size)  - CELL_PADDING * 2;
 		for (int row = 0; row < size; row++) {
@@ -165,8 +156,8 @@ public class GameBoardCanvas extends JPanel {
 				int x1 = col * CELL_SIZE + CELL_PADDING ;
 				int y1 = row * CELL_SIZE + CELL_PADDING ;
 				
-//				g2d.setColor(Color.BLUE);
-//				g2d.drawLine(x1, y1, CELL_SIZE, CELL_SIZE);
+				int x2 = (col + 1) * CELL_SIZE - CELL_PADDING;
+				int y2 = (row + 1) * CELL_SIZE - CELL_PADDING;
 				
 				if(board.setMode(modeString, size) == 1) { //General Game
 					if (generalGame.getCell(row,col, size) == Cell.RED_PLAYER) { //Red Player
@@ -180,7 +171,6 @@ public class GameBoardCanvas extends JPanel {
 							g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
 						}
 						
-						checkScore();
 					} else if (generalGame.getCell(row,col, size) == Cell.BLUE_PLAYER) { //Blue Player
 						if(playerKeyBlue == 'S') {
 							g2d.setColor(Color.BLUE);
@@ -191,8 +181,9 @@ public class GameBoardCanvas extends JPanel {
 							g2d.setColor(Color.BLUE);
 							g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
 						}
-						checkScore();
 					}
+					drawScoreLines(g2d, row, col, x1, y1, x2, y2);
+					
 				}
 				else if(board.setMode(modeString, size) == 2) { //Simple Game
 					if (simpleGame.getCell(row,col, size) == Cell.RED_PLAYER) { //Red Player
@@ -216,23 +207,105 @@ public class GameBoardCanvas extends JPanel {
 							g2d.setColor(Color.BLUE);
 							g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
 						}
-						
-
 					}
 				}
+				drawScoreLines(g2d, row, col, x1, y1, x2, y2);
 				
+			}
+		}
+	}
+	
+	private void drawScoreLines(Graphics g,  int row, int col, int x1, int y1, int x2, int y2){
+		Graphics2D g2d = (Graphics2D)g;
+		if(board.setMode(modeString, size) == 1) {
+			//S CASES
+			if(generalGame.getScoredCell(row, col, size) == scoredCell.S_LEFT_DIAG_DOWN) {
+				g2d.drawLine(x1 - (CELL_SIZE * 2), y1 - (CELL_SIZE * 2), x2, y2);
+			}
+			if(generalGame.getScoredCell(row, col, size) == scoredCell.S_RIGHT_DIAG_DOWN) {
+				g2d.drawLine(x2 + (CELL_SIZE * 2), y2 + (CELL_SIZE * 2), x1, y1);
+			}
+			if(generalGame.getScoredCell(row, col, size) == scoredCell.S_LEFT_DIAG_UP) {
+				g2d.drawLine(x2, y1, x1 - (CELL_SIZE * 2), y2 + (CELL_SIZE * 2));
+			}
+			if(generalGame.getScoredCell(row, col, size) == scoredCell.S_RIGHT_DIAG_UP) {
+				g2d.drawLine(x1, y2, x2 + (CELL_SIZE * 2), y1 - (CELL_SIZE * 2));
+			}
+			if(generalGame.getScoredCell(row, col, size) == scoredCell.S_ROW_LEFT) {
+				g2d.drawLine(x1 - (CELL_SIZE * 2), y1 + SYMBOL_SIZE / 2 , x2, y2 - SYMBOL_SIZE / 2);
+			}
+			if(generalGame.getScoredCell(row, col, size) == scoredCell.S_ROW_RIGHT) {
+				g2d.drawLine(x1, y1 + SYMBOL_SIZE / 2, x2 + (CELL_SIZE * 2), y2 - SYMBOL_SIZE / 2);
+			}
+			if(generalGame.getScoredCell(row, col, size) == scoredCell.S_COL_UP) {
+				g2d.drawLine(x1 + SYMBOL_SIZE / 2, y1 - (CELL_SIZE * 2), x2 - SYMBOL_SIZE / 2, y2);
+			}
+			if(generalGame.getScoredCell(row, col, size) == scoredCell.S_COL_DOWN) {
+				g2d.drawLine(x1 + SYMBOL_SIZE / 2, y1, x2 - SYMBOL_SIZE / 2, y2 + (CELL_SIZE * 2));
+			}
+			//O CASES
+			if(generalGame.getScoredCell(row, col, size) == scoredCell.O_ROW) {
+				g2d.drawLine(x1 - CELL_SIZE , y1 + SYMBOL_SIZE / 2, x2 + CELL_SIZE, y2 - SYMBOL_SIZE / 2);
+			}
+			if(generalGame.getScoredCell(row, col, size) == scoredCell.O_COL) {
+				g2d.drawLine(x1 + SYMBOL_SIZE / 2, y1 - CELL_SIZE, x2 - SYMBOL_SIZE / 2, y2 + CELL_SIZE);
+			}
+			if(generalGame.getScoredCell(row, col, size) == scoredCell.O_DOWN_DIAG) {
+				g2d.drawLine(x1 - CELL_SIZE, y1 - CELL_SIZE, x2 + CELL_SIZE, y2 + CELL_SIZE);
+			}
+			if(generalGame.getScoredCell(row, col, size) == scoredCell.O_UP_DIAG) {
+				g2d.drawLine(x2 + CELL_SIZE, y1 - CELL_SIZE, x1 - CELL_SIZE, y2 + CELL_SIZE);
+			}
+		}
+		
+		if(board.setMode(modeString, size) == 2) {
+			//S CASES
+			if(simpleGame.getScoredCell(row, col, size) == scoredCell.S_LEFT_DIAG_DOWN) {
+				g2d.drawLine(x1 - (CELL_SIZE * 2), y1 - (CELL_SIZE * 2), x2, y2);
+			}
+			if(simpleGame.getScoredCell(row, col, size) == scoredCell.S_RIGHT_DIAG_DOWN) {
+				g2d.drawLine(x2 + (CELL_SIZE * 2), y2 + (CELL_SIZE * 2), x1, y1);
+			}
+			if(simpleGame.getScoredCell(row, col, size) == scoredCell.S_LEFT_DIAG_UP) {
+				g2d.drawLine(x2, y1, x1 - (CELL_SIZE * 2), y2 + (CELL_SIZE * 2));
+			}
+			if(simpleGame.getScoredCell(row, col, size) == scoredCell.S_RIGHT_DIAG_UP) {
+				g2d.drawLine(x1, y2, x2 + (CELL_SIZE * 2), y1 - (CELL_SIZE * 2));
+			}
+			if(simpleGame.getScoredCell(row, col, size) == scoredCell.S_ROW_LEFT) {
+				g2d.drawLine(x1 - (CELL_SIZE * 2), y1 + SYMBOL_SIZE / 2 , x2, y2 - SYMBOL_SIZE / 2);
+			}
+			if(simpleGame.getScoredCell(row, col, size) == scoredCell.S_ROW_RIGHT) {
+				g2d.drawLine(x1, y1 + SYMBOL_SIZE / 2, x2 + (CELL_SIZE * 2), y2 - SYMBOL_SIZE / 2);
+			}
+			if(simpleGame.getScoredCell(row, col, size) == scoredCell.S_COL_UP) {
+				g2d.drawLine(x1 + SYMBOL_SIZE / 2, y1 - (CELL_SIZE * 2), x2 - SYMBOL_SIZE / 2, y2);
+			}
+			if(simpleGame.getScoredCell(row, col, size) == scoredCell.S_COL_DOWN) {
+				g2d.drawLine(x1 + SYMBOL_SIZE / 2, y1, x2 - SYMBOL_SIZE / 2, y2 + (CELL_SIZE * 2));
+			}
+			//O CASES
+			if(simpleGame.getScoredCell(row, col, size) == scoredCell.O_ROW) {
+				g2d.drawLine(x1 - CELL_SIZE , y1 + SYMBOL_SIZE / 2, x2 + CELL_SIZE, y2 - SYMBOL_SIZE / 2);
+			}
+			if(simpleGame.getScoredCell(row, col, size) == scoredCell.O_COL) {
+				g2d.drawLine(x1 + SYMBOL_SIZE / 2, y1 - CELL_SIZE, x2 - SYMBOL_SIZE / 2, y2 + CELL_SIZE);
+			}
+			if(simpleGame.getScoredCell(row, col, size) == scoredCell.O_DOWN_DIAG) {
+				g2d.drawLine(x1 - CELL_SIZE, y1 - CELL_SIZE, x2 + CELL_SIZE, y2 + CELL_SIZE);
+			}
+			if(simpleGame.getScoredCell(row, col, size) == scoredCell.O_UP_DIAG) {
+				g2d.drawLine(x2 + CELL_SIZE, y1 - CELL_SIZE, x1 - CELL_SIZE, y2 + CELL_SIZE);
 			}
 		}
 	}
 	
 	private void checkScore() {
 		if(generalGame.getGameScore() == GameStateGeneral.RED_SCORES ) {
-//			System.out.println(generalGame.getPointRed());
 			redPlayerPoints.setText(String.valueOf(generalGame.getPointRed()));
 			gameStatusBar.setText("Red Scores");
 		}
 		if(generalGame.getGameScore() == GameStateGeneral.BLUE_SCORES) {
-//			System.out.println(generalGame.getPointBlue());
 			bluePlayerPoints.setText(String.valueOf(generalGame.getPointBlue()));
 			gameStatusBar.setText("Blue Scores");
 		}
@@ -242,18 +315,18 @@ public class GameBoardCanvas extends JPanel {
 		if(board.setMode(modeString, size) == 1) {
 			if (generalGame.getTurn() == 'R') {
 				redPlayerLabel.setForeground(Color.RED);
-				bluePlayerLabel.setForeground(Color.BLACK);
 				redPlayerPoints.setForeground(Color.RED);
-				bluePlayerPoints.setForeground(Color.BLACK);
 				gameStatusBar.setForeground(Color.RED);
+				bluePlayerLabel.setForeground(Color.BLACK);
+				bluePlayerPoints.setForeground(Color.BLACK);
 				gameStatusBar.setText("Red's Turn");
 			} 
 			else{
-				redPlayerLabel.setForeground(Color.BLACK);
 				bluePlayerLabel.setForeground(Color.BLUE);
-				redPlayerPoints.setForeground(Color.BLACK);
 				bluePlayerPoints.setForeground(Color.BLUE);
 				gameStatusBar.setForeground(Color.BLUE);
+				redPlayerLabel.setForeground(Color.BLACK);
+				redPlayerPoints.setForeground(Color.BLACK);
 				gameStatusBar.setText("Blue's Turn");
 			}
 			if (generalGame.getGameState() == GameState.DRAW) {
@@ -273,14 +346,14 @@ public class GameBoardCanvas extends JPanel {
 		else if (board.setMode(modeString, size) == 2){
 			if (simpleGame.getTurn() == 'R') {
 				redPlayerLabel.setForeground(Color.RED);
-				bluePlayerLabel.setForeground(Color.BLACK);
 				gameStatusBar.setForeground(Color.RED);
+				bluePlayerLabel.setForeground(Color.BLACK);
 				gameStatusBar.setText("Red's Turn");
 			} 
 			else {
-				redPlayerLabel.setForeground(Color.BLACK);
-				bluePlayerLabel.setForeground(Color.BLUE);
 				gameStatusBar.setForeground(Color.BLUE);
+				bluePlayerLabel.setForeground(Color.BLUE);
+				redPlayerLabel.setForeground(Color.BLACK);
 				gameStatusBar.setText("Blue's Turn");
 			}
 			if (simpleGame.getGameState() == GameState.DRAW) {
