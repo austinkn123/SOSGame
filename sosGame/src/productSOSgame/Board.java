@@ -14,38 +14,28 @@ public class Board {
 	protected char bluePlayerKey = 'S';
 	protected Cell[][] grid;
 	protected scoredCell[][] scoredGrid;
+	private int pointRed = 0;
+	private int pointBlue = 0;
 	
-	public void setSize(int newSize) {
-	    this.size = newSize;
-	 }
+	public void addPointRed() {pointRed += 1;}
+	public void resetPointRed() {pointRed = 0;}
+	public int getPointRed() {return pointRed;}
+
+	public void addPointBlue() {pointBlue += 1;}
+	public void resetPointBlue() {pointBlue = 0;}
+	public int getPointBlue() {return pointBlue;}
 	
-	public int getSize() {
-	    return size;
-	 }
+	public void setSize(int newSize) {this.size = newSize;}
+	public int getSize() {return size;}
 	
-	public void setModeString(String mode) {
-	    this.modeString = mode;
-	 }
+	public void setModeString(String mode) {this.modeString = mode;}
+	public String getModeString() {return modeString;}
 	
-	public String getModeString() {
-	    return modeString;
-	 }
+	public void setRedPlayerKey(char redPlayerKey) {this.redPlayerKey = redPlayerKey;}
+	public char getRedPlayerKey() {return redPlayerKey;}
 	
-	public void setRedPlayerKey(char redPlayerKey) {
-	    this.redPlayerKey = redPlayerKey;
-	 }
-	
-	public char getRedPlayerKey() {
-	    return redPlayerKey;
-	 }
-	
-	public void setBluePlayerKey(char bluePlayerKey) {
-	    this.bluePlayerKey = bluePlayerKey;
-	 }
-	
-	public char getBluePlayerKey() {
-	    return bluePlayerKey;
-	 }
+	public void setBluePlayerKey(char bluePlayerKey) {this.bluePlayerKey = bluePlayerKey;}
+	public char getBluePlayerKey() {return bluePlayerKey;}
 	
 	public void setSizeBoard(int newSize) { 
 		setSize(newSize);
@@ -170,213 +160,391 @@ public class Board {
 	}
 	
 	//RED = S
-	protected boolean findScoreSRED(int row, int column, int size) {
+	public boolean rowRightSideRedS(int row, int column, int size) {
 		boolean score = false;
 		if((column < size - 2)) {
-			//Row Score Right
 			if(grid[row][column + 1] == Cell.BLUE_PLAYER && (grid[row][column + 2] == Cell.RED_PLAYER)) {
-				
-				scoredGrid[row][column] = scoredCell.S_ROW_RIGHT;
-				
 				return true;
 			}
-			//Right side Diagonal Down Score
+		}
+		return score;
+	}
+	
+	public boolean rowLeftSideRedS(int row, int column, int size) {
+		boolean score = false;
+		if((column > 1)) {
+			if(grid[row][column - 1] == Cell.BLUE_PLAYER && (grid[row][column - 2] == Cell.RED_PLAYER)) {
+				return true;
+			}
+		}
+		return score;
+	}
+	
+	public boolean colDownRedS(int row, int column, int size) {
+		boolean score = false;
+		if((row < size - 2)) {
+			if(grid[row + 1][column] == Cell.BLUE_PLAYER && (grid[row + 2][column] == Cell.RED_PLAYER)) {
+				return true;
+			}
+		}
+		return score;
+	}
+	
+	public boolean colUpRedS(int row, int column, int size) {
+		boolean score = false;
+		if((row > 1)) {
+			if(grid[row - 1][column] == Cell.BLUE_PLAYER && (grid[row - 2][column] == Cell.RED_PLAYER)) {
+				return true;
+			}
+		}
+		return score;
+	}
+	
+	public boolean rightSideDiagDownRedS(int row, int column, int size) {
+		boolean score = false;
+		if((column < size - 2)) {
 			if(row < size - 2) {
 				if(grid[row + 1][column + 1] == Cell.BLUE_PLAYER && (grid[row + 2][column + 2] == Cell.RED_PLAYER)) {
-					
-					scoredGrid[row][column] = scoredCell.S_RIGHT_DIAG_DOWN;
-					
 					return true;
 				}
 			}
-			//Right side Diagonal Up Score
+		}
+		return score;
+	}
+	
+	public boolean rightSideDiagUpRedS(int row, int column, int size) {
+		boolean score = false;
+		if((column < size - 2)) {
 			if(row > 1) {
 				if(grid[row - 1][column + 1] == Cell.BLUE_PLAYER && (grid[row - 2][column + 2] == Cell.RED_PLAYER)) {
-					
-					scoredGrid[row][column] = scoredCell.S_RIGHT_DIAG_UP;
-					
 					return true;
 				}
 			}
 		}
+		return score;
+	}
+	
+	public boolean leftSideDiagDownRedS(int row, int column, int size) {
+		boolean score = false;
 		if((column > 1)) {
-			//Row Score Left
-			if(grid[row][column - 1] == Cell.BLUE_PLAYER && (grid[row][column - 2] == Cell.RED_PLAYER)) {
-				
-				scoredGrid[row][column] = scoredCell.S_ROW_LEFT;
-				
-				return true;
-			}
-			//Left side Diagonal Down Score
 			if(row > 1) {
 				if(grid[row - 1][column - 1] == Cell.BLUE_PLAYER && (grid[row - 2][column - 2] == Cell.RED_PLAYER)) {
-					
-					scoredGrid[row][column] = scoredCell.S_LEFT_DIAG_DOWN;
-					
 					return true;
 				}
 			}
-			//Left side Diagonal Up Score
+		}
+		return score;
+	}
+	
+	public boolean leftSideDiagUpRedS(int row, int column, int size) {
+		boolean score = false;
+		if((column > 1)) {
 			if(row < size - 2) {
 				if(grid[row + 1][column - 1] == Cell.BLUE_PLAYER && (grid[row + 2][column - 2] == Cell.RED_PLAYER)) {
-					
-					scoredGrid[row][column] = scoredCell.S_LEFT_DIAG_UP;
-					
 					return true;
 				}
 			}
 		}
-		if((row < size - 2)) {
-			//Column Score down
-			if(grid[row + 1][column] == Cell.BLUE_PLAYER && (grid[row + 2][column] == Cell.RED_PLAYER)) {
-				
-				scoredGrid[row][column] = scoredCell.S_COL_DOWN;
-				
-				return true;
-			}
+		return score;
+	}
+	
+	protected boolean findScoreSRED(int row, int column, int size) {
+		boolean score = false;
+		//Row Score Right
+		if(rowRightSideRedS(row, column, size)) {
+			addPointRed();
+			score = true;
 		}
-		if((row > 1)) {
-			//Column Score up
-			if(grid[row - 1][column] == Cell.BLUE_PLAYER && (grid[row - 2][column] == Cell.RED_PLAYER)) {
+		
+		//Row Score Left
+		if(rowLeftSideRedS(row, column, size)) {
+			addPointRed();
+			score = true;
+		}
+		
+		//Right side Diagonal Down Score
+		if(rightSideDiagDownRedS(row, column, size)) {
+			addPointRed();
+			score = true;
+		}
+		
+		//Right side Diagonal Up Score
+		if(rightSideDiagUpRedS(row, column, size)) {
+			addPointRed();
+			score = true;
+		}
+		
+		//Left side Diagonal Down Score
+		if(leftSideDiagDownRedS(row, column, size)) {
+			addPointRed();
+			score = true;
+		}
+		
+		//Left side Diagonal Up Score
+		if(leftSideDiagUpRedS(row, column, size)) {
+			addPointRed();
+			score = true;
+		}
+		
+		//Column Score down
+		if(colDownRedS(row, column, size)) {
+			addPointRed();
+			score = true;
+		}
 				
-				scoredGrid[row][column] = scoredCell.S_COL_UP;
-				
-				return true;
-			}
+		if(colUpRedS(row, column, size)) {
+			addPointRed();
+			score = true;
 		}
 			
 		return score;
 	}
 	
 	//BLUE == O
+	public boolean rowBlueO(int row, int column, int size) {
+		boolean score = false;
+		if((column == 0) || (column == size - 1)) {
+			score = false;
+		}
+		else{
+			
+			if(grid[row][column - 1] == Cell.RED_PLAYER && (grid[row][column + 1] == Cell.RED_PLAYER)) {
+				scoredGrid[row][column] = scoredCell.O_ROW;
+				return true;
+			}
+		}
+		return score;
+	}
+	
+	public boolean colBlueO(int row, int column, int size) {
+		boolean score = false;
+		if((row == 0) || (row == size - 1) ) {
+			score = false;
+		}
+		else {
+			
+			if(grid[row - 1][column] == Cell.RED_PLAYER && (grid[row + 1][column] == Cell.RED_PLAYER)) {
+				
+				scoredGrid[row][column] = scoredCell.O_COL;
+				return true;
+			}
+		}
+		return score;
+	}
+	
+	public boolean diagDownBlueO(int row, int column, int size) {
+		boolean score = false;
+		if((row == 0) || (row == size - 1) || (column == 0) || (column == size - 1)) {
+			score = false;
+		}
+		else {
+			if(grid[row - 1][column - 1] == Cell.RED_PLAYER && (grid[row + 1][column + 1] == Cell.RED_PLAYER)) {
+				
+				scoredGrid[row][column] = scoredCell.O_DOWN_DIAG;
+				return true;
+			}
+		}
+		return score;
+	}
+	
+	public boolean diagUpBlueO(int row, int column, int size) {
+		boolean score = false;
+		if((row == 0) || (row == size - 1) || (column == 0) || (column == size - 1)) {
+			score = false;
+		}
+		else {
+			if(grid[row + 1][column - 1] == Cell.RED_PLAYER && (grid[row - 1][column + 1] == Cell.RED_PLAYER)) {
+				
+				scoredGrid[row][column] = scoredCell.O_UP_DIAG;
+				return true;
+			}
+		}
+		return score;
+	}
+	
 	protected boolean findScoreOBLUE(int row, int column, int size) {
 		//O Player
 		boolean score = false;
 		
-			if((column == 0) || (column == size - 1)) {
-				score = false;
-			}
-			else{
-				//O Player Row Score
-				if(grid[row][column - 1] == Cell.RED_PLAYER && (grid[row][column + 1] == Cell.RED_PLAYER)) {
-					
-					scoredGrid[row][column] = scoredCell.O_ROW;
-					
-					return true;
-				}
-			}
-			
-			if((row == 0) || (row == size - 1) ) {
-				score = false;
-			}
-			else {
-				//O Player Column Score
-				if(grid[row - 1][column] == Cell.RED_PLAYER && (grid[row + 1][column] == Cell.RED_PLAYER)) {
-					
-					scoredGrid[row][column] = scoredCell.O_COL;
-					
-					return true;
-				}
-			}
-			if((row == 0) || (row == size - 1) || (column == 0) || (column == size - 1)) {
-				score = false;
-			}
-			else {
-				//O Player Down Diagonal Score
-				if(grid[row - 1][column - 1] == Cell.RED_PLAYER && (grid[row + 1][column + 1] == Cell.RED_PLAYER)) {
-					
-					scoredGrid[row][column] = scoredCell.O_DOWN_DIAG;
-					
-					return true;
-				}
-				//O Player Up Diagonal Score
-				if(grid[row + 1][column - 1] == Cell.RED_PLAYER && (grid[row - 1][column + 1] == Cell.RED_PLAYER)) {
-					
-					scoredGrid[row][column] = scoredCell.O_UP_DIAG;
-					
-					return true;
-				}
-			}
+		//O Player Row Score
+		if(rowBlueO(row, column, size)) {
+			addPointBlue();
+			score = true;
+		}
+		
+		//O Player Column Score
+		if(colBlueO(row, column, size)) {
+			addPointBlue();
+			score = true;
+		}
+		
+		//O Player Down Diagonal Score
+		if(diagDownBlueO(row, column, size)) {
+			addPointBlue();
+			score = true;
+		}
+		
+		//O Player Up Diagonal Score
+		if(diagUpBlueO(row, column, size)) {
+			addPointBlue();
+			score = true;
+		}
 
 		return score;
 	}
 	
+	
 	//BLUE == S
-	protected boolean findScoreSBLUE(int row, int column, int size) {
+	public boolean rowRightSideBlueS(int row, int column, int size) {
 		boolean score = false;
-		
 		if((column < size - 2)) {
-			//Row Score Right
 			if(grid[row][column + 1] == Cell.RED_PLAYER && (grid[row][column + 2] == Cell.BLUE_PLAYER)) {
 				
 				scoredGrid[row][column] = scoredCell.S_ROW_RIGHT;
-				
 				return true;
 			}
-			//Right side Diagonal Down Score
+		}
+		return score;
+	}
+	
+	public boolean rightSideDiagDownBlueS(int row, int column, int size) {
+		boolean score = false;
+		if((column < size - 2)) {
 			if(row < size - 2) {
 				if(grid[row + 1][column + 1] == Cell.RED_PLAYER && (grid[row + 2][column + 2] == Cell.BLUE_PLAYER)) {
 					
 					scoredGrid[row][column] = scoredCell.S_RIGHT_DIAG_DOWN;
-					
-					return true;
-				}
-			}
-			//Right side Diagonal Up Score
-			if(row > 1) {
-				if(grid[row - 1][column + 1] == Cell.RED_PLAYER && (grid[row - 2][column + 2] == Cell.BLUE_PLAYER)) {
-					
-					scoredGrid[row][column] = scoredCell.S_RIGHT_DIAG_UP;
-					
 					return true;
 				}
 			}
 		}
-		
-		if((column > 1)) {
-			//Row Score Left
-			if(grid[row][column - 1] == Cell.RED_PLAYER && (grid[row][column - 2] == Cell.BLUE_PLAYER)) {
-				
-				scoredGrid[row][column] = scoredCell.S_ROW_LEFT;
-				
-				return true;
-			}
-			//Left side Diagonal Down Score
+		return score;
+	}
+	
+	public boolean rightSideDiagUpBlueS(int row, int column, int size) {
+		boolean score = false;
+		if((column < size - 2)) {
 			if(row > 1) {
-				if(grid[row - 1][column - 1] == Cell.RED_PLAYER && (grid[row - 2][column - 2] == Cell.BLUE_PLAYER)) {
-					
-					scoredGrid[row][column] = scoredCell.S_LEFT_DIAG_DOWN;
-					
+				if(grid[row - 1][column + 1] == Cell.RED_PLAYER && (grid[row - 2][column + 2] == Cell.BLUE_PLAYER)) {
+					scoredGrid[row][column] = scoredCell.S_RIGHT_DIAG_UP;
 					return true;
 				}
 			}
-			//Left side Diagonal Up Score
+		}
+		return score;
+	}
+	
+	public boolean rowLeftSideBlueS(int row, int column, int size) {
+		boolean score = false;
+		if((column > 1)) {
+			if(grid[row][column - 1] == Cell.RED_PLAYER && (grid[row][column - 2] == Cell.BLUE_PLAYER)) {
+				scoredGrid[row][column] = scoredCell.S_ROW_LEFT;
+				return true;
+			}
+		}
+		return score;
+	}
+	
+	public boolean leftSideDiagDownBlueS(int row, int column, int size) {
+		boolean score = false;
+		if((column > 1)) {
+			if(row > 1) {
+				if(grid[row - 1][column - 1] == Cell.RED_PLAYER && (grid[row - 2][column - 2] == Cell.BLUE_PLAYER)) {
+					scoredGrid[row][column] = scoredCell.S_LEFT_DIAG_DOWN;
+					return true;
+				}
+			}
+		}
+		return score;
+	}
+	
+	public boolean leftSideDiagUpBlueS(int row, int column, int size) {
+		boolean score = false;
+		if((column > 1)) {
 			if(row < size - 2) {
 				if(grid[row + 1][column - 1] == Cell.RED_PLAYER && (grid[row + 2][column - 2] == Cell.BLUE_PLAYER)) {
 					
 					scoredGrid[row][column] = scoredCell.S_LEFT_DIAG_UP;
-					
 					return true;
 				}
 			}
 		}
-		//Column Score down
+		return score;
+	}
+	
+	public boolean colDownBlueS(int row, int column, int size) {
+		boolean score = false;
 		if((row < size - 2)) {
 			if(grid[row + 1][column] == Cell.RED_PLAYER && (grid[row + 2][column] == Cell.BLUE_PLAYER)) {
 				
 				scoredGrid[row][column] = scoredCell.S_COL_DOWN;
-				
 				return true;
 			}
 		}
-		//Column Score up
+		return score;
+	}
+	
+	public boolean colUpBlueS(int row, int column, int size) {
+		boolean score = false;
 		if((row > 1)) {
 			if(grid[row - 1][column] == Cell.RED_PLAYER && (grid[row - 2][column] == Cell.BLUE_PLAYER)) {
 				
 				scoredGrid[row][column] = scoredCell.S_COL_UP;
-				
 				return true;
 			}
+		}
+		return score;
+	}
+	
+	protected boolean findScoreSBLUE(int row, int column, int size) {
+		boolean score = false;
+		
+		//Row Score Right
+		if(rowRightSideBlueS(row, column, size)) {
+			addPointBlue();
+			score = true;
+		}
+		
+		//Right side Diagonal Down Score
+		if(rightSideDiagDownBlueS(row, column, size)) {
+			addPointBlue();
+			score = true;
+		}
+		
+		//Right side Diagonal Up Score
+		if(rightSideDiagUpBlueS(row, column, size)) {
+			addPointBlue();
+			score = true;
+		}
+		
+		//Row Score Left
+		if(rowLeftSideBlueS(row, column, size)) {
+			addPointBlue();
+			score = true;
+		}
+		
+		//Left side Diagonal Down Score
+		if(leftSideDiagDownBlueS(row, column, size)) {
+			addPointBlue();
+			score = true;
+		}
+		
+		//Left side Diagonal Up Score
+		if(leftSideDiagUpBlueS(row, column, size)) {
+			addPointBlue();
+			score = true;
+		}
+		
+		//Column Score down
+		if(colDownBlueS(row, column, size)) {
+			addPointBlue();
+			score = true;
+		}
+		
+		//Column Score up
+		if(colUpBlueS(row, column, size)) {
+			addPointBlue();
+			score = true;
 		}
 		
 		return score;
@@ -384,53 +552,94 @@ public class Board {
 	
 	
 	//RED == O
+	public boolean rowRedO(int row, int column, int size) {
+		boolean score = false;
+		if((column == 0) || (column == size - 1)) {
+			score = false;
+		}
+		else{
+			//O Player Row Score
+			if(grid[row][column - 1] == Cell.BLUE_PLAYER && (grid[row][column + 1] == Cell.BLUE_PLAYER)) {
+				scoredGrid[row][column] = scoredCell.O_ROW;
+				return true;
+			}
+		}
+		return score;
+	}
+	
+	public boolean colRedO(int row, int column, int size) {
+		boolean score = false;
+		if((row == 0) || (row == size - 1) ) {
+			score = false;
+		}
+		else {
+			
+			if(grid[row - 1][column] == Cell.BLUE_PLAYER && (grid[row + 1][column] == Cell.BLUE_PLAYER)) {
+				scoredGrid[row][column] = scoredCell.O_COL;
+				return true;
+			}
+		}
+		return score;
+	}
+	
+	public boolean diagDownRedO(int row, int column, int size) {
+		boolean score = false;
+		if((row == 0) || (row == size - 1) || (column == 0) || (column == size - 1)) {
+			score = false;
+		}
+		else {
+			//O Player Down Diagonal Score
+			if(grid[row - 1][column - 1] == Cell.BLUE_PLAYER && (grid[row + 1][column + 1] == Cell.BLUE_PLAYER)) {
+				scoredGrid[row][column] = scoredCell.O_DOWN_DIAG;
+				return true;
+			}
+		}
+		return score;
+	}
+	
+	public boolean diagUpRedO(int row, int column, int size) {
+		boolean score = false;
+		if((row == 0) || (row == size - 1) || (column == 0) || (column == size - 1)) {
+			score = false;
+		}
+		else {
+			//O Player Down Diagonal Score
+			if(grid[row + 1][column - 1] == Cell.BLUE_PLAYER && (grid[row - 1][column + 1] == Cell.BLUE_PLAYER)) {
+				scoredGrid[row][column] = scoredCell.O_UP_DIAG;
+				return true;
+			}
+		}
+		return score;
+	}
+	
+	
 	protected boolean findScoreORED(int row, int column, int size) {
 		//O Player
 		boolean score = false;
-			
-			if((column == 0) || (column == size - 1)) {
-				score = false;
-			}
-			else{
-				//O Player Row Score
-				if(grid[row][column - 1] == Cell.BLUE_PLAYER && (grid[row][column + 1] == Cell.BLUE_PLAYER)) {
-					
-					scoredGrid[row][column] = scoredCell.O_ROW;
-					
-					return true;
-				}
-			}
-			if((row == 0) || (row == size - 1) ) {
-				score = false;
-			}
-			else {
-				//O Player Column Score
-				if(grid[row - 1][column] == Cell.BLUE_PLAYER && (grid[row + 1][column] == Cell.BLUE_PLAYER)) {
-					
-					scoredGrid[row][column] = scoredCell.O_COL;
-					
-					return true;
-				}
-			}
-			if((row == 0) || (row == size - 1) || (column == 0) || (column == size - 1)) {
-				score = false;
-			}
-			else {
-				//O Player Down Diagonal Score
-				if(grid[row - 1][column - 1] == Cell.BLUE_PLAYER && (grid[row + 1][column + 1] == Cell.BLUE_PLAYER)) {
-					
-					scoredGrid[row][column] = scoredCell.O_DOWN_DIAG;
-					
-					return true;
-				}
-				//O Player Up Diagonal Score
-				if(grid[row + 1][column - 1] == Cell.BLUE_PLAYER && (grid[row - 1][column + 1] == Cell.BLUE_PLAYER)) {
-					
-					scoredGrid[row][column] = scoredCell.O_UP_DIAG;
-					
-					return true;
-				}
-			}
+		
+		//O Player Row Score
+		if(rowRedO(row, column, size)) {
+			addPointRed();
+			score = true;
+		}
+		
+		//O Player Column Score
+		if(colRedO(row, column, size)) {
+			addPointRed();
+			score = true;
+		}
+		
+		//O Player Down Diagonal Score
+		if(diagDownRedO(row, column, size)) {
+			addPointRed();
+			score = true;
+		}
+		
+		//O Player Up Diagonal Score
+		if(diagUpRedO(row, column, size)) {
+			addPointRed();
+			score = true;
+		}		
 
 		return score;
 	}

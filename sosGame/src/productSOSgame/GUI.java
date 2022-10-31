@@ -43,12 +43,14 @@ public class GUI extends JFrame {
 	private ButtonGroup modeGroup = new ButtonGroup();
 	private ButtonGroup redPlayerGroup = new ButtonGroup();
 	private ButtonGroup bluePlayerGroup = new ButtonGroup();
+//	private ButtonGroup bluePlayerTypeGroup = new ButtonGroup();
+//	private ButtonGroup redPlayerTypeGroup = new ButtonGroup();
 	
 	JTextField sizeInput = new JTextField();
 	JButton enterButton = new JButton("Enter");
 	
-	private JPanel redPlayerPanel = new JPanel();
-	private JPanel bluePlayerPanel = new JPanel();
+	protected static JPanel redPlayerPanel = new JPanel();
+	protected static JPanel bluePlayerPanel = new JPanel();
 	protected JLabel redPlayerLabel = new JLabel("  Red Player  ");
 	protected JLabel bluePlayerLabel = new JLabel("  Blue Player  ");
 	
@@ -58,6 +60,10 @@ public class GUI extends JFrame {
 	private final JRadioButton oPlayerRed = new JRadioButton("O");
 	private final JRadioButton sPlayerBlue = new JRadioButton("S");
 	private final JRadioButton oPlayerBlue = new JRadioButton("O");
+//	private final JRadioButton humanPlayerBlue = new JRadioButton("Human");
+//	private final JRadioButton cpuPlayerBlue = new JRadioButton("Computer");
+//	private final JRadioButton humanPlayerRed = new JRadioButton("Human");
+//	private final JRadioButton cpuPlayerRed = new JRadioButton("Computer");
 	protected JLabel redPlayerPoints;
 	protected JLabel bluePlayerPoints;
 	
@@ -65,9 +71,8 @@ public class GUI extends JFrame {
 	
 	int size;
 	String modeString = "Not Selected";
-	char playerKeyRed = 'X';
-	char playerKeyBlue = 'X';
-
+	char playerKeyRed = 'S';
+	char playerKeyBlue = 'O';
 
 
 	/**
@@ -98,14 +103,19 @@ public class GUI extends JFrame {
 	private void panel(){
 		//SET INIT PANEL
 		initPanel.setLayout(new GridBagLayout());
+		
+		
 		contentPane.add(initPanel, BorderLayout.NORTH);
+		contentPane.add(redPlayerPanel, BorderLayout.WEST);
+		contentPane.add(bluePlayerPanel, BorderLayout.EAST);
+
 		
 		//TITLE LABEL
 		JLabel titleLabel = new JLabel("SOS GAME");
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		titleLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
 		titleLabel.setBounds(10, 10, 195, 47);
-		gbc.gridwidth = 6;
+		gbc.gridwidth = 7;
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		initPanel.add(titleLabel, gbc);
@@ -132,10 +142,10 @@ public class GUI extends JFrame {
 		//ENTER BUTTON
 		enterButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		enterButton.setBounds(272, 14, 92, 39);
-		gbc.gridwidth = 6;
+		gbc.gridwidth = 7;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.gridx = 0;
-		gbc.gridy = 3;
+		gbc.gridy = 5;
 		initPanel.add(enterButton, gbc);
 		
 		//SIZE LABEL
@@ -143,9 +153,11 @@ public class GUI extends JFrame {
 		modeLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		modeLabel.setBounds(10, 10, 195, 47);
 		gbc.gridwidth = 1;
-		gbc.gridx = 3;
+		gbc.gridx = 4;
 		gbc.gridy = 1;
 		initPanel.add(modeLabel, gbc);
+		
+		
 		
 		//MODE BUTTONS and PLAYER BUTTONS
 		modeGroup.add(generalButton);
@@ -154,15 +166,32 @@ public class GUI extends JFrame {
 		redPlayerGroup.add(oPlayerRed);
 		bluePlayerGroup.add(sPlayerBlue);
 		bluePlayerGroup.add(oPlayerBlue);
-		gbc.gridx = 4;
+		
+//		redPlayerTypeGroup.add(humanPlayerRed);
+//		redPlayerTypeGroup.add(cpuPlayerRed);
+//		bluePlayerTypeGroup.add(humanPlayerBlue);
+//		bluePlayerTypeGroup.add(cpuPlayerRed);
+		
+		gbc.gridx = 5;
 		gbc.gridy = 1;
 		initPanel.add(generalButton, gbc);
-		gbc.gridx = 5;
+		gbc.gridx = 6;
 		gbc.gridy = 1;
 		initPanel.add(simpleButton, gbc);
 		
-		contentPane.add(redPlayerPanel, BorderLayout.WEST);
-		contentPane.add(bluePlayerPanel, BorderLayout.EAST);
+//		gbc.gridx = 0;
+//		gbc.gridy = 4;
+//		initPanel.add(humanPlayerRed, gbc);
+//		gbc.gridx = 1;
+//		gbc.gridy = 4;
+//		initPanel.add(cpuPlayerRed, gbc);
+//		gbc.gridx = 5;
+//		gbc.gridy = 4;
+//		initPanel.add(humanPlayerBlue, gbc);
+//		gbc.gridx = 6;
+//		gbc.gridy = 4;
+//		initPanel.add(cpuPlayerBlue, gbc);
+		
 		
 		actionInit();
 		
@@ -222,33 +251,37 @@ public class GUI extends JFrame {
 		
 		//RED PLAYER LABEL
 		JLabel redPlayerLabel = new JLabel("  Red Player  ");
-		redPlayerLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		redPlayerLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		redPlayerLabel.setForeground(new Color(255, 0, 0));
 		gbc.gridx = 0;
 		gbc.gridy = 2;
 		initPanel.add(redPlayerLabel, gbc);
 		
-		gbc.gridx = 1;
-		gbc.gridy = 2;
+		
+		gbc.gridx = 0;
+		gbc.gridy = 3;
 		initPanel.add(sPlayerRed, gbc);
-		gbc.gridx = 2;
-		gbc.gridy = 2;
+		gbc.gridx = 1;
+		gbc.gridy = 3;
 		initPanel.add(oPlayerRed, gbc);
 		
 		//BLUE PLAYER LABEL
 		JLabel bluePlayerLabel = new JLabel("  Blue Player  ");
-		bluePlayerLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		bluePlayerLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		bluePlayerLabel.setForeground(new Color(0, 0, 255));
-		gbc.gridx = 3;
+		gbc.gridx = 5;
 		gbc.gridy = 2;
 		initPanel.add(bluePlayerLabel, gbc);
 		
-		gbc.gridx = 4;
-		gbc.gridy = 2;
-		initPanel.add(sPlayerBlue, gbc);
 		gbc.gridx = 5;
-		gbc.gridy = 2;
+		gbc.gridy = 3;
+		initPanel.add(sPlayerBlue, gbc);
+		gbc.gridx = 6;
+		gbc.gridy = 3;
 		initPanel.add(oPlayerBlue, gbc);
+		
+		redPlayerLabel.setForeground(Color.RED);
+		bluePlayerLabel.setForeground(Color.BLUE);
 		
 		//ACTION FOR ENTER BUTTON
 		enterButton.addMouseListener(new MouseAdapter() {
@@ -293,8 +326,9 @@ public class GUI extends JFrame {
 	}
 	
 	public void setGamePanel(Board board, GeneralGameBoard generalGame, SimpleGameBoard simpleGame, int pSize) {
-		CANVAS_WIDTH = 600;  
-		CANVAS_HEIGHT = 600;
+		//SCREEN BOARD SIZE
+		CANVAS_WIDTH = 500;  
+		CANVAS_HEIGHT = 500;
 		CELL_SIZE = CANVAS_WIDTH / pSize;
 		GameBoardCanvas gameBoardCanvas = new GameBoardCanvas(board, generalGame, simpleGame, pSize);
 		gameBoardCanvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
@@ -302,18 +336,6 @@ public class GUI extends JFrame {
 		pack(); 
 	}
 	
-	//For testing GUI
-	public void nonEmptyBoard(GeneralGameBoard generalGame, SimpleGameBoard simpleGame, int pSize) {
-		CANVAS_WIDTH = 600;  
-		CANVAS_HEIGHT = 600;
-		CELL_SIZE = CANVAS_WIDTH / pSize;
-		GameBoardCanvas gameBoardCanvas = new GameBoardCanvas(board, generalGame, simpleGame, pSize);
-		gameBoardCanvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT)); 
-//		gameBoardCanvas.makeMoveonBoard(generalGame, simpleGame, 1, 1, pSize, playerKeyRed, playerKeyBlue, "GENERAL");
-//		gameBoardCanvas.makeMoveonBoard(generalGame, simpleGame, 0, 0, pSize, playerKeyRed, playerKeyBlue, "GENERAL");
-		contentPane.add(gameBoardCanvas, BorderLayout.CENTER);
-		pack(); 
-	}
 	
 	/**
 	 * Launch the application.

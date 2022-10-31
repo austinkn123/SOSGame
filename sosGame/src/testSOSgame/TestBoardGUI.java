@@ -50,7 +50,6 @@ public class TestBoardGUI {
 		GUI gui = new GUI(board);
 		gui.setGamePanel(board, generalBoard, simpleBoard, size);
 		
-		gui.nonEmptyBoard(generalBoard, simpleBoard, size);
 		
 		try {
 			Thread.sleep(2000);
