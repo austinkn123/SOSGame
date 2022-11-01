@@ -3,8 +3,9 @@ package productSOSgame;
 
 public class Board {
 	public enum Cell {EMPTY, RED_PLAYER, BLUE_PLAYER, HAS_SCORED};
-	public enum scoredCell {NOT_SCORED, S_ROW_LEFT, S_ROW_RIGHT, S_COL_UP, S_COL_DOWN, S_LEFT_DIAG_DOWN, 
-		S_LEFT_DIAG_UP, S_RIGHT_DIAG_DOWN, S_RIGHT_DIAG_UP, O_ROW, O_COL, O_DOWN_DIAG, O_UP_DIAG};
+	public enum scoredCell {NOT_SCORED, RED_S_SCORED, RED_O_SCORED, BLUE_S_SCORED, BLUE_O_SCORED};
+	//NOT_SCORED, S_ROW_LEFT, S_ROW_RIGHT, S_COL_UP, S_COL_DOWN, S_LEFT_DIAG_DOWN, 
+	//S_LEFT_DIAG_UP, S_RIGHT_DIAG_DOWN, S_RIGHT_DIAG_UP, O_ROW, O_COL, O_DOWN_DIAG, O_UP_DIAG
 	public enum GameState {PLAYING, DRAW, RED_WINS, BLUE_WINS};
 	public GameState currentGameState;
 	protected char turn = 'R';
@@ -103,6 +104,7 @@ public class Board {
 		return turn;
 	}
 	
+	//For console testing
 	public void makeMove(int row, int column, int boardSize) {
 		if ((row >= 0) && (row < boardSize) && (column >= 0) && (column < boardSize) && (grid[row][column] == Cell.EMPTY)) {
 			grid[row][column] = (turn == 'R')? Cell.RED_PLAYER : Cell.BLUE_PLAYER; 
@@ -252,47 +254,55 @@ public class Board {
 		boolean score = false;
 		//Row Score Right
 		if(rowRightSideRedS(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.RED_S_SCORED;
 			addPointRed();
 			score = true;
 		}
 		
 		//Row Score Left
 		if(rowLeftSideRedS(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.RED_S_SCORED;
 			addPointRed();
 			score = true;
 		}
 		
 		//Right side Diagonal Down Score
 		if(rightSideDiagDownRedS(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.RED_S_SCORED;
 			addPointRed();
 			score = true;
 		}
 		
 		//Right side Diagonal Up Score
 		if(rightSideDiagUpRedS(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.RED_S_SCORED;
 			addPointRed();
 			score = true;
 		}
 		
 		//Left side Diagonal Down Score
 		if(leftSideDiagDownRedS(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.RED_S_SCORED;
 			addPointRed();
 			score = true;
 		}
 		
 		//Left side Diagonal Up Score
 		if(leftSideDiagUpRedS(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.RED_S_SCORED;
 			addPointRed();
 			score = true;
 		}
 		
 		//Column Score down
 		if(colDownRedS(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.RED_S_SCORED;
 			addPointRed();
 			score = true;
 		}
 				
 		if(colUpRedS(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.RED_S_SCORED;
 			addPointRed();
 			score = true;
 		}
@@ -309,7 +319,6 @@ public class Board {
 		else{
 			
 			if(grid[row][column - 1] == Cell.RED_PLAYER && (grid[row][column + 1] == Cell.RED_PLAYER)) {
-				scoredGrid[row][column] = scoredCell.O_ROW;
 				return true;
 			}
 		}
@@ -324,8 +333,6 @@ public class Board {
 		else {
 			
 			if(grid[row - 1][column] == Cell.RED_PLAYER && (grid[row + 1][column] == Cell.RED_PLAYER)) {
-				
-				scoredGrid[row][column] = scoredCell.O_COL;
 				return true;
 			}
 		}
@@ -339,8 +346,6 @@ public class Board {
 		}
 		else {
 			if(grid[row - 1][column - 1] == Cell.RED_PLAYER && (grid[row + 1][column + 1] == Cell.RED_PLAYER)) {
-				
-				scoredGrid[row][column] = scoredCell.O_DOWN_DIAG;
 				return true;
 			}
 		}
@@ -354,8 +359,6 @@ public class Board {
 		}
 		else {
 			if(grid[row + 1][column - 1] == Cell.RED_PLAYER && (grid[row - 1][column + 1] == Cell.RED_PLAYER)) {
-				
-				scoredGrid[row][column] = scoredCell.O_UP_DIAG;
 				return true;
 			}
 		}
@@ -368,24 +371,28 @@ public class Board {
 		
 		//O Player Row Score
 		if(rowBlueO(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.BLUE_O_SCORED;
 			addPointBlue();
 			score = true;
 		}
 		
 		//O Player Column Score
 		if(colBlueO(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.BLUE_O_SCORED;
 			addPointBlue();
 			score = true;
 		}
 		
 		//O Player Down Diagonal Score
 		if(diagDownBlueO(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.BLUE_O_SCORED;
 			addPointBlue();
 			score = true;
 		}
 		
 		//O Player Up Diagonal Score
 		if(diagUpBlueO(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.BLUE_O_SCORED;
 			addPointBlue();
 			score = true;
 		}
@@ -399,8 +406,6 @@ public class Board {
 		boolean score = false;
 		if((column < size - 2)) {
 			if(grid[row][column + 1] == Cell.RED_PLAYER && (grid[row][column + 2] == Cell.BLUE_PLAYER)) {
-				
-				scoredGrid[row][column] = scoredCell.S_ROW_RIGHT;
 				return true;
 			}
 		}
@@ -412,8 +417,6 @@ public class Board {
 		if((column < size - 2)) {
 			if(row < size - 2) {
 				if(grid[row + 1][column + 1] == Cell.RED_PLAYER && (grid[row + 2][column + 2] == Cell.BLUE_PLAYER)) {
-					
-					scoredGrid[row][column] = scoredCell.S_RIGHT_DIAG_DOWN;
 					return true;
 				}
 			}
@@ -426,7 +429,6 @@ public class Board {
 		if((column < size - 2)) {
 			if(row > 1) {
 				if(grid[row - 1][column + 1] == Cell.RED_PLAYER && (grid[row - 2][column + 2] == Cell.BLUE_PLAYER)) {
-					scoredGrid[row][column] = scoredCell.S_RIGHT_DIAG_UP;
 					return true;
 				}
 			}
@@ -438,7 +440,6 @@ public class Board {
 		boolean score = false;
 		if((column > 1)) {
 			if(grid[row][column - 1] == Cell.RED_PLAYER && (grid[row][column - 2] == Cell.BLUE_PLAYER)) {
-				scoredGrid[row][column] = scoredCell.S_ROW_LEFT;
 				return true;
 			}
 		}
@@ -450,7 +451,6 @@ public class Board {
 		if((column > 1)) {
 			if(row > 1) {
 				if(grid[row - 1][column - 1] == Cell.RED_PLAYER && (grid[row - 2][column - 2] == Cell.BLUE_PLAYER)) {
-					scoredGrid[row][column] = scoredCell.S_LEFT_DIAG_DOWN;
 					return true;
 				}
 			}
@@ -463,8 +463,6 @@ public class Board {
 		if((column > 1)) {
 			if(row < size - 2) {
 				if(grid[row + 1][column - 1] == Cell.RED_PLAYER && (grid[row + 2][column - 2] == Cell.BLUE_PLAYER)) {
-					
-					scoredGrid[row][column] = scoredCell.S_LEFT_DIAG_UP;
 					return true;
 				}
 			}
@@ -476,8 +474,6 @@ public class Board {
 		boolean score = false;
 		if((row < size - 2)) {
 			if(grid[row + 1][column] == Cell.RED_PLAYER && (grid[row + 2][column] == Cell.BLUE_PLAYER)) {
-				
-				scoredGrid[row][column] = scoredCell.S_COL_DOWN;
 				return true;
 			}
 		}
@@ -488,8 +484,6 @@ public class Board {
 		boolean score = false;
 		if((row > 1)) {
 			if(grid[row - 1][column] == Cell.RED_PLAYER && (grid[row - 2][column] == Cell.BLUE_PLAYER)) {
-				
-				scoredGrid[row][column] = scoredCell.S_COL_UP;
 				return true;
 			}
 		}
@@ -501,48 +495,56 @@ public class Board {
 		
 		//Row Score Right
 		if(rowRightSideBlueS(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.BLUE_S_SCORED;
 			addPointBlue();
 			score = true;
 		}
 		
 		//Right side Diagonal Down Score
 		if(rightSideDiagDownBlueS(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.BLUE_S_SCORED;
 			addPointBlue();
 			score = true;
 		}
 		
 		//Right side Diagonal Up Score
 		if(rightSideDiagUpBlueS(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.BLUE_S_SCORED;
 			addPointBlue();
 			score = true;
 		}
 		
 		//Row Score Left
 		if(rowLeftSideBlueS(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.BLUE_S_SCORED;
 			addPointBlue();
 			score = true;
 		}
 		
 		//Left side Diagonal Down Score
 		if(leftSideDiagDownBlueS(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.BLUE_S_SCORED;
 			addPointBlue();
 			score = true;
 		}
 		
 		//Left side Diagonal Up Score
 		if(leftSideDiagUpBlueS(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.BLUE_S_SCORED;
 			addPointBlue();
 			score = true;
 		}
 		
 		//Column Score down
 		if(colDownBlueS(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.BLUE_S_SCORED;
 			addPointBlue();
 			score = true;
 		}
 		
 		//Column Score up
 		if(colUpBlueS(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.BLUE_S_SCORED;
 			addPointBlue();
 			score = true;
 		}
@@ -560,7 +562,6 @@ public class Board {
 		else{
 			//O Player Row Score
 			if(grid[row][column - 1] == Cell.BLUE_PLAYER && (grid[row][column + 1] == Cell.BLUE_PLAYER)) {
-				scoredGrid[row][column] = scoredCell.O_ROW;
 				return true;
 			}
 		}
@@ -575,7 +576,6 @@ public class Board {
 		else {
 			
 			if(grid[row - 1][column] == Cell.BLUE_PLAYER && (grid[row + 1][column] == Cell.BLUE_PLAYER)) {
-				scoredGrid[row][column] = scoredCell.O_COL;
 				return true;
 			}
 		}
@@ -590,7 +590,6 @@ public class Board {
 		else {
 			//O Player Down Diagonal Score
 			if(grid[row - 1][column - 1] == Cell.BLUE_PLAYER && (grid[row + 1][column + 1] == Cell.BLUE_PLAYER)) {
-				scoredGrid[row][column] = scoredCell.O_DOWN_DIAG;
 				return true;
 			}
 		}
@@ -605,7 +604,6 @@ public class Board {
 		else {
 			//O Player Down Diagonal Score
 			if(grid[row + 1][column - 1] == Cell.BLUE_PLAYER && (grid[row - 1][column + 1] == Cell.BLUE_PLAYER)) {
-				scoredGrid[row][column] = scoredCell.O_UP_DIAG;
 				return true;
 			}
 		}
@@ -619,24 +617,28 @@ public class Board {
 		
 		//O Player Row Score
 		if(rowRedO(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.RED_O_SCORED;
 			addPointRed();
 			score = true;
 		}
 		
 		//O Player Column Score
 		if(colRedO(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.RED_O_SCORED;
 			addPointRed();
 			score = true;
 		}
 		
 		//O Player Down Diagonal Score
 		if(diagDownRedO(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.RED_O_SCORED;
 			addPointRed();
 			score = true;
 		}
 		
 		//O Player Up Diagonal Score
 		if(diagUpRedO(row, column, size)) {
+			scoredGrid[row][column] = scoredCell.RED_O_SCORED;
 			addPointRed();
 			score = true;
 		}		

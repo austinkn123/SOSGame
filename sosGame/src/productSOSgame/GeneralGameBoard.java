@@ -63,6 +63,12 @@ public class GeneralGameBoard extends Board {
 			currentGameState = GameState.PLAYING;
 			currentGameScore = GameStateGeneral.NO_SCORE;
 		}
+		
+		checkGameScore();
+		
+	}
+	
+	private void checkGameScore() {
 		if(isFilled()) {
 			if(getPointRed() > getPointBlue()) {
 				currentGameState = GameState.RED_WINS;
@@ -84,7 +90,5 @@ public class GeneralGameBoard extends Board {
 			}
 		}
 	}
-	
-	
 	
 }

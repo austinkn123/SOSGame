@@ -33,6 +33,7 @@ public class TestCompleteGames {
 	public void tearDown() throws Exception {
 	}
 	
+	//AC 5.1 A win by red the red player with the S symbol
 	//RED = S and BLUE = O
 	@Test
 	public void simpleGameRedSWin() {
@@ -52,6 +53,7 @@ public class TestCompleteGames {
 		}
 	}
 	
+	//AC 5.2 A win by red player with the O symbol
 	//RED = O and BLUE = S
 	@Test
 	public void simpleGameRedOWin() {
@@ -73,6 +75,7 @@ public class TestCompleteGames {
 		}
 	}
 	
+	//AC 5.3 A win by blue player with the S symbol
 	//RED = O and BLUE = S
 	@Test
 	public void simpleGameBlueSWin() {
@@ -93,6 +96,7 @@ public class TestCompleteGames {
 		}
 	}
 	
+	//AC 5.4 A win by blue player with the O symbol
 	//RED = S and BLUE = O
 	@Test
 	public void simpleGameBlueOWin() {
@@ -113,6 +117,7 @@ public class TestCompleteGames {
 		}
 	}
 	
+	//AC 5.5 A draw game
 	//RED = S and BLUE = O
 	@Test
 	public void simpleGameDrawGame() {
@@ -138,6 +143,7 @@ public class TestCompleteGames {
 		}
 	}
 	
+	//AC 7.1 A win by red the red player with the S symbol
 	//RED = S and BLUE = O
 	@Test
 	public void generalGameRedSWin() {
@@ -163,6 +169,7 @@ public class TestCompleteGames {
 		}
 	}
 	
+	//AC 7.2 A win by red player with the O symbol
 	//RED = O and BLUE = S
 	@Test
 	public void generalGameRedOWin() {
@@ -188,6 +195,7 @@ public class TestCompleteGames {
 		}
 	}
 	
+	//AC 7.3 A win by blue player with the S symbol
 	//RED = O and BLUE = S
 	@Test
 	public void generalGameBlueSWin() {
@@ -213,6 +221,7 @@ public class TestCompleteGames {
 		}
 	}
 	
+	//AC 7.4 A win by blue player with the O symbol
 	//RED = S and BLUE = O
 	@Test
 	public void generalGameBlueOWin() {
@@ -238,6 +247,7 @@ public class TestCompleteGames {
 		}
 	}
 	
+	//AC 7.5 A draw game
 	//RED = S and BLUE = O
 	@Test
 	public void generalGameDrawGame() {
