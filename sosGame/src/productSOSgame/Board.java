@@ -1,19 +1,22 @@
 package productSOSgame;
 
-
 public class Board {
 	public enum Cell {EMPTY, RED_PLAYER, BLUE_PLAYER, HAS_SCORED};
 	public enum scoredCell {NOT_SCORED, RED_S_SCORED, RED_O_SCORED, BLUE_S_SCORED, BLUE_O_SCORED};
-	//NOT_SCORED, S_ROW_LEFT, S_ROW_RIGHT, S_COL_UP, S_COL_DOWN, S_LEFT_DIAG_DOWN, 
-	//S_LEFT_DIAG_UP, S_RIGHT_DIAG_DOWN, S_RIGHT_DIAG_UP, O_ROW, O_COL, O_DOWN_DIAG, O_UP_DIAG
 	public enum GameState {PLAYING, DRAW, RED_WINS, BLUE_WINS};
 	public GameState currentGameState;
 	protected char turn = 'R';
 	protected int size = 0;
 	protected String modeString;
-	protected char redPlayerKey = 'S';
-	protected char bluePlayerKey = 'S';
-	protected Cell[][] grid;
+	protected char redPlayerKey = 'X';
+	protected char bluePlayerKey = 'X';
+	private char cpuRedPlayer = 'X';
+	private char cpuBluePlayer = 'X';
+//	private char cpuPlayerKey = 'X';
+//	private char humanPlayerKey = 'X';
+//	private char humanRedPlayer = 'X';
+//	private char humanBluePlayer = 'X';
+	protected Cell[][] grid; 
 	protected scoredCell[][] scoredGrid;
 	private int pointRed = 0;
 	private int pointBlue = 0;
@@ -37,6 +40,28 @@ public class Board {
 	
 	public void setBluePlayerKey(char bluePlayerKey) {this.bluePlayerKey = bluePlayerKey;}
 	public char getBluePlayerKey() {return bluePlayerKey;}
+	
+	public void setCpuRedPlayer(char cpuRedPlayer) {this.cpuRedPlayer = cpuRedPlayer;}
+	public char getCpuRedPlayer() {return cpuRedPlayer;}
+	
+	public void setCpuBluePlayer(char cpuBluePlayer) {this.cpuBluePlayer = cpuBluePlayer;}
+	public char getCpuBluePlayer() {return cpuBluePlayer;}
+	
+//	public void setCpuPlayerKey(char cpuPlayerKey) {this.cpuPlayerKey = cpuPlayerKey;}
+//	public char getCpuPlayerKey() {return cpuPlayerKey;}
+//	
+//	public void setHumanPlayerKey(char humanPlayerKey) {this.humanPlayerKey = humanPlayerKey;}
+//	public char getHumanPlayerKey() {return humanPlayerKey;}
+	
+//	public void setHumanRedPlayer(char humanRedPlayer) {this.humanRedPlayer = humanRedPlayer;}
+//	public char getHumanRedPlayer() {return humanRedPlayer;}
+	
+//	public void setHumanBluePlayer(char humanBluePlayer) {this.humanBluePlayer = humanBluePlayer;}
+//	public char getHumanBluePlayer() {return humanBluePlayer;}
+	
+	public Cell[][] getGrid(){
+		return grid;
+	}
 	
 	public void setSizeBoard(int newSize) { 
 		setSize(newSize);
@@ -110,6 +135,27 @@ public class Board {
 			grid[row][column] = (turn == 'R')? Cell.RED_PLAYER : Cell.BLUE_PLAYER; 
 			turn = (turn == 'R')? 'B' : 'R';
 		}
+	}
+
+	protected boolean makeWinningMove() {
+		return false;
+	}
+
+	protected boolean blockOpponentWinningMove() {
+		return false;
+	}
+	
+	//Finds the total of empty cells on grid
+	protected int getNumberOfEmptyCells() {
+		int numberOfEmptyCells = 0;
+		for (int row = 0; row < size; ++row) {
+			for (int col = 0; col < size; ++col) {
+				if (grid[row][col] == Cell.EMPTY) {
+					numberOfEmptyCells++;
+				}
+			}
+		}
+		return numberOfEmptyCells;
 	}
 	
 	public boolean isFilled() {
@@ -574,7 +620,6 @@ public class Board {
 			score = false;
 		}
 		else {
-			
 			if(grid[row - 1][column] == Cell.BLUE_PLAYER && (grid[row + 1][column] == Cell.BLUE_PLAYER)) {
 				return true;
 			}

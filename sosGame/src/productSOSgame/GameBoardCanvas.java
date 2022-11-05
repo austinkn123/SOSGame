@@ -36,15 +36,10 @@ public class GameBoardCanvas extends JPanel {
 	protected int CANVAS_HEIGHT;
 
 
-	protected Board board;
+	Board board;
 	GeneralGameBoard generalGame = new GeneralGameBoard();
 	SimpleGameBoard simpleGame = new SimpleGameBoard();
 	
-//	private JPanel redPlayerPanel = new JPanel();
-//	private JPanel bluePlayerPanel = new JPanel();
-//	
-//	protected JLabel redPlayerLabel = new JLabel("  Red Player  ");
-//	protected JLabel bluePlayerLabel = new JLabel("  Blue Player  ");
 	protected JLabel redPlayerPoints;
 	protected JLabel bluePlayerPoints;
 	
@@ -54,15 +49,16 @@ public class GameBoardCanvas extends JPanel {
 	
 	int size = 8;
 	String modeString = "GENERAL";
-	char playerKeyRed = 'S';
-	char playerKeyBlue = 'S';
-	
+	char playerKeyRed = 'X';
+	char playerKeyBlue = 'X';
+	char cpuPlayerKeyRed = 'X';
+	char cpuPlayerKeyBlue = 'X';
+	char humanPlayerKeyRed = 'X';
+	char humanPlayerKeyBlue = 'X';
 	
 	//For test cases
 	public void setMode(String modeString) {this.modeString = modeString;}
-	
 	public void setGameSize(int size) {this.size = size;}
-	
 	public void setPlayerKeyRed(char playerKeyRed) {this.playerKeyRed = playerKeyRed;}
 	
 	
@@ -76,6 +72,10 @@ public class GameBoardCanvas extends JPanel {
 		modeString = board.getModeString();
 		playerKeyRed = board.getRedPlayerKey();
 		playerKeyBlue = board.getBluePlayerKey();
+		cpuPlayerKeyRed = board.getCpuRedPlayer();
+		cpuPlayerKeyBlue = board.getCpuBluePlayer();
+//		humanPlayerKeyRed = board.getHumanRedPlayer();
+//		humanPlayerKeyBlue = board.getHumanBluePlayer();
 		
 		
 		gameOptions.setLayout(new GridBagLayout());
@@ -112,49 +112,57 @@ public class GameBoardCanvas extends JPanel {
 			redPlayerPoints.setForeground(Color.RED);
 			bluePlayerPoints.setForeground(Color.BLUE);
 		}
-		
-		
+	
+		//ACTION FOR ENTER BUTTON
+		newGame.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(modeString == "GENERAL") {
+					generalGame.resetPointBlue();
+					generalGame.resetPointRed();
+					bluePlayerPoints.setText(String.valueOf(generalGame.getPointBlue()));
+					redPlayerPoints.setText(String.valueOf(generalGame.getPointRed()));
+					generalGame.setSizeBoard(pSize);
+				}
+				if(modeString == "SIMPLE") {
+					simpleGame.setSizeBoard(pSize);
+				}
+				
+			}
+		});
+		if (cpuPlayerKeyRed != 'X' ) {
+			if(modeString == "GENERAL") {
+				generalGame.makeFirstXMove(pSize, playerKeyRed, playerKeyBlue, cpuPlayerKeyRed, cpuPlayerKeyBlue);
+			}
+			if(modeString == "SIMPLE") {
+				simpleGame.makeFirstXMove(pSize, playerKeyRed, playerKeyBlue, cpuPlayerKeyRed, cpuPlayerKeyBlue);
+			}
+		}
+		//MAKES A MOVE BASED ON CLICKS
 		addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 					int rowSelected = e.getY() / CELL_SIZE;
 					int colSelected = e.getX() / CELL_SIZE;
-					makeMoveonBoard(generalGame, simpleGame, rowSelected, colSelected, pSize, playerKeyRed, playerKeyBlue, modeString);
+					makeMoveonBoard(generalGame, simpleGame, rowSelected, colSelected, pSize, 
+							playerKeyRed, playerKeyBlue, modeString, cpuPlayerKeyRed, cpuPlayerKeyBlue);
 			}
 		});
- 
-	
-	//ACTION FOR ENTER BUTTON
-	newGame.addMouseListener(new MouseAdapter() {
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			if(modeString == "GENERAL") {
-				generalGame.resetPointBlue();
-				generalGame.resetPointRed();
-				bluePlayerPoints.setText(String.valueOf(generalGame.getPointBlue()));
-				redPlayerPoints.setText(String.valueOf(generalGame.getPointRed()));
-				generalGame.setSizeBoard(pSize);
-			}
-			if(modeString == "SIMPLE") {
-				simpleGame.setSizeBoard(pSize);
-			}
-			
-		}
-	});
-	
-	
 	
 	}
 	
 	public void makeMoveonBoard(GeneralGameBoard generalMode, SimpleGameBoard simpleMode, int row, int col, int pSize, 
-			char redPlayer, char bluePlayer, String pModString) { 
+			char redPlayer, char bluePlayer, String pModString, char cpuPlayerKeyRed, char cpuPlayerKeyBlue) { 
 		if(pModString == "GENERAL") {
 			if(generalMode.getGameState() == GameState.PLAYING) {
-				generalMode.makeMoveInGeneralMode(row, col, pSize, redPlayer, bluePlayer);
+				generalMode.makeMoveInGeneralMode(row, col, pSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue);
+				redPlayerPoints.setText(String.valueOf(generalGame.getPointRed()));
+				bluePlayerPoints.setText(String.valueOf(generalGame.getPointBlue()));
+				
 			}
 		}
 		if(pModString == "SIMPLE") {
 			if (simpleMode.getGameState() == GameState.PLAYING) {
-				simpleMode.makeMoveInSimpleMode(row, col, pSize, redPlayer, bluePlayer);
+				simpleMode.makeMoveInSimpleMode(row, col, pSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue);
 			}
 		}
 		repaint(); 
@@ -208,7 +216,6 @@ public class GameBoardCanvas extends JPanel {
 							g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
 							drawScoreLinesRed(g2d, row, col, x1, y1, x2, y2);
 						}
-						
 					} else if (generalGame.getCell(row,col, size) == Cell.BLUE_PLAYER) { //Blue Player
 						if(playerKeyBlue == 'S') {
 							g2d.setColor(Color.BLUE);
@@ -258,6 +265,7 @@ public class GameBoardCanvas extends JPanel {
 		}
 	}
 	
+	//DRAWING LINES FOR RED PLAYER
 	private void drawScoreLinesRed(Graphics g,  int row, int col, int x1, int y1, int x2, int y2){
 		Graphics2D g2d = (Graphics2D)g;
 		if(board.setMode(modeString, size) == 1) {
@@ -347,6 +355,7 @@ public class GameBoardCanvas extends JPanel {
 		}
 	}
 	
+	//DRAWING LINES FOR BLUE PLAYER
 	private void drawScoreLinesBlue(Graphics g,  int row, int col, int x1, int y1, int x2, int y2){
 		Graphics2D g2d = (Graphics2D)g;
 		if(board.setMode(modeString, size) == 1) {
@@ -435,29 +444,21 @@ public class GameBoardCanvas extends JPanel {
 		}
 	}
 	
-
+	
+	//CHANGES POINTS AND GAMESTATUSBAR BASED ON SCORING
 	private void checkScore() {
 		if(generalGame.getGameScore() == GameStateGeneral.RED_SCORES ) {
-			redPlayerPoints.setText(String.valueOf(generalGame.getPointRed()));
 			gameStatusBar.setText("Red Scores! Red's Turn Again");
 		}
 		if(generalGame.getGameScore() == GameStateGeneral.BLUE_SCORES) {
-			bluePlayerPoints.setText(String.valueOf(generalGame.getPointBlue()));
 			gameStatusBar.setText("Blue Scores! Blue's Turn Again");
 		}
 		
 	}
 	
+	//CHANGES GAMESTATUSBAR BASED ON LOGIC
 	private void playerStatus(){
 		if(board.setMode(modeString, size) == 1) {
-//			if(generalGame.getGameScore() == GameStateGeneral.RED_SCORES ) {
-//				redPlayerPoints.setText(String.valueOf(generalGame.getPointRed()));
-//				gameStatusBar.setText("Red Scores! Red's Turn Again");
-//			}
-//			if(generalGame.getGameScore() == GameStateGeneral.BLUE_SCORES) {
-//				bluePlayerPoints.setText(String.valueOf(generalGame.getPointBlue()));
-//				gameStatusBar.setText("Blue Scores! Blue's Turn Again");
-//			}
 			checkScore();
 			if (generalGame.getTurn() == 'R') {
 				gameStatusBar.setForeground(Color.RED);

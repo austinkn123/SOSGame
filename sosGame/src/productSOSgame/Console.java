@@ -23,7 +23,7 @@ public class Console {
 		String modeWord = "Not Selected";
 		
 		Board newBoard = new Board();
-		GeneralGameBoard generalMode = new GeneralGameBoard();
+//		GeneralGameBoard generalMode = new GeneralGameBoard();
 		SimpleGameBoard simpleMode = new SimpleGameBoard();
 		
 		Scanner inputSize = new Scanner(System.in);
@@ -49,8 +49,8 @@ public class Console {
 	    System.out.println("Mode: " + modeWord);
 	    
 	    if(modeWord == "General") {
-	    	generalMode.setSize(size);
-			new Console(generalMode).displayBoardGeneral(size, generalMode);
+//	    	generalMode.setSize(size);
+//			new Console(generalMode).displayBoardGeneral(size, generalMode);
 		}
 		else if (modeWord == "Simple") {
 			System.out.println("SSSSSSSSSSSSSSSS");

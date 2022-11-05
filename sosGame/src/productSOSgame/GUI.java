@@ -5,10 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -24,10 +22,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 
-import productSOSgame.Board.Cell;
-
+@SuppressWarnings("serial")
 public class GUI extends JFrame {
 	public static JPanel contentPane = new JPanel();
 	private JPanel initPanel = new JPanel();
@@ -43,8 +39,8 @@ public class GUI extends JFrame {
 	private ButtonGroup modeGroup = new ButtonGroup();
 	private ButtonGroup redPlayerGroup = new ButtonGroup();
 	private ButtonGroup bluePlayerGroup = new ButtonGroup();
-//	private ButtonGroup bluePlayerTypeGroup = new ButtonGroup();
-//	private ButtonGroup redPlayerTypeGroup = new ButtonGroup();
+	private ButtonGroup bluePlayerTypeGroup = new ButtonGroup();
+	private ButtonGroup redPlayerTypeGroup = new ButtonGroup();
 	
 	JTextField sizeInput = new JTextField();
 	JButton enterButton = new JButton("Enter");
@@ -54,16 +50,19 @@ public class GUI extends JFrame {
 	protected JLabel redPlayerLabel = new JLabel("  Red Player  ");
 	protected JLabel bluePlayerLabel = new JLabel("  Blue Player  ");
 	
-	private final JRadioButton simpleButton = new JRadioButton("Simple Mode");
-	private final JRadioButton generalButton = new JRadioButton("General Mode");
+	private final JRadioButton simpleButton = new JRadioButton("Simple ");
+	private final JRadioButton generalButton = new JRadioButton("General");
+	
+	private final JRadioButton humanPlayerBlue = new JRadioButton("Human");
+	private final JRadioButton cpuPlayerBlue = new JRadioButton("CPU");
+	private final JRadioButton humanPlayerRed = new JRadioButton("Human");
+	private final JRadioButton cpuPlayerRed = new JRadioButton("CPU");
+	
 	private final JRadioButton sPlayerRed = new JRadioButton("S");
 	private final JRadioButton oPlayerRed = new JRadioButton("O");
 	private final JRadioButton sPlayerBlue = new JRadioButton("S");
 	private final JRadioButton oPlayerBlue = new JRadioButton("O");
-//	private final JRadioButton humanPlayerBlue = new JRadioButton("Human");
-//	private final JRadioButton cpuPlayerBlue = new JRadioButton("Computer");
-//	private final JRadioButton humanPlayerRed = new JRadioButton("Human");
-//	private final JRadioButton cpuPlayerRed = new JRadioButton("Computer");
+	
 	protected JLabel redPlayerPoints;
 	protected JLabel bluePlayerPoints;
 	
@@ -71,8 +70,12 @@ public class GUI extends JFrame {
 	
 	int size;
 	String modeString = "Not Selected";
-	char playerKeyRed = 'S';
-	char playerKeyBlue = 'O';
+	char playerKeyRed = 'X';
+	char playerKeyBlue = 'X';
+	char cpuPlayerKeyRed = 'X';
+	char cpuPlayerKeyBlue = 'X';
+	char humanPlayerKeyRed = 'X';
+	char humanPlayerKeyBlue = 'X';
 
 
 	/**
@@ -149,7 +152,7 @@ public class GUI extends JFrame {
 		initPanel.add(enterButton, gbc);
 		
 		//SIZE LABEL
-		JLabel modeLabel = new JLabel("  Choose a Mode: ");
+		JLabel modeLabel = new JLabel("  Mode: ");
 		modeLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		modeLabel.setBounds(10, 10, 195, 47);
 		gbc.gridwidth = 1;
@@ -167,10 +170,10 @@ public class GUI extends JFrame {
 		bluePlayerGroup.add(sPlayerBlue);
 		bluePlayerGroup.add(oPlayerBlue);
 		
-//		redPlayerTypeGroup.add(humanPlayerRed);
-//		redPlayerTypeGroup.add(cpuPlayerRed);
-//		bluePlayerTypeGroup.add(humanPlayerBlue);
-//		bluePlayerTypeGroup.add(cpuPlayerRed);
+		redPlayerTypeGroup.add(humanPlayerRed);
+		redPlayerTypeGroup.add(cpuPlayerRed);
+		bluePlayerTypeGroup.add(humanPlayerBlue);
+		bluePlayerTypeGroup.add(cpuPlayerBlue);
 		
 		gbc.gridx = 5;
 		gbc.gridy = 1;
@@ -179,18 +182,18 @@ public class GUI extends JFrame {
 		gbc.gridy = 1;
 		initPanel.add(simpleButton, gbc);
 		
-//		gbc.gridx = 0;
-//		gbc.gridy = 4;
-//		initPanel.add(humanPlayerRed, gbc);
-//		gbc.gridx = 1;
-//		gbc.gridy = 4;
-//		initPanel.add(cpuPlayerRed, gbc);
-//		gbc.gridx = 5;
-//		gbc.gridy = 4;
-//		initPanel.add(humanPlayerBlue, gbc);
-//		gbc.gridx = 6;
-//		gbc.gridy = 4;
-//		initPanel.add(cpuPlayerBlue, gbc);
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		initPanel.add(humanPlayerRed, gbc);
+		gbc.gridx = 1;
+		gbc.gridy = 3;
+		initPanel.add(cpuPlayerRed, gbc);
+		gbc.gridx = 5;
+		gbc.gridy = 3;
+		initPanel.add(humanPlayerBlue, gbc);
+		gbc.gridx = 6;
+		gbc.gridy = 3;
+		initPanel.add(cpuPlayerBlue, gbc);
 		
 		
 		actionInit();
@@ -225,8 +228,8 @@ public class GUI extends JFrame {
 		generalButton.addActionListener(buttonListener);
 		simpleButton.addActionListener(buttonListener);
 
-		//ACTION FOR RED PLAYER BUTTONS 
-		ActionListener buttonListenerRedPlayer = new ActionListener() {
+		//ACTION FOR PLAYER BUTTONS 
+		ActionListener buttonListenerPlayer = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == sPlayerRed) {
@@ -241,13 +244,35 @@ public class GUI extends JFrame {
 				if(e.getSource() == oPlayerBlue) {
 					playerKeyBlue = 'O';
 				}
+				//Y for yes to identify if player is Human or CPU
+				if(e.getSource() == humanPlayerRed) {
+					humanPlayerKeyRed = 'R';
+				}
+				if(e.getSource() == cpuPlayerRed) {
+					cpuPlayerKeyRed = 'R';
+				}
+				if(e.getSource() == humanPlayerBlue) {
+					humanPlayerKeyBlue = 'B';
+				}
+				if(e.getSource() == cpuPlayerBlue) {
+					cpuPlayerKeyBlue = 'B';
+				}
+				
+				
 			}
 		};
 		
-		sPlayerRed.addActionListener(buttonListenerRedPlayer);
-		oPlayerRed.addActionListener(buttonListenerRedPlayer);
-		sPlayerBlue.addActionListener(buttonListenerRedPlayer);
-		oPlayerBlue.addActionListener(buttonListenerRedPlayer);
+		sPlayerRed.addActionListener(buttonListenerPlayer);
+		oPlayerRed.addActionListener(buttonListenerPlayer);
+		sPlayerBlue.addActionListener(buttonListenerPlayer);
+		oPlayerBlue.addActionListener(buttonListenerPlayer);
+		
+		humanPlayerRed.addActionListener(buttonListenerPlayer);
+		cpuPlayerRed.addActionListener(buttonListenerPlayer);
+		humanPlayerBlue.addActionListener(buttonListenerPlayer);
+		cpuPlayerBlue.addActionListener(buttonListenerPlayer);
+		
+		
 		
 		//RED PLAYER LABEL
 		JLabel redPlayerLabel = new JLabel("  Red Player  ");
@@ -259,10 +284,10 @@ public class GUI extends JFrame {
 		
 		
 		gbc.gridx = 0;
-		gbc.gridy = 3;
+		gbc.gridy = 4;
 		initPanel.add(sPlayerRed, gbc);
 		gbc.gridx = 1;
-		gbc.gridy = 3;
+		gbc.gridy = 4;
 		initPanel.add(oPlayerRed, gbc);
 		
 		//BLUE PLAYER LABEL
@@ -274,10 +299,10 @@ public class GUI extends JFrame {
 		initPanel.add(bluePlayerLabel, gbc);
 		
 		gbc.gridx = 5;
-		gbc.gridy = 3;
+		gbc.gridy = 4;
 		initPanel.add(sPlayerBlue, gbc);
 		gbc.gridx = 6;
-		gbc.gridy = 3;
+		gbc.gridy = 4;
 		initPanel.add(oPlayerBlue, gbc);
 		
 		redPlayerLabel.setForeground(Color.RED);
@@ -289,37 +314,54 @@ public class GUI extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				String text = sizeInput.getText();
 				size = Integer.parseInt(text);
-				if(playerKeyRed != 'X' && playerKeyBlue != 'X') {
-					board.setSize(size);
-					board.setModeString(modeString);
-					board.setRedPlayerKey(playerKeyRed);
-					board.setBluePlayerKey(playerKeyBlue);
-					if(board.setMode(modeString, size) != -1) {
-						if(board.setMode(modeString, size) == 1) {
-							generalGame.setSizeBoard(size);
-						}
-						else if (board.setMode(modeString, size) == 2) {
-							simpleGame.setSizeBoard(size);
-						}
-						else {
-							board.setSizeBoard(size);
-						}
-					setGamePanel( board, generalGame, simpleGame, size);
-					
+				if((humanPlayerKeyRed != 'X' || cpuPlayerKeyRed != 'X') && (humanPlayerKeyBlue != 'X' || cpuPlayerKeyBlue != 'X')) {
+					if(playerKeyRed != 'X' && playerKeyBlue != 'X') {
+						System.out.println(humanPlayerKeyRed + "=HR ---" + cpuPlayerKeyRed + "=CR ---" + 
+								humanPlayerKeyBlue  + "=HB ---" + cpuPlayerKeyBlue + "=CB");
+						//PASS IN SIZE, MODE, PLAYER SYMBOL
+						board.setCpuRedPlayer(cpuPlayerKeyRed);
+						board.setCpuBluePlayer(cpuPlayerKeyBlue);
+						System.out.println(board.getCpuRedPlayer() + "=CR ---" + 
+								board.getCpuBluePlayer() + "=CB");
+						board.setSize(size);
+						board.setModeString(modeString);
+						board.setRedPlayerKey(playerKeyRed);
+						board.setBluePlayerKey(playerKeyBlue);
+						
+						if(board.setMode(modeString, size) != -1) {
+							if(board.setMode(modeString, size) == 1) {
+								generalGame.setSizeBoard(size);
+							}
+							else if (board.setMode(modeString, size) == 2) {
+								simpleGame.setSizeBoard(size);
+							}
+							else {
+								board.setSizeBoard(size);
+							}
+							
+							setGamePanel( board, generalGame, simpleGame, size);
+							
 //					**Only works after one use**
-					validate();
-					sizeInput.setEditable(false);
-					enterButton.setEnabled(false);
-					enterButton.removeMouseListener(this);
-					generalButton.setEnabled(false);
-					simpleButton.setEnabled(false);
-					sPlayerRed.setEnabled(false);
-					oPlayerRed.setEnabled(false);
-					sPlayerBlue.setEnabled(false);
-					oPlayerBlue.setEnabled(false);
-					System.out.println("MODE: " + modeString);
+							validate();
+							sizeInput.setEditable(false);
+							enterButton.setEnabled(false);
+							enterButton.removeMouseListener(this);
+							generalButton.setEnabled(false);
+							simpleButton.setEnabled(false);
+							sPlayerRed.setEnabled(false);
+							oPlayerRed.setEnabled(false);
+							sPlayerBlue.setEnabled(false);
+							oPlayerBlue.setEnabled(false);
+							
+							humanPlayerBlue.setEnabled(false);
+							cpuPlayerBlue.setEnabled(false);
+							humanPlayerRed.setEnabled(false);
+							cpuPlayerRed.setEnabled(false);
+							System.out.println("MODE: " + modeString);
+						}
+					}
 				}
-				}
+				
 				
 			}
 		});
