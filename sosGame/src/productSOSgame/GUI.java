@@ -160,9 +160,7 @@ public class GUI extends JFrame {
 		gbc.gridy = 1;
 		initPanel.add(modeLabel, gbc);
 		
-		
-		
-		//MODE BUTTONS and PLAYER BUTTONS
+		//MODE BUTTONS AND PLAYER BUTTONS IN BUTTON GROUPS
 		modeGroup.add(generalButton);
 		modeGroup.add(simpleButton);
 		redPlayerGroup.add(sPlayerRed);
@@ -175,6 +173,7 @@ public class GUI extends JFrame {
 		bluePlayerTypeGroup.add(humanPlayerBlue);
 		bluePlayerTypeGroup.add(cpuPlayerBlue);
 		
+		//POSITIONING MODE BUTTONS
 		gbc.gridx = 5;
 		gbc.gridy = 1;
 		initPanel.add(generalButton, gbc);
@@ -182,6 +181,7 @@ public class GUI extends JFrame {
 		gbc.gridy = 1;
 		initPanel.add(simpleButton, gbc);
 		
+//		POSITIONING HUMAN/CPU BUTTONS FOR RED/BLUE BUTTONS
 		gbc.gridx = 0;
 		gbc.gridy = 3;
 		initPanel.add(humanPlayerRed, gbc);
@@ -247,12 +247,14 @@ public class GUI extends JFrame {
 				//Y for yes to identify if player is Human or CPU
 				if(e.getSource() == humanPlayerRed) {
 					humanPlayerKeyRed = 'R';
+					cpuPlayerKeyRed = 'X';
 				}
 				if(e.getSource() == cpuPlayerRed) {
 					cpuPlayerKeyRed = 'R';
 				}
 				if(e.getSource() == humanPlayerBlue) {
-					humanPlayerKeyBlue = 'B';
+					humanPlayerKeyBlue = 'R';
+					cpuPlayerKeyBlue = 'X';
 				}
 				if(e.getSource() == cpuPlayerBlue) {
 					cpuPlayerKeyBlue = 'B';
@@ -274,7 +276,7 @@ public class GUI extends JFrame {
 		
 		
 		
-		//RED PLAYER LABEL
+//		RED PLAYER LABEL
 		JLabel redPlayerLabel = new JLabel("  Red Player  ");
 		redPlayerLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		redPlayerLabel.setForeground(new Color(255, 0, 0));
@@ -282,7 +284,7 @@ public class GUI extends JFrame {
 		gbc.gridy = 2;
 		initPanel.add(redPlayerLabel, gbc);
 		
-		
+//		PLACING RED PLAYER'S S/O BUTTONS
 		gbc.gridx = 0;
 		gbc.gridy = 4;
 		initPanel.add(sPlayerRed, gbc);
@@ -290,7 +292,7 @@ public class GUI extends JFrame {
 		gbc.gridy = 4;
 		initPanel.add(oPlayerRed, gbc);
 		
-		//BLUE PLAYER LABEL
+//		BLUE PLAYER LABEL
 		JLabel bluePlayerLabel = new JLabel("  Blue Player  ");
 		bluePlayerLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		bluePlayerLabel.setForeground(new Color(0, 0, 255));
@@ -298,6 +300,7 @@ public class GUI extends JFrame {
 		gbc.gridy = 2;
 		initPanel.add(bluePlayerLabel, gbc);
 		
+//		PLACING BLUE PLAYER'S S/O BUTTONS
 		gbc.gridx = 5;
 		gbc.gridy = 4;
 		initPanel.add(sPlayerBlue, gbc);
@@ -308,17 +311,17 @@ public class GUI extends JFrame {
 		redPlayerLabel.setForeground(Color.RED);
 		bluePlayerLabel.setForeground(Color.BLUE);
 		
-		//ACTION FOR ENTER BUTTON
+//		ACTION FOR ENTER BUTTON
 		enterButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				String text = sizeInput.getText();
 				size = Integer.parseInt(text);
-				if((humanPlayerKeyRed != 'X' || cpuPlayerKeyRed != 'X') && (humanPlayerKeyBlue != 'X' || cpuPlayerKeyBlue != 'X')) {
+				if((humanPlayerKeyRed != 'X' || cpuPlayerKeyRed != 'X') || (humanPlayerKeyBlue != 'X' || cpuPlayerKeyBlue != 'X')) {
 					if(playerKeyRed != 'X' && playerKeyBlue != 'X') {
 						System.out.println(humanPlayerKeyRed + "=HR ---" + cpuPlayerKeyRed + "=CR ---" + 
 								humanPlayerKeyBlue  + "=HB ---" + cpuPlayerKeyBlue + "=CB");
-						//PASS IN SIZE, MODE, PLAYER SYMBOL
+//						PASS IN SIZE, MODE, PLAYER SYMBOL
 						board.setCpuRedPlayer(cpuPlayerKeyRed);
 						board.setCpuBluePlayer(cpuPlayerKeyBlue);
 						System.out.println(board.getCpuRedPlayer() + "=CR ---" + 
@@ -368,7 +371,7 @@ public class GUI extends JFrame {
 	}
 	
 	public void setGamePanel(Board board, GeneralGameBoard generalGame, SimpleGameBoard simpleGame, int pSize) {
-		//SCREEN BOARD SIZE
+//		SCREEN BOARD SIZE
 		CANVAS_WIDTH = 500;  
 		CANVAS_HEIGHT = 500;
 		CELL_SIZE = CANVAS_WIDTH / pSize;

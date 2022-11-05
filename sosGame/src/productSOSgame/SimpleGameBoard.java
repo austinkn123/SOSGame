@@ -9,13 +9,14 @@ public class SimpleGameBoard extends Board {
 		if ((row >= 0) && (row < boardSize) && (column >= 0) && (column < boardSize) && (grid[row][column] == Cell.EMPTY)) {
 			grid[row][column] = (turn == 'R')? Cell.RED_PLAYER : Cell.BLUE_PLAYER;
 			
+//			After making a move, the gamestate is updated
 			updateGameState(turn, row, column, redPlayer, bluePlayer); 
 			
 			turn = (turn == 'R')? 'B' : 'R';
 			
+//			Making a computer move if the char key for computer matches
 			if ((turn == cpuPlayerKeyRed || turn == cpuPlayerKeyBlue) && currentGameState == GameState.PLAYING) {
 				makeAutoMove(boardSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue);
-//				updateGameState(turn, row, column, redPlayer, bluePlayer);
 			}
 			
 		}
@@ -49,8 +50,9 @@ public class SimpleGameBoard extends Board {
 				}
 			}
 		}
+		
 	}
-	
+//	Make a random first move
 	public void makeFirstXMove(int size, char redPlayer, 
 			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue) {
 		Random random = new Random();
@@ -59,6 +61,7 @@ public class SimpleGameBoard extends Board {
 				cpuPlayerKeyRed, cpuPlayerKeyBlue);
 	}
 	
+	//If a player has scored, or if the board is filled with nobody scoring then end the game 
 	private void updateGameState(char turn, int row, int column, char redPlayer, char bluePlayer) {
 		if (hasScored(turn, row, column, size, redPlayer, bluePlayer)) { // check for player scoring
 			currentGameState = (turn == 'R') ? GameState.RED_WINS : GameState.BLUE_WINS;

@@ -12,10 +12,6 @@ public class Board {
 	protected char bluePlayerKey = 'X';
 	private char cpuRedPlayer = 'X';
 	private char cpuBluePlayer = 'X';
-//	private char cpuPlayerKey = 'X';
-//	private char humanPlayerKey = 'X';
-//	private char humanRedPlayer = 'X';
-//	private char humanBluePlayer = 'X';
 	protected Cell[][] grid; 
 	protected scoredCell[][] scoredGrid;
 	private int pointRed = 0;
@@ -47,33 +43,17 @@ public class Board {
 	public void setCpuBluePlayer(char cpuBluePlayer) {this.cpuBluePlayer = cpuBluePlayer;}
 	public char getCpuBluePlayer() {return cpuBluePlayer;}
 	
-//	public void setCpuPlayerKey(char cpuPlayerKey) {this.cpuPlayerKey = cpuPlayerKey;}
-//	public char getCpuPlayerKey() {return cpuPlayerKey;}
-//	
-//	public void setHumanPlayerKey(char humanPlayerKey) {this.humanPlayerKey = humanPlayerKey;}
-//	public char getHumanPlayerKey() {return humanPlayerKey;}
 	
-//	public void setHumanRedPlayer(char humanRedPlayer) {this.humanRedPlayer = humanRedPlayer;}
-//	public char getHumanRedPlayer() {return humanRedPlayer;}
-	
-//	public void setHumanBluePlayer(char humanBluePlayer) {this.humanBluePlayer = humanBluePlayer;}
-//	public char getHumanBluePlayer() {return humanBluePlayer;}
+	public Board() {
+		grid = new Cell[size][size];
+		initBoard();
+	}
 	
 	public Cell[][] getGrid(){
 		return grid;
 	}
 	
-	public void setSizeBoard(int newSize) { 
-		setSize(newSize);
-	    //CAREFUL, MAKES NEW BOARD OF ZEROS
-	    grid = new Cell[newSize][newSize];
-	    
-	    //TESTING
-	    scoredGrid = new scoredCell[newSize][newSize];
-	    
-	    initBoard();
-	 }
-	
+//	Sets the game mode key and checks valid size
 	public int setMode(String modeKey,int newSize) {
 		if(newSize < 3) {
 			return -1;
@@ -87,11 +67,19 @@ public class Board {
 	    return -1;
 	 }
 	
-	public Board() {
-		grid = new Cell[size][size];
-		initBoard();
-	}
+//	Can function as a reset function
+	public void setSizeBoard(int newSize) { 
+		setSize(newSize);
+	    //CAREFUL, MAKES NEW BOARD OF ZEROS
+	    grid = new Cell[newSize][newSize];
+	    
+	    //TESTING
+	    scoredGrid = new scoredCell[newSize][newSize];
+	    
+	    initBoard();
+	 }
 	
+//	Sets board and scored board as empty and sets game state
 	public void initBoard() {
 		for (int row = 0; row < size; row++) {
 			for (int column = 0; column < size; column++) {

@@ -6,15 +6,16 @@ public class GeneralGameBoard extends Board {
 	public enum GameStateGeneral {RED_SCORES, BLUE_SCORES, NO_SCORE};
 	protected GameStateGeneral currentGameScore;
 	
+	
 	public void makeMoveInGeneralMode(int row, int column, int boardSize, char redPlayer, 
 			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue) {
 		if ((row >= 0) && (row < boardSize) && (column >= 0) && (column < boardSize) && (grid[row][column] == Cell.EMPTY)) {
 			grid[row][column] = (turn == 'R')? Cell.RED_PLAYER : Cell.BLUE_PLAYER; 
 			
-			
-			
+//			After making a move, the gamestate is updated
 			updateGameState(turn, row, column, redPlayer, bluePlayer); 
 			
+//			Turn is still with the player if they scored
 			if(currentGameScore == GameStateGeneral.RED_SCORES) {
 				turn = 'R';
 			}
@@ -25,14 +26,16 @@ public class GeneralGameBoard extends Board {
 				turn = (turn == 'R')? 'B' : 'R';
 			}
 			
+//			Making a computer move if the char key for computer matches
 			if ((turn == cpuPlayerKeyRed || turn == cpuPlayerKeyBlue) && currentGameState == GameState.PLAYING) {
+				System.out.println("TURN: " + turn);
 				makeAutoMove(boardSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue);
 			}
 			
 		}
 	}
 	
-	//Makes a automated move
+//	Makes a automated move
 	private void makeAutoMove(int size, char redPlayer, 
 			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue) {
 		if (!makeWinningMove()) {
@@ -45,7 +48,7 @@ public class GeneralGameBoard extends Board {
 			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue) {
 		int numberOfEmptyCells = getNumberOfEmptyCells();
 		Random random = new Random();
-		//Generate random number within number of empty cells
+//		Generate random number within number of empty cells
 		int targetMove = random.nextInt(numberOfEmptyCells);
 		int index=0;
 		for (int row = 0; row < size; ++row) {
@@ -62,10 +65,13 @@ public class GeneralGameBoard extends Board {
 		}
 	}
 	
+//	Make a random first move
 	public void makeFirstXMove(int size, char redPlayer, 
 			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue) {
 		Random random = new Random();
 		int position = random.nextInt(size * size);
+		System.out.println("CPU RED: " + cpuPlayerKeyRed);
+		System.out.println("CPU BLUE: " + cpuPlayerKeyBlue);
 		makeMoveInGeneralMode(position/3, position%3, size, redPlayer, bluePlayer, 
 				cpuPlayerKeyRed, cpuPlayerKeyBlue);
 	}
@@ -78,6 +84,7 @@ public class GeneralGameBoard extends Board {
 		return currentGameScore;
 	}
 	
+//	Checking the game state to see if a player has scored
 	private void updateGameState(char turn, int row, int column, char redPlayer, char bluePlayer) {
 		if (hasScored(turn, row, column, size, redPlayer, bluePlayer)) { // check for player scoring
 			currentGameScore = (turn == 'R') ? GameStateGeneral.RED_SCORES : GameStateGeneral.BLUE_SCORES;
@@ -91,6 +98,7 @@ public class GeneralGameBoard extends Board {
 		
 	}
 	
+//	Checks score when game ends to decide winner
 	private void checkGameScore() {
 		if(isFilled()) {
 			if(getPointRed() > getPointBlue()) {
