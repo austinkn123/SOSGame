@@ -13,7 +13,7 @@ import productSOSgame.SimpleGameBoard;
 import productSOSgame.Board.Cell;
 
 
-public class TestMoveBlue {
+public class TestMoveBlueHuman {
 
 	private Board board;
 	private GeneralGameBoard generalBoardPlayerS;

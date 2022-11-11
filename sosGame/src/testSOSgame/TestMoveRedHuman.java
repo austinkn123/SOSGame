@@ -13,7 +13,7 @@ import productSOSgame.SimpleGameBoard;
 import productSOSgame.Board.Cell;
 
 
-public class TestMoveRed {
+public class TestMoveRedHuman {
 
 	private Board board;
 	private GeneralGameBoard generalBoard;
@@ -41,6 +41,7 @@ public class TestMoveRed {
 		assertEquals("", simpleBoard.getCell(0, 0, size), Cell.RED_PLAYER);
 		assertEquals("", simpleBoard.getTurn(), 'B');
 	}
+	
 	//acceptance criterion 4.2
 	@Test
 	public void testRedTurnMoveNonVacantCellinSimpleMode() { 
@@ -111,7 +112,7 @@ public class TestMoveRed {
 	// acceptance criterion 6.4
 	//S player
 	@Test
-	public void scoredPointasPlayerS() {
+	public void scoredPointAsPlayerS() {
 		generalBoard.makeMoveInGeneralMode(0, 0, size, 'S', 'O', 'X', 'X');
 		generalBoard.makeMoveInGeneralMode(1, 0, size, 'S', 'O', 'X', 'X');
 		generalBoard.makeMoveInGeneralMode(2, 0, size, 'S', 'O', 'X', 'X');
@@ -122,7 +123,7 @@ public class TestMoveRed {
 	
 	//O Player
 	@Test
-	public void scoredPointasPlayerO() {
+	public void scoredPointAsPlayerO() {
 		generalBoard.makeMoveInGeneralMode(1, 1, size, 'O', 'S', 'X', 'X'); //O
 		generalBoard.makeMoveInGeneralMode(0, 0, size, 'O', 'S', 'X', 'X'); //S
 		generalBoard.makeMoveInGeneralMode(1, 0, size, 'O', 'S', 'X', 'X'); //O

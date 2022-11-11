@@ -42,6 +42,8 @@ public class SimpleGameBoard extends Board {
 			for (int col = 0; col < size; ++col) {
 				if (grid[row][col] == Cell.EMPTY) {
 					if (targetMove == index) {
+						setRow(row);
+						setCol(col);
 						makeMoveInSimpleMode(row, col, size, redPlayer, bluePlayer, 
 									cpuPlayerKeyRed, cpuPlayerKeyBlue);
 						return;
@@ -53,11 +55,13 @@ public class SimpleGameBoard extends Board {
 		
 	}
 //	Make a random first move
-	public void makeFirstXMove(int size, char redPlayer, 
+	public void makeFirstMove(int size, char redPlayer, 
 			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue) {
 		Random random = new Random();
-		int position = random.nextInt(9);
-		makeMoveInSimpleMode(position/3, position%3, size, redPlayer, bluePlayer, 
+		int position = random.nextInt(size * size);
+		setRow(position/size);
+		setCol(position%size);
+		makeMoveInSimpleMode(position/size, position%size, size, redPlayer, bluePlayer, 
 				cpuPlayerKeyRed, cpuPlayerKeyBlue);
 	}
 	

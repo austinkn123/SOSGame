@@ -16,6 +16,8 @@ public class Board {
 	protected scoredCell[][] scoredGrid;
 	private int pointRed = 0;
 	private int pointBlue = 0;
+	public int row;
+	public int col;
 	
 	public void addPointRed() {pointRed += 1;}
 	public void resetPointRed() {pointRed = 0;}
@@ -42,6 +44,23 @@ public class Board {
 	
 	public void setCpuBluePlayer(char cpuBluePlayer) {this.cpuBluePlayer = cpuBluePlayer;}
 	public char getCpuBluePlayer() {return cpuBluePlayer;}
+	
+//	For Automated Testing
+	public void setRow(int row) {
+		this.row = row;
+	}
+	
+	public void setCol(int col) {
+		this.col = col;
+	}
+	
+	public int getRow() {
+		return row;
+	}
+	
+	public int getCol() {
+		return col;
+	}
 	
 	
 	public Board() {

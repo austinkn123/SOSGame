@@ -154,11 +154,12 @@ public class GameBoardCanvas extends JPanel {
 	public void makeFirstAutoMove(GeneralGameBoard generalMode, SimpleGameBoard simpleMode, int pSize, 
 			char redPlayer, char bluePlayer, String pModString, char cpuPlayerKeyRed, char cpuPlayerKeyBlue) { 
 		if (cpuPlayerKeyRed != 'X') {
+			System.out.println(cpuPlayerKeyRed);
 			if(modeString == "GENERAL") {
-				generalGame.makeFirstXMove(pSize, playerKeyRed, playerKeyBlue, cpuPlayerKeyRed, cpuPlayerKeyBlue);
+				generalGame.makeFirstMove(pSize, playerKeyRed, playerKeyBlue, cpuPlayerKeyRed, cpuPlayerKeyBlue);
 			}
 			if(modeString == "SIMPLE") {
-				simpleGame.makeFirstXMove(pSize, playerKeyRed, playerKeyBlue, cpuPlayerKeyRed, cpuPlayerKeyBlue);
+				simpleGame.makeFirstMove(pSize, playerKeyRed, playerKeyBlue, cpuPlayerKeyRed, cpuPlayerKeyBlue);
 			}
 		}
 	}

@@ -36,7 +36,7 @@ public class GeneralGameBoard extends Board {
 	}
 	
 //	Makes a automated move
-	private void makeAutoMove(int size, char redPlayer, 
+	public void makeAutoMove(int size, char redPlayer, 
 			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue) {
 		if (!makeWinningMove()) {
 			if (!blockOpponentWinningMove())
@@ -55,6 +55,8 @@ public class GeneralGameBoard extends Board {
 			for (int col = 0; col < size; ++col) {
 				if (grid[row][col] == Cell.EMPTY) {
 					if (targetMove == index) {
+						setRow(row);
+						setCol(col);
 						makeMoveInGeneralMode(row, col, size, redPlayer, bluePlayer, 
 								cpuPlayerKeyRed, cpuPlayerKeyBlue);
 						return;
@@ -66,14 +68,26 @@ public class GeneralGameBoard extends Board {
 	}
 	
 //	Make a random first move
-	public void makeFirstXMove(int size, char redPlayer, 
+	public void makeFirstMove(int size, char redPlayer, 
 			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue) {
 		Random random = new Random();
 		int position = random.nextInt(size * size);
 		System.out.println("CPU RED: " + cpuPlayerKeyRed);
 		System.out.println("CPU BLUE: " + cpuPlayerKeyBlue);
-		makeMoveInGeneralMode(position/3, position%3, size, redPlayer, bluePlayer, 
+		setRow(position/size);
+		setCol(position%size);
+		makeMoveInGeneralMode(position/size, position%size, size, redPlayer, bluePlayer, 
 				cpuPlayerKeyRed, cpuPlayerKeyBlue);
+	}
+	
+//	FOR TESTING PURPOSES
+	public void testingAutomatedMove(int row, int column, int size, char redPlayer, 
+			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue) {
+		if ((turn == cpuPlayerKeyRed || turn == cpuPlayerKeyBlue) && currentGameState == GameState.PLAYING) {
+			makeMoveInGeneralMode(row, column, size, redPlayer, bluePlayer, 
+					cpuPlayerKeyRed, cpuPlayerKeyBlue);
+			
+		}
 	}
 	
 	public void setGameScore(GameStateGeneral currentGameScore) {
