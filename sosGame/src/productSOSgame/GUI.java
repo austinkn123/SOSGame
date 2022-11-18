@@ -42,13 +42,17 @@ public class GUI extends JFrame {
 	private ButtonGroup bluePlayerTypeGroup = new ButtonGroup();
 	private ButtonGroup redPlayerTypeGroup = new ButtonGroup();
 	
-	JTextField sizeInput = new JTextField();
-	JButton enterButton = new JButton("Enter");
+	public JTextField sizeInput = new JTextField();
+	
 	
 	protected static JPanel redPlayerPanel = new JPanel();
 	protected static JPanel bluePlayerPanel = new JPanel();
 	protected JLabel redPlayerLabel = new JLabel("  Red Player  ");
 	protected JLabel bluePlayerLabel = new JLabel("  Blue Player  ");
+//	protected JLabel redPlayerPoints;
+//	protected JLabel bluePlayerPoints;
+	
+	public JButton enterButton = new JButton("Enter");
 	
 	private final JRadioButton simpleButton = new JRadioButton("Simple ");
 	private final JRadioButton generalButton = new JRadioButton("General");
@@ -63,19 +67,16 @@ public class GUI extends JFrame {
 	private final JRadioButton sPlayerBlue = new JRadioButton("S");
 	private final JRadioButton oPlayerBlue = new JRadioButton("O");
 	
-	protected JLabel redPlayerPoints;
-	protected JLabel bluePlayerPoints;
+	private GridBagConstraints gbc = new GridBagConstraints();
 	
-	GridBagConstraints gbc = new GridBagConstraints();
-	
-	int size;
-	String modeString = "Not Selected";
-	char playerKeyRed = 'X';
-	char playerKeyBlue = 'X';
-	char cpuPlayerKeyRed = 'X';
-	char cpuPlayerKeyBlue = 'X';
-	char humanPlayerKeyRed = 'X';
-	char humanPlayerKeyBlue = 'X';
+	private int size;
+	private String modeString = "Not Selected";
+	private char playerKeyRed = 'X';
+	private char playerKeyBlue = 'X';
+	private char cpuPlayerKeyRed = 'X';
+	private char cpuPlayerKeyBlue = 'X';
+	private char humanPlayerKeyRed = 'X';
+	private char humanPlayerKeyBlue = 'X';
 
 
 	/**
@@ -125,7 +126,7 @@ public class GUI extends JFrame {
 		
 		//SIZE LABEL
 		JLabel sizeLabel = new JLabel("Enter Size(>2):");
-		sizeLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		sizeLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
 		sizeLabel.setBounds(10, 10, 195, 47);
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
@@ -153,7 +154,7 @@ public class GUI extends JFrame {
 		
 		//SIZE LABEL
 		JLabel modeLabel = new JLabel("  Mode: ");
-		modeLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		modeLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
 		modeLabel.setBounds(10, 10, 195, 47);
 		gbc.gridwidth = 1;
 		gbc.gridx = 4;
@@ -333,12 +334,15 @@ public class GUI extends JFrame {
 						
 						if(board.setMode(modeString, size) != -1) {
 							if(board.setMode(modeString, size) == 1) {
+								generalGame.setModeString(modeString);
 								generalGame.setSizeBoard(size);
 							}
 							else if (board.setMode(modeString, size) == 2) {
+								simpleGame.setModeString(modeString);
 								simpleGame.setSizeBoard(size);
 							}
 							else {
+								board.setModeString(modeString);
 								board.setSizeBoard(size);
 							}
 							

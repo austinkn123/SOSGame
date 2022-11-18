@@ -78,9 +78,9 @@ public class TestBoardGUI {
 		board.setModeString("GENERAL");
 		generalBoard.setSizeBoard(size);
 		System.out.println("GENERAL BOARD");
-		generalBoard.makeMoveInGeneralMode(0, 0, size, 'S', 'O', 'X', 'X'); //RED is S
-		generalBoard.makeMoveInGeneralMode(1, 1, size, 'S', 'O', 'X', 'X'); //BLUE is O
-		generalBoard.makeMoveInGeneralMode(1, 4, size, 'S', 'O', 'X', 'X'); //RED is S
+		generalBoard.makeMoveInGeneralMode(0, 0, size, 'S', 'O', 'X', 'X', false); //RED is S
+		generalBoard.makeMoveInGeneralMode(1, 1, size, 'S', 'O', 'X', 'X', false); //BLUE is O
+		generalBoard.makeMoveInGeneralMode(1, 4, size, 'S', 'O', 'X', 'X', false); //RED is S
 		System.out.println("S makes Move");
 		System.out.println(generalBoard.getCell(0, 0, size));
 		System.out.println("O makes Move");
@@ -102,9 +102,9 @@ public class TestBoardGUI {
 		simpleBoard.setSizeBoard(size);
 		board.setRedPlayerKey('O');
 		board.setBluePlayerKey('S');
-		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'O', 'S', 'X', 'X'); //RED is O
-		simpleBoard.makeMoveInSimpleMode(1, 1, size, 'O', 'S', 'X', 'X'); //BLUE is S
-		simpleBoard.makeMoveInSimpleMode(1, 4, size, 'O', 'S', 'X', 'X'); //RED is O
+		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'O', 'S', 'X', 'X', false); //RED is O
+		simpleBoard.makeMoveInSimpleMode(1, 1, size, 'O', 'S', 'X', 'X', false); //BLUE is S
+		simpleBoard.makeMoveInSimpleMode(1, 4, size, 'O', 'S', 'X', 'X', false); //RED is O
 		System.out.println("S makes Move");
 		System.out.println(simpleBoard.getCell(0, 0, size));
 		System.out.println("O makes Move");

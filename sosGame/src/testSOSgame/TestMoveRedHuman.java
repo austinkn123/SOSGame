@@ -37,7 +37,7 @@ public class TestMoveRedHuman {
 	// acceptance criterion 4.1
 	@Test
 	public void testRedTurnMoveVacantCellinSimpleMode() {
-		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'S', 'O', 'X', 'X'); //RED is S
+		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'S', 'O', 'X', 'X', false); //RED is S
 		assertEquals("", simpleBoard.getCell(0, 0, size), Cell.RED_PLAYER);
 		assertEquals("", simpleBoard.getTurn(), 'B');
 	}
@@ -45,32 +45,32 @@ public class TestMoveRedHuman {
 	//acceptance criterion 4.2
 	@Test
 	public void testRedTurnMoveNonVacantCellinSimpleMode() { 
-		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'S', 'O', 'X', 'X'); //RED is S
-		simpleBoard.makeMoveInSimpleMode(0, 1, size, 'S', 'O', 'X', 'X'); //BLUE is O
+		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'S', 'O', 'X', 'X', false); //RED is S
+		simpleBoard.makeMoveInSimpleMode(0, 1, size, 'S', 'O', 'X', 'X', false); //BLUE is O
 		assertEquals("", simpleBoard.getCell(0, 1, size), Cell.BLUE_PLAYER);
 		assertEquals("", simpleBoard.getTurn(), 'R');
-		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'S', 'O', 'X', 'X'); //RED is S
+		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'S', 'O', 'X', 'X', false); //RED is S
 		assertEquals("", simpleBoard.getTurn(), 'R');
 	}
 	
 	//acceptance criterion 4.3
 	@Test
 	public void testRedTurnInvalidSizeMoveinSimpleMode() {
-		simpleBoard.makeMoveInSimpleMode(0, size + 1, size, 'S', 'O', 'X', 'X'); //RED is S
+		simpleBoard.makeMoveInSimpleMode(0, size + 1, size, 'S', 'O', 'X', 'X', false); //RED is S
 		assertEquals("", simpleBoard.getTurn(), 'R');
 	}
 	
 	// acceptance criterion 6.1
 	@Test
 	public void testRedTurnMoveVacantCellinGeneralModePlayerS() {
-		generalBoard.makeMoveInGeneralMode(0, 0, size, 'S', 'O', 'X', 'X');
+		generalBoard.makeMoveInGeneralMode(0, 0, size, 'S', 'O', 'X', 'X', false);
 		assertEquals("", generalBoard.getCell(0, 0, size), Cell.RED_PLAYER);
 		assertEquals("", generalBoard.getTurn(), 'B');
 	}
 	
 	@Test
 	public void testRedTurnMoveVacantCellinGeneralModePlayerO() {
-		generalBoard.makeMoveInGeneralMode(0, 0, size, 'O', 'S', 'X', 'X');
+		generalBoard.makeMoveInGeneralMode(0, 0, size, 'O', 'S', 'X', 'X', false);
 		assertEquals("", generalBoard.getCell(0, 0, size), Cell.RED_PLAYER);
 		assertEquals("", generalBoard.getTurn(), 'B');
 	}
@@ -78,34 +78,34 @@ public class TestMoveRedHuman {
 	// acceptance criterion 6.2
 	@Test
 	public void testRedTurnMoveNonVacantCellinGeneralModePlayerS() {
-		generalBoard.makeMoveInGeneralMode(0, 0, size, 'S', 'O', 'X', 'X');
-		generalBoard.makeMoveInGeneralMode(1, 0, size, 'S', 'O', 'X', 'X');
+		generalBoard.makeMoveInGeneralMode(0, 0, size, 'S', 'O', 'X', 'X', false);
+		generalBoard.makeMoveInGeneralMode(1, 0, size, 'S', 'O', 'X', 'X', false);
 		assertEquals("", generalBoard.getCell(1, 0, size), Cell.BLUE_PLAYER);
 		assertEquals("", generalBoard.getTurn(), 'R');
-		generalBoard.makeMoveInGeneralMode(0, 0, size, 'S', 'O', 'X', 'X');
+		generalBoard.makeMoveInGeneralMode(0, 0, size, 'S', 'O', 'X', 'X', false);
 		assertEquals("", generalBoard.getTurn(), 'R');
 	}
 	
 	@Test
 	public void testRedTurnMoveNonVacantCellinGeneralModePlayerO() {
-		generalBoard.makeMoveInGeneralMode(0, 0, size, 'O', 'S', 'X', 'X');
-		generalBoard.makeMoveInGeneralMode(1, 0, size, 'O', 'S', 'X', 'X');
+		generalBoard.makeMoveInGeneralMode(0, 0, size, 'O', 'S', 'X', 'X', false);
+		generalBoard.makeMoveInGeneralMode(1, 0, size, 'O', 'S', 'X', 'X', false);
 		assertEquals("", generalBoard.getCell(1, 0, size), Cell.BLUE_PLAYER);
 		assertEquals("", generalBoard.getTurn(), 'R');
-		generalBoard.makeMoveInGeneralMode(0, 0, size, 'O', 'S', 'X', 'X');
+		generalBoard.makeMoveInGeneralMode(0, 0, size, 'O', 'S', 'X', 'X', false);
 		assertEquals("", generalBoard.getTurn(), 'R');
 	}
 	
 	// acceptance criterion 6.3
 	@Test
 	public void testRedTurnInvalidSizeMoveinGeneralModePlayerS() {
-		generalBoard.makeMoveInGeneralMode(size + 1, 0, size, 'S', 'O', 'X', 'X');
+		generalBoard.makeMoveInGeneralMode(size + 1, 0, size, 'S', 'O', 'X', 'X', false);
 		assertEquals("", generalBoard.getTurn(), 'R');
 	} 
 	
 	@Test
 	public void testRedTurnInvalidSizeMoveinGeneralModePlayerO() {
-		generalBoard.makeMoveInGeneralMode(size + 1, 0, size, 'O', 'S', 'X', 'X');
+		generalBoard.makeMoveInGeneralMode(size + 1, 0, size, 'O', 'S', 'X', 'X', false);
 		assertEquals("", generalBoard.getTurn(), 'R');
 	} 
 	
@@ -113,9 +113,9 @@ public class TestMoveRedHuman {
 	//S player
 	@Test
 	public void scoredPointAsPlayerS() {
-		generalBoard.makeMoveInGeneralMode(0, 0, size, 'S', 'O', 'X', 'X');
-		generalBoard.makeMoveInGeneralMode(1, 0, size, 'S', 'O', 'X', 'X');
-		generalBoard.makeMoveInGeneralMode(2, 0, size, 'S', 'O', 'X', 'X');
+		generalBoard.makeMoveInGeneralMode(0, 0, size, 'S', 'O', 'X', 'X', false);
+		generalBoard.makeMoveInGeneralMode(1, 0, size, 'S', 'O', 'X', 'X', false);
+		generalBoard.makeMoveInGeneralMode(2, 0, size, 'S', 'O', 'X', 'X', false);
 		assertEquals("", generalBoard.getGameScore(), GameStateGeneral.RED_SCORES); 
 		assertEquals("", generalBoard.getPointRed(), 1); 
 		assertEquals("", generalBoard.getTurn(), 'R'); 
@@ -124,11 +124,11 @@ public class TestMoveRedHuman {
 	//O Player
 	@Test
 	public void scoredPointAsPlayerO() {
-		generalBoard.makeMoveInGeneralMode(1, 1, size, 'O', 'S', 'X', 'X'); //O
-		generalBoard.makeMoveInGeneralMode(0, 0, size, 'O', 'S', 'X', 'X'); //S
-		generalBoard.makeMoveInGeneralMode(1, 0, size, 'O', 'S', 'X', 'X'); //O
-		generalBoard.makeMoveInGeneralMode(0, 2, size, 'O', 'S', 'X', 'X'); //S
-		generalBoard.makeMoveInGeneralMode(0, 1, size, 'O', 'S', 'X', 'X'); //O
+		generalBoard.makeMoveInGeneralMode(1, 1, size, 'O', 'S', 'X', 'X', false); //O
+		generalBoard.makeMoveInGeneralMode(0, 0, size, 'O', 'S', 'X', 'X', false); //S
+		generalBoard.makeMoveInGeneralMode(1, 0, size, 'O', 'S', 'X', 'X', false); //O
+		generalBoard.makeMoveInGeneralMode(0, 2, size, 'O', 'S', 'X', 'X', false); //S
+		generalBoard.makeMoveInGeneralMode(0, 1, size, 'O', 'S', 'X', 'X', false); //O
 		assertEquals("", generalBoard.getGameScore(), GameStateGeneral.RED_SCORES); 
 		assertEquals("", generalBoard.getPointRed(), 1); 
 		assertEquals("", generalBoard.getTurn(), 'R'); 

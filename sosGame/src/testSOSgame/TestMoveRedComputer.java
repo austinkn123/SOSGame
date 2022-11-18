@@ -12,7 +12,7 @@ import productSOSgame.SimpleGameBoard;
 import productSOSgame.Board.Cell;
 import productSOSgame.Board.GameState;
 
-public class TestMoveRedAutomated {
+public class TestMoveRedComputer {
 
 	private Board board;
 	private GeneralGameBoard generalBoard;
@@ -36,14 +36,14 @@ public class TestMoveRedAutomated {
 	// acceptance criterion 8.1
 	@Test
 	public void testAutomatedRedTurnMoveVacantCellinSimpleModePlayerS() {
-		simpleBoard.makeFirstMove(size, 'S', 'O', 'R', 'X');
+		simpleBoard.makeFirstMove(size, 'S', 'O', 'R', 'X', false);
 		assertEquals("", simpleBoard.getCell(simpleBoard.getRow(), simpleBoard.getCol(), size), Cell.RED_PLAYER);
 		assertEquals("", simpleBoard.getTurn(), 'B');
 	}
 	
 	@Test
 	public void testAutomatedRedTurnMoveVacantCellinSimpleModePlayerO() {
-		simpleBoard.makeFirstMove(size, 'O', 'S', 'R', 'X');
+		simpleBoard.makeFirstMove(size, 'O', 'S', 'R', 'X', false);
 		assertEquals("", simpleBoard.getCell(simpleBoard.getRow(), simpleBoard.getCol(), size), Cell.RED_PLAYER);
 		assertEquals("", simpleBoard.getTurn(), 'B');
 	}
@@ -51,44 +51,44 @@ public class TestMoveRedAutomated {
 	// acceptance criterion 8.2
 	@Test
 	public void testAutomatedRedTurnMoveNonVacantCellinSimpleModePlayerS() {
-		simpleBoard.makeFirstMove(size, 'S', 'O', 'R', 'X');
-		simpleBoard.makeMoveInSimpleMode(simpleBoard.getRow(), simpleBoard.getCol(), size, 'S', 'O', 'R', 'X');
+		simpleBoard.makeFirstMove(size, 'S', 'O', 'R', 'X', false);
+		simpleBoard.makeMoveInSimpleMode(simpleBoard.getRow(), simpleBoard.getCol(), size, 'S', 'O', 'R', 'X', false);
 		assertEquals("", simpleBoard.getTurn(), 'B');
 	}
 	
 	@Test
 	public void testAutomatedRedTurnMoveNonVacantCellinSimpleModePlayerO() {
-		simpleBoard.makeFirstMove(size, 'O', 'S', 'R', 'X');
-		simpleBoard.makeMoveInSimpleMode(simpleBoard.getRow(), simpleBoard.getCol(), size, 'S', 'O', 'R', 'X');
+		simpleBoard.makeFirstMove(size, 'O', 'S', 'R', 'X', false);
+		simpleBoard.makeMoveInSimpleMode(simpleBoard.getRow(), simpleBoard.getCol(), size, 'S', 'O', 'R', 'X', false);
 		assertEquals("", simpleBoard.getTurn(), 'B');
 	}
 	
 	// acceptance criterion 8.3
 	@Test
 	public void testAutomatedRedTurnInvalidSizeMoveinSimpleModePlayerS() {
-		simpleBoard.makeFirstMove(size, 'S', 'O', 'R', 'X');
-		simpleBoard.makeMoveInSimpleMode(simpleBoard.getRow(), simpleBoard.getCol(), size + 1, 'S', 'O', 'R', 'X');
+		simpleBoard.makeFirstMove(size, 'S', 'O', 'R', 'X', false);
+		simpleBoard.makeMoveInSimpleMode(simpleBoard.getRow(), simpleBoard.getCol(), size + 1, 'S', 'O', 'R', 'X', false);
 		assertEquals("", simpleBoard.getTurn(), 'B');
 	} 
 	
 	@Test
 	public void testAutomatedRedTurnInvalidSizeMoveinSimpleModePlayerO() {
-		simpleBoard.makeFirstMove(size, 'S', 'O', 'R', 'X');
-		simpleBoard.makeMoveInSimpleMode(simpleBoard.getRow(), simpleBoard.getCol(), size + 1, 'S', 'O', 'R', 'X');
+		simpleBoard.makeFirstMove(size, 'S', 'O', 'R', 'X', false);
+		simpleBoard.makeMoveInSimpleMode(simpleBoard.getRow(), simpleBoard.getCol(), size + 1, 'S', 'O', 'R', 'X', false);
 		assertEquals("", simpleBoard.getTurn(), 'B');
 	} 
 	
 	// acceptance criterion 9.1
 	@Test
 	public void testAutomatedRedTurnMoveVacantCellinGeneralModePlayerS() {
-		generalBoard.makeFirstMove(size, 'S', 'O', 'R', 'X');
+		generalBoard.makeFirstMove(size, 'S', 'O', 'R', 'X', false);
 		assertEquals("", generalBoard.getCell(generalBoard.getRow(), generalBoard.getCol(), size), Cell.RED_PLAYER);
 		assertEquals("", generalBoard.getTurn(), 'B');
 	}
 	
 	@Test
 	public void testAutomatedRedTurnMoveVacantCellinGeneralModePlayerO() {
-		generalBoard.makeFirstMove(size, 'O', 'S', 'R', 'X');
+		generalBoard.makeFirstMove(size, 'O', 'S', 'R', 'X', false);
 		assertEquals("", generalBoard.getCell(generalBoard.getRow(), generalBoard.getCol(), size), Cell.RED_PLAYER);
 		assertEquals("", generalBoard.getTurn(), 'B');
 	}
@@ -96,40 +96,40 @@ public class TestMoveRedAutomated {
 	// acceptance criterion 9.2
 	@Test
 	public void testAutomatedRedTurnMoveNonVacantCellinGeneralModePlayerS() {
-		generalBoard.makeFirstMove(size, 'S', 'O', 'R', 'X');
-		generalBoard.makeMoveInGeneralMode(generalBoard.getRow(), generalBoard.getCol(), size, 'S', 'O', 'R', 'X');
+		generalBoard.makeFirstMove(size, 'S', 'O', 'R', 'X', false);
+		generalBoard.makeMoveInGeneralMode(generalBoard.getRow(), generalBoard.getCol(), size, 'S', 'O', 'R', 'X', false);
 		assertEquals("", generalBoard.getTurn(), 'B');
 	}
 	
 	@Test
 	public void testAutomatedRedTurnMoveNonVacantCellinGeneralModePlayerO() {
-		generalBoard.makeFirstMove(size, 'O', 'S', 'R', 'X');
-		generalBoard.makeMoveInGeneralMode(1, 1, size,  'O', 'S', 'R', 'X');
+		generalBoard.makeFirstMove(size, 'O', 'S', 'R', 'X', false);
+		generalBoard.makeMoveInGeneralMode(1, 1, size,  'O', 'S', 'R', 'X', false);
 		assertEquals("", generalBoard.getTurn(), 'B');
-		generalBoard.testingAutomatedMove(1, 1, size,  'O', 'S', 'R', 'X');
+		generalBoard.testingAutomatedMove(1, 1, size,  'O', 'S', 'R', 'X', false);
 		assertEquals("", generalBoard.getTurn(), 'B');
 	}
 	
 	// acceptance criterion 9.3
 	@Test
 	public void testAutomatedRedTurnInvalidSizeMoveinGeneralModePlayerS() {
-		generalBoard.makeFirstMove(size, 'S', 'O', 'R', 'X');
-		generalBoard.makeMoveInGeneralMode(generalBoard.getRow(), generalBoard.getCol(), size + 1, 'S', 'O', 'R', 'X');
+		generalBoard.makeFirstMove(size, 'S', 'O', 'R', 'X', false);
+		generalBoard.makeMoveInGeneralMode(generalBoard.getRow(), generalBoard.getCol(), size + 1, 'S', 'O', 'R', 'X', false);
 		assertEquals("", generalBoard.getTurn(), 'B');
 	} 
 	
 	@Test
 	public void testAutomatedRedTurnInvalidSizeMoveinGeneralModePlayerO() {
-		generalBoard.makeFirstMove(size, 'O', 'S', 'R', 'X');
-		generalBoard.makeMoveInGeneralMode(generalBoard.getRow(), generalBoard.getCol(), size + 1, 'S', 'O', 'R', 'X');
+		generalBoard.makeFirstMove(size, 'O', 'S', 'R', 'X', false);
+		generalBoard.makeMoveInGeneralMode(generalBoard.getRow(), generalBoard.getCol(), size + 1, 'S', 'O', 'R', 'X', false);
 		assertEquals("", generalBoard.getTurn(), 'B');
 	} 
 	
 	// acceptance criterion 9.4
 	@Test
 	public void scoredPointAsAutomatedPlayerS() {
-		generalBoard.makeFirstMove(size, 'S', 'O', 'R', 'B');
-		generalBoard.makeMoveInGeneralMode(generalBoard.getRow(), generalBoard.getCol(), size , 'S', 'O', 'R', 'B');
+		generalBoard.makeFirstMove(size, 'S', 'O', 'R', 'B', false);
+		generalBoard.makeMoveInGeneralMode(generalBoard.getRow(), generalBoard.getCol(), size , 'S', 'O', 'R', 'B', false);
 		assertEquals("", generalBoard.getGameState(), GameState.RED_WINS); 
 	} 
 	

@@ -17,6 +17,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+
 import productSOSgame.Board.Cell;
 import productSOSgame.GeneralGameBoard.GameStateGeneral;
 import productSOSgame.Board.GameState;
@@ -36,25 +38,24 @@ public class GameBoardCanvas extends JPanel {
 	protected int CANVAS_HEIGHT;
 
 
-	Board board;
-	GeneralGameBoard generalGame = new GeneralGameBoard();
-	SimpleGameBoard simpleGame = new SimpleGameBoard();
+	private Board board;
+	private GeneralGameBoard generalGame = new GeneralGameBoard();
+	private SimpleGameBoard simpleGame = new SimpleGameBoard();
 	
 	protected JLabel redPlayerPoints;
 	protected JLabel bluePlayerPoints;
 	
-	private  JPanel gameOptions = new JPanel();
+	private JPanel gameOptions = new JPanel();
 	private JLabel gameStatusBar = new JLabel("Red Player, Make a Move!");;
 	GridBagConstraints gbc = new GridBagConstraints();
 	
-	int size = 8;
-	String modeString = "GENERAL";
-	char playerKeyRed = 'X';
-	char playerKeyBlue = 'X';
-	char cpuPlayerKeyRed = 'X';
-	char cpuPlayerKeyBlue = 'X';
-	char humanPlayerKeyRed = 'X';
-	char humanPlayerKeyBlue = 'X';
+	private int size = 8;
+	private String modeString = "GENERAL";
+	private char playerKeyRed = 'X';
+	private char playerKeyBlue = 'X';
+	private char cpuPlayerKeyRed = 'X';
+	private char cpuPlayerKeyBlue = 'X';
+	private boolean recordState = false;
 	
 	//For test cases
 	public void setMode(String modeString) {this.modeString = modeString;}
@@ -70,28 +71,28 @@ public class GameBoardCanvas extends JPanel {
 		size= board.getSize();
 		size = pSize;
 		modeString = board.getModeString();
+		System.out.println(board.getModeString());
 		playerKeyRed = board.getRedPlayerKey();
 		playerKeyBlue = board.getBluePlayerKey();
 		cpuPlayerKeyRed = board.getCpuRedPlayer();
 		cpuPlayerKeyBlue = board.getCpuBluePlayer();
 		
 		
-		gameOptions.setLayout(new GridBagLayout());
+//		gameOptions.setLayout(new GridBagLayout());
+		gameOptions.setLayout(new BorderLayout());
 		GUI.contentPane.add(gameOptions, BorderLayout.SOUTH);
 		
 		gameStatusBar.setFont(new Font("Calibri", Font.BOLD, 25));
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gameOptions.add(gameStatusBar, gbc);
+		gameOptions.add(gameStatusBar, BorderLayout.CENTER);
 		
 		//NEW GAME BUTTON
 		JButton newGame = new JButton("  New Game  ");
-		newGame.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		newGame.setBounds(272, 14, 92, 39);
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gameOptions.add(newGame, gbc); 
+		newGame.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		gameOptions.add(newGame, BorderLayout.WEST);
+		
+		JRadioButton recordButton = new JRadioButton("Record");
+		recordButton.setFont(new Font("Tahoma", Font.PLAIN, 20)); 
+		gameOptions.add(recordButton, BorderLayout.EAST);
 		
 		//SCREEN BOARD SIZE
 		CANVAS_WIDTH = 500;  
@@ -117,6 +118,7 @@ public class GameBoardCanvas extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(modeString == "GENERAL") {
+					recordState = false;
 					generalGame.resetPointBlue();
 					generalGame.resetPointRed();
 					bluePlayerPoints.setText(String.valueOf(generalGame.getPointBlue()));
@@ -124,13 +126,28 @@ public class GameBoardCanvas extends JPanel {
 					generalGame.setSizeBoard(pSize);
 				}
 				if(modeString == "SIMPLE") {
+					recordState = false;
 					simpleGame.setSizeBoard(pSize);
 				}
+				
+				recordButton.setSelected(false);
+				recordButton.setEnabled(true);
+				
 				System.out.println(cpuPlayerKeyRed);
 //				if (cpuPlayerKeyRed == board.getTurn()) {
 //					makeFirstAutoMove(generalGame, simpleGame, pSize, 
 //							playerKeyRed, playerKeyBlue, modeString, cpuPlayerKeyRed, cpuPlayerKeyBlue);
 //				}
+				
+			}
+		});
+		
+		//ACTION FOR RECORD BUTTON
+		recordButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				recordState = true;
+				recordButton.setEnabled(false);
 				
 			}
 		});
@@ -156,10 +173,10 @@ public class GameBoardCanvas extends JPanel {
 		if (cpuPlayerKeyRed != 'X') {
 			System.out.println(cpuPlayerKeyRed);
 			if(modeString == "GENERAL") {
-				generalGame.makeFirstMove(pSize, playerKeyRed, playerKeyBlue, cpuPlayerKeyRed, cpuPlayerKeyBlue);
+				generalGame.makeFirstMove(pSize, playerKeyRed, playerKeyBlue, cpuPlayerKeyRed, cpuPlayerKeyBlue, recordState);
 			}
 			if(modeString == "SIMPLE") {
-				simpleGame.makeFirstMove(pSize, playerKeyRed, playerKeyBlue, cpuPlayerKeyRed, cpuPlayerKeyBlue);
+				simpleGame.makeFirstMove(pSize, playerKeyRed, playerKeyBlue, cpuPlayerKeyRed, cpuPlayerKeyBlue, recordState);
 			}
 		}
 	}
@@ -169,7 +186,7 @@ public class GameBoardCanvas extends JPanel {
 			char redPlayer, char bluePlayer, String pModString, char cpuPlayerKeyRed, char cpuPlayerKeyBlue) { 
 		if(pModString == "GENERAL") {
 			if(generalMode.getGameState() == GameState.PLAYING) {
-				generalMode.makeMoveInGeneralMode(row, col, pSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue);
+				generalMode.makeMoveInGeneralMode(row, col, pSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue, recordState);
 				redPlayerPoints.setText(String.valueOf(generalGame.getPointRed()));
 				bluePlayerPoints.setText(String.valueOf(generalGame.getPointBlue()));
 				
@@ -177,7 +194,7 @@ public class GameBoardCanvas extends JPanel {
 		}
 		if(pModString == "SIMPLE") {
 			if (simpleMode.getGameState() == GameState.PLAYING) {
-				simpleMode.makeMoveInSimpleMode(row, col, pSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue);
+				simpleMode.makeMoveInSimpleMode(row, col, pSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue, recordState);
 			}
 		}
 		repaint(); 
@@ -282,48 +299,61 @@ public class GameBoardCanvas extends JPanel {
 	//DRAWING LINES FOR RED PLAYER
 	private void drawScoreLinesRed(Graphics g,  int row, int col, int x1, int y1, int x2, int y2){
 		Graphics2D g2d = (Graphics2D)g;
+		g2d.setColor(Color.BLACK);
 //		GENERAL GAME
 		if(board.setMode(modeString, size) == 1) {
 //			S CASES
 			if(generalGame.getScoredCell(row, col, size) == scoredCell.RED_S_SCORED) {
 				if(generalGame.rowRightSideRedS(row, col, size) ) {
 					g2d.drawLine(x1, y1 + SYMBOL_SIZE / 2, x2 + (CELL_SIZE * 2), y2 - SYMBOL_SIZE / 2);
+//					return;
 				}
 				if(generalGame.rowLeftSideRedS(row, col, size)) {
 					g2d.drawLine(x1 - (CELL_SIZE * 2), y1 + SYMBOL_SIZE / 2 , x2, y2 - SYMBOL_SIZE / 2);
+//					return;
 				}
 				if(generalGame.rightSideDiagDownRedS(row, col, size)) {
 					g2d.drawLine(x2 + (CELL_SIZE * 2), y2 + (CELL_SIZE * 2), x1, y1);
+//					return;
 				}
 				if(generalGame.rightSideDiagUpRedS(row, col, size)) {
 					g2d.drawLine(x1, y2, x2 + (CELL_SIZE * 2), y1 - (CELL_SIZE * 2));
+//					return;
 				}
 				if(generalGame.leftSideDiagDownRedS(row, col, size)) {
 					g2d.drawLine(x1 - (CELL_SIZE * 2), y1 - (CELL_SIZE * 2), x2, y2);
+//					return;
 				}
 				if(generalGame.leftSideDiagUpRedS(row, col, size)) {
 					g2d.drawLine(x2, y1, x1 - (CELL_SIZE * 2), y2 + (CELL_SIZE * 2));
+//					return;
 				}
 				if(generalGame.colDownRedS(row, col, size)) {
 					g2d.drawLine(x1 + SYMBOL_SIZE / 2, y1, x2 - SYMBOL_SIZE / 2, y2 + (CELL_SIZE * 2));
+//					return;
 				}
 				if(generalGame.colUpRedS(row, col, size)) {
 					g2d.drawLine(x1 + SYMBOL_SIZE / 2, y1 - (CELL_SIZE * 2) , x2 - SYMBOL_SIZE / 2, y2 );
+//					return;
 				}
 			}
 //			O CASES
 			if(generalGame.getScoredCell(row, col, size) == scoredCell.RED_O_SCORED) {
 				if(generalGame.rowRedO(row, col, size) ) {
 					g2d.drawLine(x1 - CELL_SIZE , y1 + SYMBOL_SIZE / 2, x2 + CELL_SIZE, y2 - SYMBOL_SIZE / 2);
+//					return;
 				}
 				if(generalGame.colRedO(row, col, size) ) {
 					g2d.drawLine(x1 + SYMBOL_SIZE / 2, y1 - CELL_SIZE, x2 - SYMBOL_SIZE / 2, y2 + CELL_SIZE);
+//					return;
 				}
 				if(generalGame.diagDownRedO(row, col, size) ) {
 					g2d.drawLine(x1 - CELL_SIZE, y1 - CELL_SIZE, x2 + CELL_SIZE, y2 + CELL_SIZE);
+//					return;
 				}
 				if(generalGame.diagUpRedO(row, col, size) ) {
 					g2d.drawLine(x2 + CELL_SIZE, y1 - CELL_SIZE, x1 - CELL_SIZE, y2 + CELL_SIZE);
+//					return;
 				}
 			}
 		}
@@ -332,43 +362,55 @@ public class GameBoardCanvas extends JPanel {
 //			S CASES
 			if(simpleGame.getScoredCell(row, col, size) == scoredCell.RED_S_SCORED) {
 				if(simpleGame.rowRightSideRedS(row, col, size)) {
-				g2d.drawLine(x1, y1 + SYMBOL_SIZE / 2, x2 + (CELL_SIZE * 2), y2 - SYMBOL_SIZE / 2);
+					g2d.drawLine(x1, y1 + SYMBOL_SIZE / 2, x2 + (CELL_SIZE * 2), y2 - SYMBOL_SIZE / 2);
+//					return;
 				}
 				if(simpleGame.rowLeftSideRedS(row, col, size)) {
 					g2d.drawLine(x1 - (CELL_SIZE * 2), y1 + SYMBOL_SIZE / 2 , x2, y2 - SYMBOL_SIZE / 2);
+//					return;
 				}
 				if(simpleGame.rightSideDiagDownRedS(row, col, size)) {
 					g2d.drawLine(x2 + (CELL_SIZE * 2), y2 + (CELL_SIZE * 2), x1, y1);
+//					return;
 				}
 				if(simpleGame.rightSideDiagUpRedS(row, col, size)) {
 					g2d.drawLine(x1, y2, x2 + (CELL_SIZE * 2), y1 - (CELL_SIZE * 2));
+//					return;
 				}
 				if(simpleGame.leftSideDiagDownRedS(row, col, size)) {
 					g2d.drawLine(x1 - (CELL_SIZE * 2), y1 - (CELL_SIZE * 2), x2, y2);
+//					return;
 				}
 				if(simpleGame.leftSideDiagUpRedS(row, col, size)) {
 					g2d.drawLine(x2, y1, x1 - (CELL_SIZE * 2), y2 + (CELL_SIZE * 2));
+//					return;
 				}
 				if(simpleGame.colDownRedS(row, col, size)) {
 					g2d.drawLine(x1 + SYMBOL_SIZE / 2, y1, x2 - SYMBOL_SIZE / 2, y2 + (CELL_SIZE * 2));
+//					return;
 				}
 				if(simpleGame.colUpRedS(row, col, size)) {
 					g2d.drawLine(x1 + SYMBOL_SIZE / 2, y1 - (CELL_SIZE * 2) , x2 - SYMBOL_SIZE / 2, y2 );
+//					return;
 				}
 			}
 //			O CASES
 			if(simpleGame.getScoredCell(row, col, size) == scoredCell.RED_O_SCORED) {
 				if(simpleGame.rowRedO(row, col, size) ) {
 					g2d.drawLine(x1 - CELL_SIZE , y1 + SYMBOL_SIZE / 2, x2 + CELL_SIZE, y2 - SYMBOL_SIZE / 2);
+//					return;
 				}
 				if(simpleGame.colRedO(row, col, size) ) {
 					g2d.drawLine(x1 + SYMBOL_SIZE / 2, y1 - CELL_SIZE, x2 - SYMBOL_SIZE / 2, y2 + CELL_SIZE);
+//					return;
 				}
 				if(simpleGame.diagDownRedO(row, col, size) ) {
 					g2d.drawLine(x1 - CELL_SIZE, y1 - CELL_SIZE, x2 + CELL_SIZE, y2 + CELL_SIZE);
+//					return;
 				}
 				if(simpleGame.diagUpRedO(row, col, size) ) {
 					g2d.drawLine(x2 + CELL_SIZE, y1 - CELL_SIZE, x1 - CELL_SIZE, y2 + CELL_SIZE);
+//					return;
 				}
 			}
 		}
@@ -377,6 +419,7 @@ public class GameBoardCanvas extends JPanel {
 	//DRAWING LINES FOR BLUE PLAYER
 	private void drawScoreLinesBlue(Graphics g,  int row, int col, int x1, int y1, int x2, int y2){
 		Graphics2D g2d = (Graphics2D)g;
+		g2d.setColor(Color.BLACK);
 //		GENERAL GAME
 		if(board.setMode(modeString, size) == 1) {
 //			S CASES
@@ -473,10 +516,10 @@ public class GameBoardCanvas extends JPanel {
 	//CHANGES POINTS AND GAMESTATUSBAR BASED ON SCORING
 	private void checkScore() {
 		if(generalGame.getGameScore() == GameStateGeneral.RED_SCORES ) {
-			gameStatusBar.setText("Red Scores! Red's Turn Again");
+			gameStatusBar.setText("            Red Scores! Red's Turn Again");
 		}
 		if(generalGame.getGameScore() == GameStateGeneral.BLUE_SCORES) {
-			gameStatusBar.setText("Blue Scores! Blue's Turn Again");
+			gameStatusBar.setText("            Blue Scores! Blue's Turn Again");
 		}
 		
 	}
@@ -488,46 +531,52 @@ public class GameBoardCanvas extends JPanel {
 			checkScore();
 			if (generalGame.getTurn() == 'R') {
 				gameStatusBar.setForeground(Color.RED);
-				gameStatusBar.setText("Red's Turn");
+				gameStatusBar.setText("            Red's Turn");
 			} 
 			else{
 				gameStatusBar.setForeground(Color.BLUE);
-				gameStatusBar.setText("Blue's Turn");
+				gameStatusBar.setText("            Blue's Turn");
 			}
 			if (generalGame.getGameState() == GameState.DRAW) {
 				gameStatusBar.setForeground(Color.BLACK);
-				gameStatusBar.setText("Game is a Draw");
+				gameStatusBar.setText("            Game is a Draw");
+				redPlayerPoints.setText(String.valueOf(generalGame.getPointRed()));
+				bluePlayerPoints.setText(String.valueOf(generalGame.getPointBlue()));
 			}
 			if (generalGame.getGameState() == GameState.RED_WINS) {
 				gameStatusBar.setForeground(Color.RED);
-				gameStatusBar.setText("Red Wins");
+				gameStatusBar.setText("            Red Wins");
+				redPlayerPoints.setText(String.valueOf(generalGame.getPointRed()));
+				bluePlayerPoints.setText(String.valueOf(generalGame.getPointBlue()));
 			}
 			if (generalGame.getGameState() == GameState.BLUE_WINS) {
 				gameStatusBar.setForeground(Color.BLUE);
-				gameStatusBar.setText("Blue Wins");
+				gameStatusBar.setText("            Blue Wins");
+				redPlayerPoints.setText(String.valueOf(generalGame.getPointRed()));
+				bluePlayerPoints.setText(String.valueOf(generalGame.getPointBlue()));
 			}
 		}
 //		SIMPLE GAME
 		else if (board.setMode(modeString, size) == 2){
 			if (simpleGame.getTurn() == 'R') {
 				gameStatusBar.setForeground(Color.RED);
-				gameStatusBar.setText("Red's Turn");
+				gameStatusBar.setText("            Red's Turn");
 			} 
 			else {
 				gameStatusBar.setForeground(Color.BLUE);
-				gameStatusBar.setText("Blue's Turn");
+				gameStatusBar.setText("            Blue's Turn");
 			}
 			if (simpleGame.getGameState() == GameState.DRAW) {
 				gameStatusBar.setForeground(Color.BLACK);
-				gameStatusBar.setText("Game is a Draw");
+				gameStatusBar.setText("            Game is a Draw");
 			}
 			if (simpleGame.getGameState() == GameState.RED_WINS) {
 				gameStatusBar.setForeground(Color.RED);
-				gameStatusBar.setText("Red Wins");
+				gameStatusBar.setText("            Red Wins");
 			}
 			if (simpleGame.getGameState() == GameState.BLUE_WINS) {
 				gameStatusBar.setForeground(Color.BLUE);
-				gameStatusBar.setText("Blue Wins");
+				gameStatusBar.setText("            Blue Wins");
 			}
 		}
 		

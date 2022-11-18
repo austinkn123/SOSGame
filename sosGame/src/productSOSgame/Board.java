@@ -1,5 +1,11 @@
 package productSOSgame;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import productSOSgame.GeneralGameBoard.GameStateGeneral;
+
 public class Board {
 	public enum Cell {EMPTY, RED_PLAYER, BLUE_PLAYER, HAS_SCORED};
 	public enum scoredCell {NOT_SCORED, RED_S_SCORED, RED_O_SCORED, BLUE_S_SCORED, BLUE_O_SCORED};
@@ -18,6 +24,11 @@ public class Board {
 	private int pointBlue = 0;
 	public int row;
 	public int col;
+	protected String movesRecordedString = "";
+	protected File recordFile = new File("RecordGame.txt");
+	protected String redOpp;
+	protected String blueOpp;
+	protected String turnString; 
 	
 	public void addPointRed() {pointRed += 1;}
 	public void resetPointRed() {pointRed = 0;}
@@ -47,10 +58,13 @@ public class Board {
 	
 //	For Automated Testing
 	public void setRow(int row) {this.row = row;}
-	public void setCol(int col) {this.col = col;}
 	public int getRow() {return row;}
+	public void setCol(int col) {this.col = col;}
 	public int getCol() {return col;}
 	
+	public char getTurn() {
+		return turn;
+	}
 	
 	public Board() {
 		grid = new Cell[size][size];
@@ -67,9 +81,11 @@ public class Board {
 			return -1;
 		}
 	    if(modeKey == "GENERAL") {
+	    	setModeString(modeKey);
 	    	return 1;
 	    }
 	    else if(modeKey == "SIMPLE") {
+	    	setModeString(modeKey);
 	    	return 2;
 	    }
 	    return -1;
@@ -119,10 +135,6 @@ public class Board {
 		else {
 			return null;
 		}
-	}
-
-	public char getTurn() {
-		return turn;
 	}
 	
 	//For console testing
@@ -201,6 +213,36 @@ public class Board {
 	
 	public GameState getGameState() {
 		return currentGameState;
+	}
+	
+	protected void createFile() {
+		try {
+			if (recordFile.createNewFile()) {
+				System.out.println("File created: " + recordFile.getName());
+			} 
+			else {
+				System.out.println("File already exists.");
+			}
+	    } 
+		catch (IOException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace();
+		}
+	}
+	
+	public void recordMoves(int row, int column, int boardSize, char redPlayer, 
+			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue, char turn) {
+		
+		
+		turnString = (turn == 'R') ? "Red" : "Blue";
+
+		if (cpuPlayerKeyBlue == 'B') {
+			blueOpp = "Computer";
+		}
+		
+		movesRecordedString += turnString + "'s Turn: " +  "\n Move: Row - " +  row 
+				+ " Column - " + column + "\n";
+
 	}
 	
 	//RED = S

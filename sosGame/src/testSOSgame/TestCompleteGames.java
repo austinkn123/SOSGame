@@ -41,9 +41,9 @@ public class TestCompleteGames {
 		board.setRedPlayerKey('S');
 		board.setBluePlayerKey('O');
 		board.setModeString("SIMPLE");
-		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'S', 'O', 'X', 'X'); //RED is S
-		simpleBoard.makeMoveInSimpleMode(0, 1, size, 'S', 'O', 'X', 'X'); //BLUE is O
-		simpleBoard.makeMoveInSimpleMode(0, 2, size, 'S', 'O', 'X', 'X'); //RED is S
+		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'S', 'O', 'X', 'X', false); //RED is S
+		simpleBoard.makeMoveInSimpleMode(0, 1, size, 'S', 'O', 'X', 'X', false); //BLUE is O
+		simpleBoard.makeMoveInSimpleMode(0, 2, size, 'S', 'O', 'X', 'X', false); //RED is S
 		assertEquals("", simpleBoard.getGameState(), GameState.RED_WINS);
 		GUI gui = new GUI(board);
 		gui.setGamePanel(board, generalBoard, simpleBoard, size);
@@ -61,11 +61,11 @@ public class TestCompleteGames {
 		board.setRedPlayerKey('O');
 		board.setBluePlayerKey('S');
 		board.setModeString("SIMPLE");
-		simpleBoard.makeMoveInSimpleMode(1, 1, size, 'O', 'S', 'X', 'X'); //RED is O
-		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'O', 'S', 'X', 'X'); //BLUE is S
-		simpleBoard.makeMoveInSimpleMode(2, 1, size, 'O', 'S', 'X', 'X'); //RED is O
-		simpleBoard.makeMoveInSimpleMode(0, 2, size, 'O', 'S', 'X', 'X'); //BLUE is S
-		simpleBoard.makeMoveInSimpleMode(0, 1, size, 'O', 'S', 'X', 'X'); //RED is O
+		simpleBoard.makeMoveInSimpleMode(1, 1, size, 'O', 'S', 'X', 'X', false); //RED is O
+		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'O', 'S', 'X', 'X', false); //BLUE is S
+		simpleBoard.makeMoveInSimpleMode(2, 1, size, 'O', 'S', 'X', 'X', false); //RED is O
+		simpleBoard.makeMoveInSimpleMode(0, 2, size, 'O', 'S', 'X', 'X', false); //BLUE is S
+		simpleBoard.makeMoveInSimpleMode(0, 1, size, 'O', 'S', 'X', 'X', false); //RED is O
 		assertEquals("", simpleBoard.getGameState(), GameState.RED_WINS);
 		GUI gui = new GUI(board);
 		gui.setGamePanel(board, generalBoard, simpleBoard, size);
@@ -83,10 +83,10 @@ public class TestCompleteGames {
 		board.setRedPlayerKey('O');
 		board.setBluePlayerKey('S');
 		board.setModeString("SIMPLE");
-		simpleBoard.makeMoveInSimpleMode(1, 1, size, 'O', 'S', 'X', 'X'); //RED is O
-		simpleBoard.makeMoveInSimpleMode(1, 0, size, 'O', 'S', 'X', 'X'); //BLUE is S
-		simpleBoard.makeMoveInSimpleMode(2, 1, size, 'O', 'S', 'X', 'X'); //RED is O
-		simpleBoard.makeMoveInSimpleMode(1, 2, size, 'O', 'S', 'X', 'X'); //BLUE is S
+		simpleBoard.makeMoveInSimpleMode(1, 1, size, 'O', 'S', 'X', 'X', false); //RED is O
+		simpleBoard.makeMoveInSimpleMode(1, 0, size, 'O', 'S', 'X', 'X', false); //BLUE is S
+		simpleBoard.makeMoveInSimpleMode(2, 1, size, 'O', 'S', 'X', 'X', false); //RED is O
+		simpleBoard.makeMoveInSimpleMode(1, 2, size, 'O', 'S', 'X', 'X', false); //BLUE is S
 		assertEquals("", simpleBoard.getGameState(), GameState.BLUE_WINS);
 		GUI gui = new GUI(board);
 		gui.setGamePanel(board, generalBoard, simpleBoard, size);
@@ -104,10 +104,10 @@ public class TestCompleteGames {
 		board.setRedPlayerKey('S');
 		board.setBluePlayerKey('O');
 		board.setModeString("SIMPLE");
-		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'S', 'O', 'X', 'X'); //RED is S
-		simpleBoard.makeMoveInSimpleMode(1, 0, size, 'S', 'O', 'X', 'X'); //BLUE is O
-		simpleBoard.makeMoveInSimpleMode(0, 2, size, 'S', 'O', 'X', 'X'); //RED is S
-		simpleBoard.makeMoveInSimpleMode(0, 1, size, 'S', 'O', 'X', 'X'); //BLUE is O
+		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'S', 'O', 'X', 'X', false); //RED is S
+		simpleBoard.makeMoveInSimpleMode(1, 0, size, 'S', 'O', 'X', 'X', false); //BLUE is O
+		simpleBoard.makeMoveInSimpleMode(0, 2, size, 'S', 'O', 'X', 'X', false); //RED is S
+		simpleBoard.makeMoveInSimpleMode(0, 1, size, 'S', 'O', 'X', 'X', false); //BLUE is O
 		assertEquals("", simpleBoard.getGameState(), GameState.BLUE_WINS);
 		GUI gui = new GUI(board);
 		gui.setGamePanel(board, generalBoard, simpleBoard, size);
@@ -125,15 +125,15 @@ public class TestCompleteGames {
 		board.setRedPlayerKey('S');
 		board.setBluePlayerKey('O');
 		board.setModeString("SIMPLE");
-		simpleBoard.makeMoveInSimpleMode(1, 1, size, 'S', 'O', 'X', 'X'); //RED is S
-		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'S', 'O', 'X', 'X'); //BLUE is O
-		simpleBoard.makeMoveInSimpleMode(1, 0, size, 'S', 'O', 'X', 'X'); //RED is S
-		simpleBoard.makeMoveInSimpleMode(2, 0, size, 'S', 'O', 'X', 'X'); //BLUE is O
-		simpleBoard.makeMoveInSimpleMode(2, 1, size, 'S', 'O', 'X', 'X'); //RED is S
-		simpleBoard.makeMoveInSimpleMode(2, 2, size, 'S', 'O', 'X', 'X'); //BLUE is O
-		simpleBoard.makeMoveInSimpleMode(1, 2, size, 'S', 'O', 'X', 'X'); //RED is S
-		simpleBoard.makeMoveInSimpleMode(0, 2, size, 'S', 'O', 'X', 'X'); //BLUE is O
-		simpleBoard.makeMoveInSimpleMode(0, 1, size, 'S', 'O', 'X', 'X'); //RED is S
+		simpleBoard.makeMoveInSimpleMode(1, 1, size, 'S', 'O', 'X', 'X', false); //RED is S
+		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'S', 'O', 'X', 'X', false); //BLUE is O
+		simpleBoard.makeMoveInSimpleMode(1, 0, size, 'S', 'O', 'X', 'X', false); //RED is S
+		simpleBoard.makeMoveInSimpleMode(2, 0, size, 'S', 'O', 'X', 'X', false); //BLUE is O
+		simpleBoard.makeMoveInSimpleMode(2, 1, size, 'S', 'O', 'X', 'X', false); //RED is S
+		simpleBoard.makeMoveInSimpleMode(2, 2, size, 'S', 'O', 'X', 'X', false); //BLUE is O
+		simpleBoard.makeMoveInSimpleMode(1, 2, size, 'S', 'O', 'X', 'X', false); //RED is S
+		simpleBoard.makeMoveInSimpleMode(0, 2, size, 'S', 'O', 'X', 'X', false); //BLUE is O
+		simpleBoard.makeMoveInSimpleMode(0, 1, size, 'S', 'O', 'X', 'X', false); //RED is S
 		assertEquals("", simpleBoard.getGameState(), GameState.DRAW);
 		GUI gui = new GUI(board);
 		gui.setGamePanel(board, generalBoard, simpleBoard, size);
@@ -151,15 +151,15 @@ public class TestCompleteGames {
 		board.setRedPlayerKey('S');
 		board.setBluePlayerKey('O');
 		board.setModeString("GENERAL");
-		generalBoard.makeMoveInGeneralMode(1, 1, size, 'S', 'O', 'X', 'X'); //RED is S
-		generalBoard.makeMoveInGeneralMode(2, 1, size, 'S', 'O', 'X', 'X'); //BLUE is O
-		generalBoard.makeMoveInGeneralMode(0, 0, size, 'S', 'O', 'X', 'X'); //RED is S
-		generalBoard.makeMoveInGeneralMode(2, 2, size, 'S', 'O', 'X', 'X'); //BLUE is O
-		generalBoard.makeMoveInGeneralMode(1, 0, size, 'S', 'O', 'X', 'X'); //RED is S
-		generalBoard.makeMoveInGeneralMode(0, 1, size, 'S', 'O', 'X', 'X'); //BLUE is O
-		generalBoard.makeMoveInGeneralMode(2, 0, size, 'S', 'O', 'X', 'X'); //RED is S
-		generalBoard.makeMoveInGeneralMode(1, 2, size, 'S', 'O', 'X', 'X'); //BLUE is O
-		generalBoard.makeMoveInGeneralMode(0, 2, size, 'S', 'O', 'X', 'X'); //RED is S
+		generalBoard.makeMoveInGeneralMode(1, 1, size, 'S', 'O', 'X', 'X', false); //RED is S
+		generalBoard.makeMoveInGeneralMode(2, 1, size, 'S', 'O', 'X', 'X', false); //BLUE is O
+		generalBoard.makeMoveInGeneralMode(0, 0, size, 'S', 'O', 'X', 'X', false); //RED is S
+		generalBoard.makeMoveInGeneralMode(2, 2, size, 'S', 'O', 'X', 'X', false); //BLUE is O
+		generalBoard.makeMoveInGeneralMode(1, 0, size, 'S', 'O', 'X', 'X', false); //RED is S
+		generalBoard.makeMoveInGeneralMode(0, 1, size, 'S', 'O', 'X', 'X', false); //BLUE is O
+		generalBoard.makeMoveInGeneralMode(2, 0, size, 'S', 'O', 'X', 'X', false); //RED is S
+		generalBoard.makeMoveInGeneralMode(1, 2, size, 'S', 'O', 'X', 'X', false); //BLUE is O
+		generalBoard.makeMoveInGeneralMode(0, 2, size, 'S', 'O', 'X', 'X', false); //RED is S
 		assertEquals("", generalBoard.getGameState(), GameState.RED_WINS);
 		GUI gui = new GUI(board);
 		gui.setGamePanel(board, generalBoard, simpleBoard, size);
@@ -177,15 +177,15 @@ public class TestCompleteGames {
 		board.setRedPlayerKey('O');
 		board.setBluePlayerKey('S');
 		board.setModeString("GENERAL");
-		generalBoard.makeMoveInGeneralMode(0, 0, size, 'O', 'S', 'X', 'X'); //RED is O
-		generalBoard.makeMoveInGeneralMode(1, 0, size, 'O', 'S', 'X', 'X'); //BLUE is S
-		generalBoard.makeMoveInGeneralMode(2, 0, size, 'O', 'S', 'X', 'X'); //RED is O
-		generalBoard.makeMoveInGeneralMode(2, 1, size, 'O', 'S', 'X', 'X'); //BLUE is S
-		generalBoard.makeMoveInGeneralMode(2, 2, size, 'O', 'S', 'X', 'X'); //RED is O
-		generalBoard.makeMoveInGeneralMode(1, 2, size, 'O', 'S', 'X', 'X'); //BLUE is S
-		generalBoard.makeMoveInGeneralMode(0, 2, size, 'O', 'S', 'X', 'X'); //RED is O
-		generalBoard.makeMoveInGeneralMode(0, 1, size, 'O', 'S', 'X', 'X'); //BLUE is S
-		generalBoard.makeMoveInGeneralMode(1, 1, size, 'O', 'S', 'X', 'X'); //RED is O
+		generalBoard.makeMoveInGeneralMode(0, 0, size, 'O', 'S', 'X', 'X', false); //RED is O
+		generalBoard.makeMoveInGeneralMode(1, 0, size, 'O', 'S', 'X', 'X', false); //BLUE is S
+		generalBoard.makeMoveInGeneralMode(2, 0, size, 'O', 'S', 'X', 'X', false); //RED is O
+		generalBoard.makeMoveInGeneralMode(2, 1, size, 'O', 'S', 'X', 'X', false); //BLUE is S
+		generalBoard.makeMoveInGeneralMode(2, 2, size, 'O', 'S', 'X', 'X', false); //RED is O
+		generalBoard.makeMoveInGeneralMode(1, 2, size, 'O', 'S', 'X', 'X', false); //BLUE is S
+		generalBoard.makeMoveInGeneralMode(0, 2, size, 'O', 'S', 'X', 'X', false); //RED is O
+		generalBoard.makeMoveInGeneralMode(0, 1, size, 'O', 'S', 'X', 'X', false); //BLUE is S
+		generalBoard.makeMoveInGeneralMode(1, 1, size, 'O', 'S', 'X', 'X', false); //RED is O
 		assertEquals("", generalBoard.getGameState(), GameState.RED_WINS);
 		GUI gui = new GUI(board);
 		gui.setGamePanel(board, generalBoard, simpleBoard, size);
@@ -203,15 +203,15 @@ public class TestCompleteGames {
 		board.setRedPlayerKey('O');
 		board.setBluePlayerKey('S');
 		board.setModeString("GENERAL");
-		generalBoard.makeMoveInGeneralMode(1, 1, size, 'O', 'S', 'X', 'X'); //RED is O
-		generalBoard.makeMoveInGeneralMode(0, 0, size, 'O', 'S', 'X', 'X'); //BLUE is S
-		generalBoard.makeMoveInGeneralMode(1, 0, size, 'O', 'S', 'X', 'X'); //RED is O
-		generalBoard.makeMoveInGeneralMode(0, 1, size, 'O', 'S', 'X', 'X'); //BLUE is S
-		generalBoard.makeMoveInGeneralMode(0, 2, size, 'O', 'S', 'X', 'X'); //RED is O
-		generalBoard.makeMoveInGeneralMode(1, 2, size, 'O', 'S', 'X', 'X'); //BLUE is S
-		generalBoard.makeMoveInGeneralMode(2, 2, size, 'O', 'S', 'X', 'X'); //RED is O
-		generalBoard.makeMoveInGeneralMode(2, 0, size, 'O', 'S', 'X', 'X'); //BLUE is S
-		generalBoard.makeMoveInGeneralMode(2, 1, size, 'O', 'S', 'X', 'X'); //RED is O
+		generalBoard.makeMoveInGeneralMode(1, 1, size, 'O', 'S', 'X', 'X', false); //RED is O
+		generalBoard.makeMoveInGeneralMode(0, 0, size, 'O', 'S', 'X', 'X', false); //BLUE is S
+		generalBoard.makeMoveInGeneralMode(1, 0, size, 'O', 'S', 'X', 'X', false); //RED is O
+		generalBoard.makeMoveInGeneralMode(0, 1, size, 'O', 'S', 'X', 'X', false); //BLUE is S
+		generalBoard.makeMoveInGeneralMode(0, 2, size, 'O', 'S', 'X', 'X', false); //RED is O
+		generalBoard.makeMoveInGeneralMode(1, 2, size, 'O', 'S', 'X', 'X', false); //BLUE is S
+		generalBoard.makeMoveInGeneralMode(2, 2, size, 'O', 'S', 'X', 'X', false); //RED is O
+		generalBoard.makeMoveInGeneralMode(2, 0, size, 'O', 'S', 'X', 'X', false); //BLUE is S
+		generalBoard.makeMoveInGeneralMode(2, 1, size, 'O', 'S', 'X', 'X', false); //RED is O
 		assertEquals("", generalBoard.getGameState(), GameState.BLUE_WINS);
 		GUI gui = new GUI(board);
 		gui.setGamePanel(board, generalBoard, simpleBoard, size);
@@ -229,15 +229,15 @@ public class TestCompleteGames {
 		board.setRedPlayerKey('S');
 		board.setBluePlayerKey('O');
 		board.setModeString("GENERAL");
-		generalBoard.makeMoveInGeneralMode(2, 0, size, 'S', 'O', 'X', 'X'); //RED is S
-		generalBoard.makeMoveInGeneralMode(0, 0, size, 'S', 'O', 'X', 'X'); //BLUE is O
-		generalBoard.makeMoveInGeneralMode(1, 0, size, 'S', 'O', 'X', 'X'); //RED is S
-		generalBoard.makeMoveInGeneralMode(0, 1, size, 'S', 'O', 'X', 'X'); //BLUE is O
-		generalBoard.makeMoveInGeneralMode(1, 1, size, 'S', 'O', 'X', 'X'); //RED is S
-		generalBoard.makeMoveInGeneralMode(0, 2, size, 'S', 'O', 'X', 'X'); //BLUE is O
-		generalBoard.makeMoveInGeneralMode(2, 2, size, 'S', 'O', 'X', 'X'); //RED is S
-		generalBoard.makeMoveInGeneralMode(2, 1, size, 'S', 'O', 'X', 'X'); //BLUE is O
-		generalBoard.makeMoveInGeneralMode(1, 2, size, 'S', 'O', 'X', 'X'); //RED is S
+		generalBoard.makeMoveInGeneralMode(2, 0, size, 'S', 'O', 'X', 'X', false); //RED is S
+		generalBoard.makeMoveInGeneralMode(0, 0, size, 'S', 'O', 'X', 'X', false); //BLUE is O
+		generalBoard.makeMoveInGeneralMode(1, 0, size, 'S', 'O', 'X', 'X', false); //RED is S
+		generalBoard.makeMoveInGeneralMode(0, 1, size, 'S', 'O', 'X', 'X', false); //BLUE is O
+		generalBoard.makeMoveInGeneralMode(1, 1, size, 'S', 'O', 'X', 'X', false); //RED is S
+		generalBoard.makeMoveInGeneralMode(0, 2, size, 'S', 'O', 'X', 'X', false); //BLUE is O
+		generalBoard.makeMoveInGeneralMode(2, 2, size, 'S', 'O', 'X', 'X', false); //RED is S
+		generalBoard.makeMoveInGeneralMode(2, 1, size, 'S', 'O', 'X', 'X', false); //BLUE is O
+		generalBoard.makeMoveInGeneralMode(1, 2, size, 'S', 'O', 'X', 'X', false); //RED is S
 		assertEquals("", generalBoard.getGameState(), GameState.BLUE_WINS);
 		GUI gui = new GUI(board);
 		gui.setGamePanel(board, generalBoard, simpleBoard, size);
@@ -255,15 +255,15 @@ public class TestCompleteGames {
 		board.setRedPlayerKey('S');
 		board.setBluePlayerKey('O');
 		board.setModeString("GENERAL");
-		generalBoard.makeMoveInGeneralMode(1, 1, size, 'S', 'O', 'X', 'X'); //RED is S
-		generalBoard.makeMoveInGeneralMode(0, 0, size, 'S', 'O', 'X', 'X'); //BLUE is O
-		generalBoard.makeMoveInGeneralMode(1, 0, size, 'S', 'O', 'X', 'X'); //RED is S
-		generalBoard.makeMoveInGeneralMode(2, 0, size, 'S', 'O', 'X', 'X'); //BLUE is O
-		generalBoard.makeMoveInGeneralMode(2, 1, size, 'S', 'O', 'X', 'X'); //RED is S
-		generalBoard.makeMoveInGeneralMode(2, 2, size, 'S', 'O', 'X', 'X'); //BLUE is O
-		generalBoard.makeMoveInGeneralMode(1, 2, size, 'S', 'O', 'X', 'X'); //RED is S
-		generalBoard.makeMoveInGeneralMode(0, 2, size, 'S', 'O', 'X', 'X'); //BLUE is O
-		generalBoard.makeMoveInGeneralMode(0, 1, size, 'S', 'O', 'X', 'X'); //RED is S
+		generalBoard.makeMoveInGeneralMode(1, 1, size, 'S', 'O', 'X', 'X', false); //RED is S
+		generalBoard.makeMoveInGeneralMode(0, 0, size, 'S', 'O', 'X', 'X', false); //BLUE is O
+		generalBoard.makeMoveInGeneralMode(1, 0, size, 'S', 'O', 'X', 'X', false); //RED is S
+		generalBoard.makeMoveInGeneralMode(2, 0, size, 'S', 'O', 'X', 'X', false); //BLUE is O
+		generalBoard.makeMoveInGeneralMode(2, 1, size, 'S', 'O', 'X', 'X', false); //RED is S
+		generalBoard.makeMoveInGeneralMode(2, 2, size, 'S', 'O', 'X', 'X', false); //BLUE is O
+		generalBoard.makeMoveInGeneralMode(1, 2, size, 'S', 'O', 'X', 'X', false); //RED is S
+		generalBoard.makeMoveInGeneralMode(0, 2, size, 'S', 'O', 'X', 'X', false); //BLUE is O
+		generalBoard.makeMoveInGeneralMode(0, 1, size, 'S', 'O', 'X', 'X', false); //RED is S
 		assertEquals("", generalBoard.getGameState(), GameState.DRAW);
 		GUI gui = new GUI(board);
 		gui.setGamePanel(board, generalBoard, simpleBoard, size);
@@ -273,29 +273,5 @@ public class TestCompleteGames {
 			e.printStackTrace();
 		}
 	}
-	
-//	@Test 
-//	public void testAutomatedRedTurnMoveVacantCellinGeneralModePlayerS() {
-//		board.setRedPlayerKey('S');
-//		board.setBluePlayerKey('O');
-//		board.setModeString("SIMPLE");
-////		generalBoard.makeAutoMove(size, 'S', 'O', 'R', 'X');
-////		generalBoard.makeMoveInGeneralMode(1, 0, size, 'S', 'O', 'R', 'X');
-////		assertEquals("", generalBoard.getCell(1, 0, size), Cell.BLUE_PLAYER);
-////		assertEquals("", generalBoard.getTurn(), 'R');
-////		generalBoard.makeAutoMove(size, 'S', 'O', 'R', 'X');
-////		assertEquals("", generalBoard.getTurn(), 'B');
-//		simpleBoard.makeFirstMove(size, 'S', 'O', 'X', 'B');
-//		simpleBoard.makeMoveInSimpleMode(0, 0, size, 'S', 'O', 'X', 'B');
-////		simpleBoard.makeMoveInGeneralMode(1, 1, size, 'S', 'O', 'R', 'B');
-////		generalBoard.makeMoveInGeneralMode(1, 2, size, 'S', 'O', 'R', 'X');
-//		GUI gui = new GUI(board);
-//		gui.setGamePanel(board, generalBoard, simpleBoard, size);
-//		try {
-//			Thread.sleep(7000);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-//	}
 
 }
