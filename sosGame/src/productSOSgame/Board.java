@@ -25,7 +25,7 @@ public class Board {
 	public int row;
 	public int col;
 	protected String movesRecordedString = "";
-	protected File recordFile = new File("RecordGame.txt");
+	public File recordFile = new File("RecordGame.txt");
 	protected String redOpp;
 	protected String blueOpp;
 	protected String turnString; 
@@ -240,7 +240,7 @@ public class Board {
 			blueOpp = "Computer";
 		}
 		
-		movesRecordedString += turnString + "'s Turn: " +  "\n Move: Row - " +  row 
+		movesRecordedString += turnString + "'s Turn: \n Move: Row - " +  row 
 				+ " Column - " + column + "\n";
 
 	}

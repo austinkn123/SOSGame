@@ -1,22 +1,25 @@
-SIMPLE mode:
-Red is Computer as the S symbol 
-Blue is Computer as the O symbol 
+GENERAL mode:
+Red is Human as the S symbol 
+Blue is Human as the O symbol 
+Red's Turn: 
+ Move: Row - 1 Column - 1
+Blue's Turn: 
+ Move: Row - 0 Column - 0
 Red's Turn: 
  Move: Row - 1 Column - 0
 Blue's Turn: 
- Move: Row - 1 Column - 1
-Red's Turn: 
- Move: Row - 2 Column - 2
-Blue's Turn: 
- Move: Row - 0 Column - 1
-Red's Turn: 
  Move: Row - 2 Column - 0
-Blue's Turn: 
- Move: Row - 1 Column - 2
 Red's Turn: 
  Move: Row - 2 Column - 1
 Blue's Turn: 
+ Move: Row - 2 Column - 2
+Red's Turn: 
+ Move: Row - 1 Column - 2
+Blue's Turn: 
  Move: Row - 0 Column - 2
 Red's Turn: 
- Move: Row - 0 Column - 0
-RED_WINS
+ Move: Row - 0 Column - 1
+
+DRAW
+Red Points: 0
+Blue Points: 0

@@ -47,7 +47,7 @@ public class SimpleGameBoard extends Board {
 					|| currentGameState == GameState.DRAW) {
 		      FileWriter myWriter = new FileWriter("RecordGame.txt");
 		      System.out.println(modeString);
-		    	  myWriter.write(modeString + " mode:\n" + "Red is " + redOpp + " as the " + redPlayer + " symbol \n" 
+		    	  myWriter.write(modeString + " mode:\n Red is " + redOpp + " as the " + redPlayer + " symbol \n" 
 		    			  + "Blue is " + blueOpp + " as the " + bluePlayer + " symbol \n" + movesRecordedString + currentGameState + "\n");
 		      System.out.println("Successfully wrote to the file.");
 			  myWriter.close();
