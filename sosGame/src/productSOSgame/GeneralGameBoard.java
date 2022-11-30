@@ -1,6 +1,5 @@
 package productSOSgame;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
@@ -15,8 +14,8 @@ public class GeneralGameBoard extends Board {
 		createFile();
 	}
 	
-	
-	public void makeMoveInGeneralMode(int row, int column, int boardSize, char redPlayer, 
+	@Override
+	public void makeMove(int row, int column, int boardSize, char redPlayer, 
 			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue, Boolean recordKey) {
 		if ((row >= 0) && (row < boardSize) && (column >= 0) && (column < boardSize) && (grid[row][column] == Cell.EMPTY)) {
 			grid[row][column] = (turn == 'R')? Cell.RED_PLAYER : Cell.BLUE_PLAYER; 
@@ -98,7 +97,7 @@ public class GeneralGameBoard extends Board {
 					if (targetMove == index) {
 						setRow(row);
 						setCol(col);
-						makeMoveInGeneralMode(row, col, size, redPlayer, bluePlayer, 
+						makeMove(row, col, size, redPlayer, bluePlayer, 
 								cpuPlayerKeyRed, cpuPlayerKeyBlue, recordKey);
 						return;
 					} else
@@ -117,7 +116,7 @@ public class GeneralGameBoard extends Board {
 		System.out.println("CPU BLUE: " + cpuPlayerKeyBlue);
 		setRow(position/size);
 		setCol(position%size);
-		makeMoveInGeneralMode(position/size, position%size, size, redPlayer, bluePlayer, 
+		makeMove(position/size, position%size, size, redPlayer, bluePlayer, 
 				cpuPlayerKeyRed, cpuPlayerKeyBlue, recordKey);
 	}
 	
@@ -125,7 +124,7 @@ public class GeneralGameBoard extends Board {
 	public void testingAutomatedMove(int row, int column, int size, char redPlayer, 
 			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue, Boolean recordKey) {
 		if ((turn == cpuPlayerKeyRed || turn == cpuPlayerKeyBlue) && currentGameState == GameState.PLAYING) {
-			makeMoveInGeneralMode(row, column, size, redPlayer, bluePlayer, 
+			makeMove(row, column, size, redPlayer, bluePlayer, 
 					cpuPlayerKeyRed, cpuPlayerKeyBlue, recordKey);
 			
 		}

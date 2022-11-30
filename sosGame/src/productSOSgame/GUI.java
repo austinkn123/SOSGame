@@ -49,8 +49,6 @@ public class GUI extends JFrame {
 	protected static JPanel bluePlayerPanel = new JPanel();
 	protected JLabel redPlayerLabel = new JLabel("  Red Player  ");
 	protected JLabel bluePlayerLabel = new JLabel("  Blue Player  ");
-//	protected JLabel redPlayerPoints;
-//	protected JLabel bluePlayerPoints;
 	
 	public JButton enterButton = new JButton("Enter");
 	

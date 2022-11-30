@@ -138,7 +138,8 @@ public class Board {
 	}
 	
 	//For console testing
-	public void makeMove(int row, int column, int boardSize) {
+	public void makeMove(int row, int column, int boardSize, char redPlayer, 
+			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue, Boolean recordKey) {
 		if ((row >= 0) && (row < boardSize) && (column >= 0) && (column < boardSize) && (grid[row][column] == Cell.EMPTY)) {
 			grid[row][column] = (turn == 'R')? Cell.RED_PLAYER : Cell.BLUE_PLAYER; 
 			turn = (turn == 'R')? 'B' : 'R';

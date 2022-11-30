@@ -11,7 +11,8 @@ public class SimpleGameBoard extends Board {
 	}
 	
 	
-	public void makeMoveInSimpleMode(int row, int column, int boardSize, char redPlayer, char bluePlayer,
+	@Override
+	public void makeMove(int row, int column, int boardSize, char redPlayer, char bluePlayer,
 			char cpuPlayerKeyRed, char cpuPlayerKeyBlue, Boolean recordKey) {
 		if ((row >= 0) && (row < boardSize) && (column >= 0) && (column < boardSize) && (grid[row][column] == Cell.EMPTY)) {
 			grid[row][column] = (turn == 'R')? Cell.RED_PLAYER : Cell.BLUE_PLAYER;
@@ -83,7 +84,7 @@ public class SimpleGameBoard extends Board {
 					if (targetMove == index) {
 						setRow(row);
 						setCol(col);
-						makeMoveInSimpleMode(row, col, size, redPlayer, bluePlayer, 
+						makeMove(row, col, size, redPlayer, bluePlayer, 
 									cpuPlayerKeyRed, cpuPlayerKeyBlue, recordKey);
 						return;
 					} else
@@ -100,7 +101,7 @@ public class SimpleGameBoard extends Board {
 		int position = random.nextInt(size * size);
 		setRow(position/size);
 		setCol(position%size);
-		makeMoveInSimpleMode(position/size, position%size, size, redPlayer, bluePlayer, 
+		makeMove(position/size, position%size, size, redPlayer, bluePlayer, 
 				cpuPlayerKeyRed, cpuPlayerKeyBlue, recordKey);
 	}
 	

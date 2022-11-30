@@ -186,7 +186,7 @@ public class GameBoardCanvas extends JPanel {
 			char redPlayer, char bluePlayer, String pModString, char cpuPlayerKeyRed, char cpuPlayerKeyBlue) { 
 		if(pModString == "GENERAL") {
 			if(generalMode.getGameState() == GameState.PLAYING) {
-				generalMode.makeMoveInGeneralMode(row, col, pSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue, recordState);
+				generalMode.makeMove(row, col, pSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue, recordState);
 				redPlayerPoints.setText(String.valueOf(generalGame.getPointRed()));
 				bluePlayerPoints.setText(String.valueOf(generalGame.getPointBlue()));
 				
@@ -194,7 +194,7 @@ public class GameBoardCanvas extends JPanel {
 		}
 		if(pModString == "SIMPLE") {
 			if (simpleMode.getGameState() == GameState.PLAYING) {
-				simpleMode.makeMoveInSimpleMode(row, col, pSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue, recordState);
+				simpleMode.makeMove(row, col, pSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue, recordState);
 			}
 		}
 		repaint(); 

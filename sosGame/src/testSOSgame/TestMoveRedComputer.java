@@ -52,14 +52,14 @@ public class TestMoveRedComputer {
 	@Test
 	public void testAutomatedRedTurnMoveNonVacantCellinSimpleModePlayerS() {
 		simpleBoard.makeFirstMove(size, 'S', 'O', 'R', 'X', false);
-		simpleBoard.makeMoveInSimpleMode(simpleBoard.getRow(), simpleBoard.getCol(), size, 'S', 'O', 'R', 'X', false);
+		simpleBoard.makeMove(simpleBoard.getRow(), simpleBoard.getCol(), size, 'S', 'O', 'R', 'X', false);
 		assertEquals("", simpleBoard.getTurn(), 'B');
 	}
 	
 	@Test
 	public void testAutomatedRedTurnMoveNonVacantCellinSimpleModePlayerO() {
 		simpleBoard.makeFirstMove(size, 'O', 'S', 'R', 'X', false);
-		simpleBoard.makeMoveInSimpleMode(simpleBoard.getRow(), simpleBoard.getCol(), size, 'S', 'O', 'R', 'X', false);
+		simpleBoard.makeMove(simpleBoard.getRow(), simpleBoard.getCol(), size, 'S', 'O', 'R', 'X', false);
 		assertEquals("", simpleBoard.getTurn(), 'B');
 	}
 	
@@ -67,14 +67,14 @@ public class TestMoveRedComputer {
 	@Test
 	public void testAutomatedRedTurnInvalidSizeMoveinSimpleModePlayerS() {
 		simpleBoard.makeFirstMove(size, 'S', 'O', 'R', 'X', false);
-		simpleBoard.makeMoveInSimpleMode(simpleBoard.getRow(), simpleBoard.getCol(), size + 1, 'S', 'O', 'R', 'X', false);
+		simpleBoard.makeMove(simpleBoard.getRow(), simpleBoard.getCol(), size + 1, 'S', 'O', 'R', 'X', false);
 		assertEquals("", simpleBoard.getTurn(), 'B');
 	} 
 	
 	@Test
 	public void testAutomatedRedTurnInvalidSizeMoveinSimpleModePlayerO() {
 		simpleBoard.makeFirstMove(size, 'S', 'O', 'R', 'X', false);
-		simpleBoard.makeMoveInSimpleMode(simpleBoard.getRow(), simpleBoard.getCol(), size + 1, 'S', 'O', 'R', 'X', false);
+		simpleBoard.makeMove(simpleBoard.getRow(), simpleBoard.getCol(), size + 1, 'S', 'O', 'R', 'X', false);
 		assertEquals("", simpleBoard.getTurn(), 'B');
 	} 
 	
@@ -97,14 +97,14 @@ public class TestMoveRedComputer {
 	@Test
 	public void testAutomatedRedTurnMoveNonVacantCellinGeneralModePlayerS() {
 		generalBoard.makeFirstMove(size, 'S', 'O', 'R', 'X', false);
-		generalBoard.makeMoveInGeneralMode(generalBoard.getRow(), generalBoard.getCol(), size, 'S', 'O', 'R', 'X', false);
+		generalBoard.makeMove(generalBoard.getRow(), generalBoard.getCol(), size, 'S', 'O', 'R', 'X', false);
 		assertEquals("", generalBoard.getTurn(), 'B');
 	}
 	
 	@Test
 	public void testAutomatedRedTurnMoveNonVacantCellinGeneralModePlayerO() {
 		generalBoard.makeFirstMove(size, 'O', 'S', 'R', 'X', false);
-		generalBoard.makeMoveInGeneralMode(1, 1, size,  'O', 'S', 'R', 'X', false);
+		generalBoard.makeMove(1, 1, size,  'O', 'S', 'R', 'X', false);
 		assertEquals("", generalBoard.getTurn(), 'B');
 		generalBoard.testingAutomatedMove(1, 1, size,  'O', 'S', 'R', 'X', false);
 		assertEquals("", generalBoard.getTurn(), 'B');
@@ -114,14 +114,14 @@ public class TestMoveRedComputer {
 	@Test
 	public void testAutomatedRedTurnInvalidSizeMoveinGeneralModePlayerS() {
 		generalBoard.makeFirstMove(size, 'S', 'O', 'R', 'X', false);
-		generalBoard.makeMoveInGeneralMode(generalBoard.getRow(), generalBoard.getCol(), size + 1, 'S', 'O', 'R', 'X', false);
+		generalBoard.makeMove(generalBoard.getRow(), generalBoard.getCol(), size + 1, 'S', 'O', 'R', 'X', false);
 		assertEquals("", generalBoard.getTurn(), 'B');
 	} 
 	
 	@Test
 	public void testAutomatedRedTurnInvalidSizeMoveinGeneralModePlayerO() {
 		generalBoard.makeFirstMove(size, 'O', 'S', 'R', 'X', false);
-		generalBoard.makeMoveInGeneralMode(generalBoard.getRow(), generalBoard.getCol(), size + 1, 'S', 'O', 'R', 'X', false);
+		generalBoard.makeMove(generalBoard.getRow(), generalBoard.getCol(), size + 1, 'S', 'O', 'R', 'X', false);
 		assertEquals("", generalBoard.getTurn(), 'B');
 	} 
 	
@@ -129,7 +129,7 @@ public class TestMoveRedComputer {
 	@Test
 	public void scoredPointAsAutomatedPlayerS() {
 		generalBoard.makeFirstMove(size, 'S', 'O', 'R', 'B', false);
-		generalBoard.makeMoveInGeneralMode(generalBoard.getRow(), generalBoard.getCol(), size , 'S', 'O', 'R', 'B', false);
+		generalBoard.makeMove(generalBoard.getRow(), generalBoard.getCol(), size , 'S', 'O', 'R', 'B', false);
 		assertEquals("", generalBoard.getGameState(), GameState.RED_WINS); 
 	} 
 	
