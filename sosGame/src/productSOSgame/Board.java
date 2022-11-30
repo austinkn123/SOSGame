@@ -3,13 +3,16 @@ package productSOSgame;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Random;
 
-import productSOSgame.GeneralGameBoard.GameStateGeneral;
+import productSOSgame.Board.Cell;
+import productSOSgame.Board.GameState;
+//import productSOSgame.GeneralGameBoard.GameStateGeneral;
 
 public class Board {
 	public enum Cell {EMPTY, RED_PLAYER, BLUE_PLAYER, HAS_SCORED};
 	public enum scoredCell {NOT_SCORED, RED_S_SCORED, RED_O_SCORED, BLUE_S_SCORED, BLUE_O_SCORED};
-	public enum GameState {PLAYING, DRAW, RED_WINS, BLUE_WINS};
+	public enum GameState {PLAYING, DRAW, RED_WINS, BLUE_WINS, RED_SCORES, BLUE_SCORES};
 	public GameState currentGameState;
 	protected char turn = 'R';
 	protected int size = 0;
@@ -137,12 +140,51 @@ public class Board {
 		}
 	}
 	
+	//If a player has scored, or if the board is filled with nobody scoring then end the game 
+	public void updateGameState(char turn, int row, int column, char redPlayer, char bluePlayer) {
+		if (hasScored(turn, row, column, size, redPlayer, bluePlayer)) { // check for player scoring
+			currentGameState = (turn == 'R') ? GameState.RED_SCORES : GameState.BLUE_SCORES;
+		} // Otherwise, no change to current state (still GameState.PLAYING).
+		else {
+			currentGameState = GameState.PLAYING;
+		}
+		if (isFilled() && (currentGameState == GameState.PLAYING)) {
+			currentGameState = GameState.DRAW; 
+		}
+	}
+	
+	public void checkGameScore() {
+		System.out.println(getPointRed());
+		if(getPointRed() > getPointBlue()) {
+			currentGameState = GameState.RED_WINS;
+			System.out.println("RED WINS");
+			System.out.println("RED--" + getPointRed());
+			System.out.println("BLUE--" + getPointBlue());
+		}
+		else if (getPointRed() < getPointBlue()){
+			currentGameState = GameState.BLUE_WINS;
+			System.out.println("BLUE WINS");
+			System.out.println("RED--" + getPointRed());
+			System.out.println("BLUE--" + getPointBlue());
+		}
+		else if (getPointRed() == getPointBlue()){
+			currentGameState = GameState.DRAW;
+			System.out.println("DRAW");
+			System.out.println("RED--" + getPointRed());
+			System.out.println("BLUE--" + getPointBlue());
+		}
+	}
+	
 	//For console testing
 	public void makeMove(int row, int column, int boardSize, char redPlayer, 
 			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue, Boolean recordKey) {
 		if ((row >= 0) && (row < boardSize) && (column >= 0) && (column < boardSize) && (grid[row][column] == Cell.EMPTY)) {
 			grid[row][column] = (turn == 'R')? Cell.RED_PLAYER : Cell.BLUE_PLAYER; 
 			turn = (turn == 'R')? 'B' : 'R';
+		}
+		updateGameState(turn, row, column, redPlayer, bluePlayer); 
+		if(recordKey == true) {
+			recordMoves(row, column, boardSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue, turn);
 		}
 	}
 
@@ -152,6 +194,50 @@ public class Board {
 
 	protected boolean blockOpponentWinningMove() {
 		return false;
+	}
+	
+	//Makes a automated move
+	protected void makeAutoMove(int size, char redPlayer, 
+			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue, Boolean recordKey) {
+		if (!makeWinningMove()) {
+			if (!blockOpponentWinningMove())
+				makeRandomMove(size, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue, recordKey);
+		}
+
+	}
+	
+	public void makeFirstMove(int size, char redPlayer, 
+			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue, Boolean recordKey) {
+		Random random = new Random();
+		int position = random.nextInt(size * size);
+		setRow(position/size);
+		setCol(position%size);
+		makeMove(position/size, position%size, size, redPlayer, bluePlayer, 
+				cpuPlayerKeyRed, cpuPlayerKeyBlue, recordKey);
+	}
+	
+	private void makeRandomMove(int size, char redPlayer, 
+			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue, Boolean recordKey) {
+		int numberOfEmptyCells = getNumberOfEmptyCells();
+		Random random = new Random();
+		//Generate random number within number of empty cells
+		int targetMove = random.nextInt(numberOfEmptyCells);
+		int index=0;
+		for (int row = 0; row < size; ++row) {
+			for (int col = 0; col < size; ++col) {
+				if (grid[row][col] == Cell.EMPTY) {
+					if (targetMove == index) {
+						setRow(row);
+						setCol(col);
+						makeMove(row, col, size, redPlayer, bluePlayer, 
+									cpuPlayerKeyRed, cpuPlayerKeyBlue, recordKey);
+						return;
+					} else
+						index++;
+				}
+			}
+		}
+		
 	}
 	
 	//Finds the total of empty cells on grid

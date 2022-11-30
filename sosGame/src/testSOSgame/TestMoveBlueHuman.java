@@ -8,9 +8,10 @@ import org.junit.Test;
 
 import productSOSgame.Board;
 import productSOSgame.GeneralGameBoard;
-import productSOSgame.GeneralGameBoard.GameStateGeneral;
+//import productSOSgame.GeneralGameBoard.GameStateGeneral;
 import productSOSgame.SimpleGameBoard;
 import productSOSgame.Board.Cell;
+import productSOSgame.Board.GameState;
 
 
 public class TestMoveBlueHuman {
@@ -113,7 +114,7 @@ public class TestMoveBlueHuman {
 		generalBoardPlayerS.makeMove(0, 0, size, 'O', 'S', 'X', 'X', false); // BLUE IS S and moves
 		generalBoardPlayerS.makeMove(0, 1, size, 'O', 'S', 'X', 'X', false); // RED IS O and moves
 		generalBoardPlayerS.makeMove(0, 2, size, 'O', 'S', 'X', 'X', false); // BLUE IS S and moves
-		assertEquals("", generalBoardPlayerS.getGameScore(), GameStateGeneral.BLUE_SCORES); 
+		assertEquals("", generalBoardPlayerS.getGameState(), GameState.BLUE_SCORES); 
 		assertEquals("", generalBoardPlayerS.getPointBlue(), 1); 
 		assertEquals("", generalBoardPlayerS.getTurn(), 'B'); 
 	}
@@ -124,7 +125,7 @@ public class TestMoveBlueHuman {
 		generalBoardPlayerO.makeMove(0, 1, size, 'S', 'O', 'X', 'X', false); // BLUE IS O and moves
 		generalBoardPlayerO.makeMove(1, 3, size, 'S', 'O', 'X', 'X', false); // RED IS S and moves
 		generalBoardPlayerO.makeMove(1, 2, size, 'S', 'O', 'X', 'X', false); // BLUE IS O and moves
-		assertEquals("", generalBoardPlayerO.getGameScore(), GameStateGeneral.BLUE_SCORES); 
+		assertEquals("", generalBoardPlayerO.getGameState(), GameState.BLUE_SCORES); 
 		assertEquals("", generalBoardPlayerO.getPointBlue(), 1); 
 		assertEquals("", generalBoardPlayerO.getTurn(), 'B'); 
 	}

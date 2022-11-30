@@ -5,8 +5,9 @@ import java.io.IOException;
 import java.util.Random;
 
 public class GeneralGameBoard extends Board {
-	public enum GameStateGeneral {RED_SCORES, BLUE_SCORES, NO_SCORE};
-	protected GameStateGeneral currentGameScore;
+//	public enum GameStateGeneral {RED_SCORES, BLUE_SCORES, NO_SCORE};
+//	protected GameStateGeneral currentGameScore;
+	
 //	private File recordFile = new File("RecordGame.txt");
 //	private String movesRecordedString = "";
 	
@@ -14,38 +15,61 @@ public class GeneralGameBoard extends Board {
 		createFile();
 	}
 	
+//	@Override
+//	public void makeMove(int row, int column, int boardSize, char redPlayer, 
+//			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue, Boolean recordKey) {
+//		if ((row >= 0) && (row < boardSize) && (column >= 0) && (column < boardSize) && (grid[row][column] == Cell.EMPTY)) {
+//			grid[row][column] = (turn == 'R')? Cell.RED_PLAYER : Cell.BLUE_PLAYER; 
+//			
+//			
+////			After making a move, the gamestate is updated
+//			updateGameState(turn, row, column, redPlayer, bluePlayer); 
+//			if(recordKey == true) {
+//				recordMoves(row, column, boardSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue, turn);
+//			}
+////			Turn is still with the player if they scored
+//			if(currentGameState == GameState.RED_SCORES) {
+//				turn = 'R';
+//			}
+//			else if(currentGameState == GameState.BLUE_SCORES) {
+//				turn = 'B';
+//			}
+//			else {
+//				turn = (turn == 'R')? 'B' : 'R';
+//			}
+//			
+////			Making a computer move if the char key for computer matches
+//			if ((turn == cpuPlayerKeyRed || turn == cpuPlayerKeyBlue) && currentGameState == GameState.PLAYING) {
+//				makeAutoMove(boardSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue, recordKey);
+//			}
+//			 
+//		}
+//	}
+	
 	@Override
 	public void makeMove(int row, int column, int boardSize, char redPlayer, 
 			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue, Boolean recordKey) {
 		if ((row >= 0) && (row < boardSize) && (column >= 0) && (column < boardSize) && (grid[row][column] == Cell.EMPTY)) {
 			grid[row][column] = (turn == 'R')? Cell.RED_PLAYER : Cell.BLUE_PLAYER; 
 			
-//			After making a move, the gamestate is updated
-			updateGameState(turn, row, column, redPlayer, bluePlayer); 
-			System.out.println("TURN: " + turn);
-			if(recordKey == true) {
-				recordMoves(row, column, boardSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue, turn);
-			}
+			super.makeMove(row, column, boardSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue, recordKey);
 			
-//			Turn is still with the player if they scored
-			if(currentGameScore == GameStateGeneral.RED_SCORES) {
+	//		Turn is still with the player if they scored
+			if(currentGameState == GameState.RED_SCORES) {
 				turn = 'R';
 			}
-			else if(currentGameScore == GameStateGeneral.BLUE_SCORES) {
+			else if(currentGameState == GameState.BLUE_SCORES) {
 				turn = 'B';
 			}
 			else {
 				turn = (turn == 'R')? 'B' : 'R';
 			}
 			
-//			Making a computer move if the char key for computer matches
-			if ((turn == cpuPlayerKeyRed || turn == cpuPlayerKeyBlue) && currentGameState == GameState.PLAYING) {
+	//	    Making a computer move if the char key for computer matches
+			if ((turn == cpuPlayerKeyRed || turn == cpuPlayerKeyBlue) && currentGameState == GameState.PLAYING
+					|| currentGameState == GameState.RED_SCORES || currentGameState == GameState.BLUE_SCORES) {
 				makeAutoMove(boardSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue, recordKey);
 			}
-			
-			
-			
-			 
 			 
 		}
 	}
@@ -75,51 +99,6 @@ public class GeneralGameBoard extends Board {
 		}
 	}
 	
-//	Makes a automated move
-	public void makeAutoMove(int size, char redPlayer, char bluePlayer, 
-			char cpuPlayerKeyRed, char cpuPlayerKeyBlue, Boolean recordKey) {
-		if (!makeWinningMove()) {
-			if (!blockOpponentWinningMove())
-				makeRandomMove(size, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue, recordKey);
-		}
-	}
-	
-	private void makeRandomMove(int size, char redPlayer, char bluePlayer, 
-			char cpuPlayerKeyRed, char cpuPlayerKeyBlue, Boolean recordKey) {
-		int numberOfEmptyCells = getNumberOfEmptyCells();
-		Random random = new Random();
-//		Generate random number within number of empty cells
-		int targetMove = random.nextInt(numberOfEmptyCells);
-		int index=0;
-		for (int row = 0; row < size; ++row) {
-			for (int col = 0; col < size; ++col) {
-				if (grid[row][col] == Cell.EMPTY) {
-					if (targetMove == index) {
-						setRow(row);
-						setCol(col);
-						makeMove(row, col, size, redPlayer, bluePlayer, 
-								cpuPlayerKeyRed, cpuPlayerKeyBlue, recordKey);
-						return;
-					} else
-						index++;
-				}
-			}
-		}
-	}
-	
-//	Make a random first move
-	public void makeFirstMove(int size, char redPlayer, char bluePlayer, 
-			char cpuPlayerKeyRed, char cpuPlayerKeyBlue, Boolean recordKey) {
-		Random random = new Random();
-		int position = random.nextInt(size * size);
-		System.out.println("CPU RED: " + cpuPlayerKeyRed);
-		System.out.println("CPU BLUE: " + cpuPlayerKeyBlue);
-		setRow(position/size);
-		setCol(position%size);
-		makeMove(position/size, position%size, size, redPlayer, bluePlayer, 
-				cpuPlayerKeyRed, cpuPlayerKeyBlue, recordKey);
-	}
-	
 //	FOR TESTING PURPOSES
 	public void testingAutomatedMove(int row, int column, int size, char redPlayer, 
 			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue, Boolean recordKey) {
@@ -130,50 +109,43 @@ public class GeneralGameBoard extends Board {
 		}
 	}
 	
-	public void setGameScore(GameStateGeneral currentGameScore) {
-		this.currentGameScore = currentGameScore;
-	}
-	
-	public GameStateGeneral getGameScore() {
-		return currentGameScore;
-	}
-	
 //	Checking the game state to see if a player has scored
-	private void updateGameState(char turn, int row, int column, char redPlayer, char bluePlayer) {
+	@Override
+	public void updateGameState(char turn, int row, int column, char redPlayer, char bluePlayer) {
 		if (hasScored(turn, row, column, size, redPlayer, bluePlayer)) { // check for player scoring
-			currentGameScore = (turn == 'R') ? GameStateGeneral.RED_SCORES : GameStateGeneral.BLUE_SCORES;
+			currentGameState = (turn == 'R') ? GameState.RED_SCORES : GameState.BLUE_SCORES;
 		} // Otherwise, no change to current state (still GameState.PLAYING).
 		else {
 			currentGameState = GameState.PLAYING;
-			currentGameScore = GameStateGeneral.NO_SCORE;
+		}
+		if(isFilled()) {
+			checkGameScore();
 		}
 		
-		checkGameScore();
 		
 	}
 	
 //	Checks score when game ends to decide winner
-	private void checkGameScore() {
-		if(isFilled()) {
-			if(getPointRed() > getPointBlue()) {
-				currentGameState = GameState.RED_WINS;
-				System.out.println("RED WINS");
-				System.out.println("RED--" + getPointRed());
-				System.out.println("BLUE--" + getPointBlue());
-			}
-			else if (getPointRed() < getPointBlue()){
-				currentGameState = GameState.BLUE_WINS;
-				System.out.println("BLUE WINS");
-				System.out.println("RED--" + getPointRed());
-				System.out.println("BLUE--" + getPointBlue());
-			}
-			else if (getPointRed() == getPointBlue()){
-				currentGameState = GameState.DRAW;
-				System.out.println("DRAW");
-				System.out.println("RED--" + getPointRed());
-				System.out.println("BLUE--" + getPointBlue());
-			}
-		}
-	}
+//	private void checkGameScore() {
+//		System.out.println(getPointRed());
+//		if(getPointRed() > getPointBlue()) {
+//			currentGameState = GameState.RED_WINS;
+//			System.out.println("RED WINS");
+//			System.out.println("RED--" + getPointRed());
+//			System.out.println("BLUE--" + getPointBlue());
+//		}
+//		else if (getPointRed() < getPointBlue()){
+//			currentGameState = GameState.BLUE_WINS;
+//			System.out.println("BLUE WINS");
+//			System.out.println("RED--" + getPointRed());
+//			System.out.println("BLUE--" + getPointBlue());
+//		}
+//		else if (getPointRed() == getPointBlue()){
+//			currentGameState = GameState.DRAW;
+//			System.out.println("DRAW");
+//			System.out.println("RED--" + getPointRed());
+//			System.out.println("BLUE--" + getPointBlue());
+//		}
+//	}
 	
 }

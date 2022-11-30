@@ -8,9 +8,10 @@ import org.junit.Test;
 
 import productSOSgame.Board;
 import productSOSgame.GeneralGameBoard;
-import productSOSgame.GeneralGameBoard.GameStateGeneral;
+//import productSOSgame.GeneralGameBoard.GameStateGeneral;
 import productSOSgame.SimpleGameBoard;
 import productSOSgame.Board.Cell;
+import productSOSgame.Board.GameState;
 
 
 public class TestMoveRedHuman {
@@ -116,7 +117,7 @@ public class TestMoveRedHuman {
 		generalBoard.makeMove(0, 0, size, 'S', 'O', 'X', 'X', false);
 		generalBoard.makeMove(1, 0, size, 'S', 'O', 'X', 'X', false);
 		generalBoard.makeMove(2, 0, size, 'S', 'O', 'X', 'X', false);
-		assertEquals("", generalBoard.getGameScore(), GameStateGeneral.RED_SCORES); 
+		assertEquals("", generalBoard.getGameState(), GameState.RED_SCORES); 
 		assertEquals("", generalBoard.getPointRed(), 1); 
 		assertEquals("", generalBoard.getTurn(), 'R'); 
 	}
@@ -129,7 +130,7 @@ public class TestMoveRedHuman {
 		generalBoard.makeMove(1, 0, size, 'O', 'S', 'X', 'X', false); //O
 		generalBoard.makeMove(0, 2, size, 'O', 'S', 'X', 'X', false); //S
 		generalBoard.makeMove(0, 1, size, 'O', 'S', 'X', 'X', false); //O
-		assertEquals("", generalBoard.getGameScore(), GameStateGeneral.RED_SCORES); 
+		assertEquals("", generalBoard.getGameState(), GameState.RED_SCORES); 
 		assertEquals("", generalBoard.getPointRed(), 1); 
 		assertEquals("", generalBoard.getTurn(), 'R'); 
 	}

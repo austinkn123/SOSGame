@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import productSOSgame.Board.Cell;
-import productSOSgame.GeneralGameBoard.GameStateGeneral;
+//import productSOSgame.GeneralGameBoard.GameStateGeneral;
 import productSOSgame.Board.GameState;
 import productSOSgame.Board.scoredCell;;
 
@@ -127,6 +127,8 @@ public class GameBoardCanvas extends JPanel {
 				}
 				if(modeString == "SIMPLE") {
 					recordState = false;
+					simpleGame.resetPointBlue();
+					simpleGame.resetPointRed();
 					simpleGame.setSizeBoard(pSize);
 				}
 				
@@ -185,7 +187,8 @@ public class GameBoardCanvas extends JPanel {
 	public void makeMoveonBoard(GeneralGameBoard generalMode, SimpleGameBoard simpleMode, int row, int col, int pSize, 
 			char redPlayer, char bluePlayer, String pModString, char cpuPlayerKeyRed, char cpuPlayerKeyBlue) { 
 		if(pModString == "GENERAL") {
-			if(generalMode.getGameState() == GameState.PLAYING) {
+			if(generalMode.getGameState() == GameState.PLAYING || generalMode.getGameState() == GameState.RED_SCORES
+					|| generalMode.getGameState() == GameState.BLUE_SCORES) {
 				generalMode.makeMove(row, col, pSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue, recordState);
 				redPlayerPoints.setText(String.valueOf(generalGame.getPointRed()));
 				bluePlayerPoints.setText(String.valueOf(generalGame.getPointBlue()));
@@ -515,10 +518,10 @@ public class GameBoardCanvas extends JPanel {
 	
 	//CHANGES POINTS AND GAMESTATUSBAR BASED ON SCORING
 	private void checkScore() {
-		if(generalGame.getGameScore() == GameStateGeneral.RED_SCORES ) {
+		if(generalGame.getGameState() == GameState.RED_SCORES ) {
 			gameStatusBar.setText("            Red Scores! Red's Turn Again");
 		}
-		if(generalGame.getGameScore() == GameStateGeneral.BLUE_SCORES) {
+		if(generalGame.getGameState() == GameState.BLUE_SCORES) {
 			gameStatusBar.setText("            Blue Scores! Blue's Turn Again");
 		}
 		
@@ -527,8 +530,10 @@ public class GameBoardCanvas extends JPanel {
 	//CHANGES GAMESTATUSBAR BASED ON LOGIC
 	private void playerStatus(){
 //		GENERAL GAME
+		
 		if(board.setMode(modeString, size) == 1) {
 			checkScore();
+			System.out.println(generalGame.getGameState());
 			if (generalGame.getTurn() == 'R') {
 				gameStatusBar.setForeground(Color.RED);
 				gameStatusBar.setText("            Red's Turn");
