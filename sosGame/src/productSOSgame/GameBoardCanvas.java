@@ -187,8 +187,7 @@ public class GameBoardCanvas extends JPanel {
 	public void makeMoveonBoard(GeneralGameBoard generalMode, SimpleGameBoard simpleMode, int row, int col, int pSize, 
 			char redPlayer, char bluePlayer, String pModString, char cpuPlayerKeyRed, char cpuPlayerKeyBlue) { 
 		if(pModString == "GENERAL") {
-			if(generalMode.getGameState() == GameState.PLAYING || generalMode.getGameState() == GameState.RED_SCORES
-					|| generalMode.getGameState() == GameState.BLUE_SCORES) {
+			if(generalMode.getGameState() == GameState.PLAYING) {
 				generalMode.makeMove(row, col, pSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue, recordState);
 				redPlayerPoints.setText(String.valueOf(generalGame.getPointRed()));
 				bluePlayerPoints.setText(String.valueOf(generalGame.getPointBlue()));
@@ -212,6 +211,7 @@ public class GameBoardCanvas extends JPanel {
 		drawGridLines(g);
 		drawBoard(g);
 		playerStatus();
+		checkScore();
 	}
 	
 	private void drawGridLines(Graphics g){
@@ -515,14 +515,14 @@ public class GameBoardCanvas extends JPanel {
 		}
 	}
 	
-	
+//	generalGame.getGameState() == GameState.BLUE_SCORES
 	//CHANGES POINTS AND GAMESTATUSBAR BASED ON SCORING
 	private void checkScore() {
-		if(generalGame.getGameState() == GameState.RED_SCORES ) {
-			gameStatusBar.setText("            Red Scores! Red's Turn Again");
+		if(generalGame.scoreStatusRed) {
+			gameStatusBar.setText(" Red Scores! Red's Turn Again");
 		}
-		if(generalGame.getGameState() == GameState.BLUE_SCORES) {
-			gameStatusBar.setText("            Blue Scores! Blue's Turn Again");
+		if(generalGame.scoreStatusBlue) {
+			gameStatusBar.setText(" Blue Scores! Blue's Turn Again");
 		}
 		
 	}
@@ -532,8 +532,9 @@ public class GameBoardCanvas extends JPanel {
 //		GENERAL GAME
 		
 		if(board.setMode(modeString, size) == 1) {
-			checkScore();
+//			checkScore();
 			System.out.println(generalGame.getGameState());
+			System.out.println(generalGame.scoreStatusRed);
 			if (generalGame.getTurn() == 'R') {
 				gameStatusBar.setForeground(Color.RED);
 				gameStatusBar.setText("            Red's Turn");

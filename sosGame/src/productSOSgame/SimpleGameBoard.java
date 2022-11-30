@@ -2,7 +2,6 @@ package productSOSgame;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Random;
 
 public class SimpleGameBoard extends Board {
 	
@@ -18,13 +17,6 @@ public class SimpleGameBoard extends Board {
 			grid[row][column] = (turn == 'R')? Cell.RED_PLAYER : Cell.BLUE_PLAYER;
 			
 			super.makeMove(row, column, boardSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue, recordKey);
-		
-	//		After making a move, the gamestate is updated
-//			updateGameState(turn, row, column, redPlayer, bluePlayer); 
-//			
-//			if(recordKey == true) {
-//				recordMoves(row, column, boardSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue, turn);
-//			}
 			
 			turn = (turn == 'R')? 'B' : 'R';
 			

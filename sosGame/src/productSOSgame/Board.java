@@ -1,13 +1,8 @@
 package productSOSgame;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
-
-import productSOSgame.Board.Cell;
-import productSOSgame.Board.GameState;
-//import productSOSgame.GeneralGameBoard.GameStateGeneral;
 
 public class Board {
 	public enum Cell {EMPTY, RED_PLAYER, BLUE_PLAYER, HAS_SCORED};
@@ -32,6 +27,8 @@ public class Board {
 	protected String redOpp;
 	protected String blueOpp;
 	protected String turnString; 
+	protected boolean scoreStatusRed;
+	protected boolean scoreStatusBlue;
 	
 	public void addPointRed() {pointRed += 1;}
 	public void resetPointRed() {pointRed = 0;}
