@@ -6,7 +6,9 @@ import java.util.Random;
 
 public class Board {
 	public enum Cell {EMPTY, RED_PLAYER, BLUE_PLAYER, HAS_SCORED};
+	protected Cell[][] grid; 
 	public enum scoredCell {NOT_SCORED, RED_S_SCORED, RED_O_SCORED, BLUE_S_SCORED, BLUE_O_SCORED};
+	protected scoredCell[][] scoredGrid;
 	public enum GameState {PLAYING, DRAW, RED_WINS, BLUE_WINS, RED_SCORES, BLUE_SCORES};
 	public GameState currentGameState;
 	protected char turn = 'R';
@@ -16,19 +18,26 @@ public class Board {
 	protected char bluePlayerKey = 'X';
 	private char cpuRedPlayer = 'X';
 	private char cpuBluePlayer = 'X';
-	protected Cell[][] grid; 
-	protected scoredCell[][] scoredGrid;
 	private int pointRed = 0;
 	private int pointBlue = 0;
 	public int row;
 	public int col;
+	protected boolean scoreStatusRed;
+	protected boolean scoreStatusBlue;
 	protected String movesRecordedString = "";
 	public File recordFile = new File("RecordGame.txt");
 	protected String redOpp;
 	protected String blueOpp;
 	protected String turnString; 
-	protected boolean scoreStatusRed;
-	protected boolean scoreStatusBlue;
+	
+	
+	public void setGameState(GameState currentGameState) {
+		this.currentGameState = currentGameState;
+	}
+	
+	public GameState getGameState() {
+		return currentGameState;
+	}
 	
 	public void addPointRed() {pointRed += 1;}
 	public void resetPointRed() {pointRed = 0;}
@@ -154,21 +163,21 @@ public class Board {
 		System.out.println(getPointRed());
 		if(getPointRed() > getPointBlue()) {
 			currentGameState = GameState.RED_WINS;
-			System.out.println("RED WINS");
-			System.out.println("RED--" + getPointRed());
-			System.out.println("BLUE--" + getPointBlue());
+//			System.out.println("RED WINS");
+//			System.out.println("RED--" + getPointRed());
+//			System.out.println("BLUE--" + getPointBlue());
 		}
 		else if (getPointRed() < getPointBlue()){
 			currentGameState = GameState.BLUE_WINS;
-			System.out.println("BLUE WINS");
-			System.out.println("RED--" + getPointRed());
-			System.out.println("BLUE--" + getPointBlue());
+//			System.out.println("BLUE WINS");
+//			System.out.println("RED--" + getPointRed());
+//			System.out.println("BLUE--" + getPointBlue());
 		}
 		else if (getPointRed() == getPointBlue()){
 			currentGameState = GameState.DRAW;
-			System.out.println("DRAW");
-			System.out.println("RED--" + getPointRed());
-			System.out.println("BLUE--" + getPointBlue());
+//			System.out.println("DRAW");
+//			System.out.println("RED--" + getPointRed());
+//			System.out.println("BLUE--" + getPointBlue());
 		}
 	}
 	
@@ -291,14 +300,6 @@ public class Board {
 		return score;
 	}
 	
-	public void setGameState(GameState currentGameState) {
-		this.currentGameState = currentGameState;
-	}
-	
-	public GameState getGameState() {
-		return currentGameState;
-	}
-	
 	protected void createFile() {
 		try {
 			if (recordFile.createNewFile()) {
@@ -326,6 +327,9 @@ public class Board {
 		
 		movesRecordedString += turnString + "'s Turn: \n Move: Row - " +  row 
 				+ " Column - " + column + "\n";
+		
+		redOpp = (cpuPlayerKeyRed == 'R') ? "Computer"  : "Human";
+		blueOpp = (cpuPlayerKeyBlue == 'B') ? "Computer"  : "Human";
 
 	}
 	

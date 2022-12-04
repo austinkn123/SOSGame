@@ -33,8 +33,6 @@ public class SimpleGameBoard extends Board {
 			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue, char turn) {
 		
 		super.recordMoves(row, column, boardSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue, turn);
-		redOpp = (cpuPlayerKeyRed == 'R') ? "Computer"  : "Human";
-		blueOpp = (cpuPlayerKeyBlue == 'B') ? "Computer"  : "Human";
 		try {
 			if(currentGameState == GameState.RED_WINS || currentGameState == GameState.BLUE_WINS
 					|| currentGameState == GameState.DRAW) {

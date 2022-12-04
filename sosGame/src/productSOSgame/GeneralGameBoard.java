@@ -50,8 +50,6 @@ public class GeneralGameBoard extends Board {
 			char bluePlayer, char cpuPlayerKeyRed, char cpuPlayerKeyBlue, char turn) {
 		
 		super.recordMoves(row, column, boardSize, redPlayer, bluePlayer, cpuPlayerKeyRed, cpuPlayerKeyBlue, turn);
-		redOpp = (cpuPlayerKeyRed == 'R') ? "Computer"  : "Human";
-		blueOpp = (cpuPlayerKeyBlue == 'B') ? "Computer"  : "Human";
 		try {
 			if(isFilled()) {
 		      FileWriter myWriter = new FileWriter("RecordGame.txt");
